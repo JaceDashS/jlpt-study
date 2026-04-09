@@ -1,0 +1,40 @@
+{
+  "name": "jlpt-hankwoneuro-kkeutnaeri-n1",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "validate:structure": "node scripts/validate-problem.cjs --layer structure",
+    "validate:consistency": "node scripts/validate-problem.cjs --layer consistency",
+    "validate:choices": "node scripts/validate-problem.cjs --layer choices",
+    "validate:reading": "node scripts/validate-problem.cjs --layer reading",
+    "check:missing-meaning": "node scripts/check-missing-meaning.cjs",
+    "check:mojibake": "node scripts/check-mojibake.cjs",
+    "migrate:expression-field": "node scripts/migrate-expression-field.cjs",
+    "check:problem": "node scripts/check-problem-all.cjs",
+    "check:quality": "node scripts/check-quality-all.cjs",
+    "test:stage-progression": "node scripts/test-stage-progression.cjs",
+    "fix:problem-choice-number": "node scripts/fix-problem-choice-number.cjs",
+    "fix:problem-cheat-pattern": "node scripts/fix-problem-cheat-pattern.cjs",
+    "cleanup:legacy": "node scripts/delete-legacy-files.cjs",
+    "fix:problem-duplicate": "node scripts/fix-problem-duplicate-choices.cjs",
+    "fix:problem-hiragana": "node scripts/fix-problem-hiragana-coverage.cjs",
+    "fix:problem-hiragana:generate": "node scripts/fix-problem-hiragana-coverage.cjs --generate-missing",
+    "fix:problem-missing": "node scripts/fix-missing-problems.cjs",
+    "sync:problem-by-kanji": "node scripts/sync-problem-by-kanji.cjs",
+    "sync:problem-by-kanji:write": "node scripts/sync-problem-by-kanji.cjs --write"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.10"
+  }
+}

@@ -1,0 +1,717 @@
+{
+  "format": "combined",
+  "meta": {
+    "level": "jlpt-n1",
+    "title": "tmp"
+  },
+  "days": [
+    {
+      "day": [
+        {
+          "items": [
+            {
+              "expression": "穴",
+              "meaningKo": "구멍",
+              "readingParts": {
+                "kanjiToKana": {
+                  "穴": "あな"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 1,
+              "id": "d1-i1"
+            },
+            {
+              "expression": "油",
+              "meaningKo": "기름",
+              "readingParts": {
+                "kanjiToKana": {
+                  "油": "あぶら"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 2,
+              "id": "d1-i2"
+            },
+            {
+              "expression": "胃",
+              "meaningKo": "위; 위장",
+              "readingParts": {
+                "kanjiToKana": {
+                  "胃": "い"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 3,
+              "id": "d1-i3"
+            },
+            {
+              "expression": "息",
+              "meaningKo": "숨",
+              "readingParts": {
+                "kanjiToKana": {
+                  "息": "いき"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 4,
+              "id": "d1-i4"
+            },
+            {
+              "expression": "裏",
+              "meaningKo": "뒤",
+              "readingParts": {
+                "kanjiToKana": {
+                  "裏": "うら"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 5,
+              "id": "d1-i5"
+            },
+            {
+              "expression": "噂",
+              "meaningKo": "소문",
+              "readingParts": {
+                "kanjiToKana": {
+                  "噂": "うわさ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 6,
+              "id": "d1-i6"
+            },
+            {
+              "expression": "餌",
+              "meaningKo": "먹이",
+              "readingParts": {
+                "kanjiToKana": {
+                  "餌": "えさ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 7,
+              "id": "d1-i7"
+            },
+            {
+              "expression": "枝",
+              "meaningKo": "나뭇가지",
+              "readingParts": {
+                "kanjiToKana": {
+                  "枝": "えだ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 8,
+              "id": "d1-i8"
+            },
+            {
+              "expression": "襟",
+              "meaningKo": "옷깃",
+              "readingParts": {
+                "kanjiToKana": {
+                  "襟": "えり"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 9,
+              "id": "d1-i9"
+            },
+            {
+              "expression": "奥",
+              "meaningKo": "안쪽, 속, 깊숙한 곳",
+              "readingParts": {
+                "kanjiToKana": {
+                  "奥": "おく"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 10,
+              "id": "d1-i10"
+            },
+            {
+              "expression": "親",
+              "meaningKo": "부모",
+              "readingParts": {
+                "kanjiToKana": {
+                  "親": "おや"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 11,
+              "id": "d1-i11"
+            },
+            {
+              "expression": "課",
+              "meaningKo": "과",
+              "readingParts": {
+                "kanjiToKana": {
+                  "課": "か"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 12,
+              "id": "d1-i12"
+            },
+            {
+              "expression": "数",
+              "meaningKo": "수; 숫자",
+              "readingParts": {
+                "kanjiToKana": {
+                  "数": "かず"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 13,
+              "id": "d1-i13"
+            },
+            {
+              "expression": "形",
+              "meaningKo": "형태",
+              "readingParts": {
+                "kanjiToKana": {
+                  "形": "かたち"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 14,
+              "id": "d1-i14"
+            },
+            {
+              "expression": "壁",
+              "meaningKo": "벽",
+              "readingParts": {
+                "kanjiToKana": {
+                  "壁": "かべ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 15,
+              "id": "d1-i15"
+            },
+            {
+              "expression": "雷",
+              "meaningKo": "천둥",
+              "readingParts": {
+                "kanjiToKana": {
+                  "雷": "かみなり"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 16,
+              "id": "d1-i16"
+            },
+            {
+              "expression": "皮",
+              "meaningKo": "껍질, 가죽",
+              "readingParts": {
+                "kanjiToKana": {
+                  "皮": "かわ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 17,
+              "id": "d1-i17"
+            },
+            {
+              "expression": "缶",
+              "meaningKo": "캔; 깡통",
+              "readingParts": {
+                "kanjiToKana": {
+                  "缶": "かん"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 18,
+              "id": "d1-i18"
+            },
+            {
+              "expression": "曲",
+              "meaningKo": "곡; 노래",
+              "readingParts": {
+                "kanjiToKana": {
+                  "曲": "きょく"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 19,
+              "id": "d1-i19"
+            },
+            {
+              "expression": "穴",
+              "meaningKo": "구멍",
+              "readingParts": {
+                "kanjiToKana": {
+                  "穴": "あな"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 20,
+              "id": "d1-i20"
+            }
+          ],
+          "stage": 1,
+          "stageCompleteDate": null,
+          "nextReviewDate": null,
+          "lastAttemptDate": ""
+        }
+      ]
+    },
+    {
+      "day": [
+        {
+          "items": [
+            {
+              "expression": "油",
+              "meaningKo": "기름",
+              "readingParts": {
+                "kanjiToKana": {
+                  "油": "あぶら"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 1,
+              "id": "d2-i1"
+            },
+            {
+              "expression": "胃",
+              "meaningKo": "위; 위장",
+              "readingParts": {
+                "kanjiToKana": {
+                  "胃": "い"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 2,
+              "id": "d2-i2"
+            },
+            {
+              "expression": "息",
+              "meaningKo": "숨",
+              "readingParts": {
+                "kanjiToKana": {
+                  "息": "いき"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 3,
+              "id": "d2-i3"
+            },
+            {
+              "expression": "裏",
+              "meaningKo": "뒤",
+              "readingParts": {
+                "kanjiToKana": {
+                  "裏": "うら"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 4,
+              "id": "d2-i4"
+            },
+            {
+              "expression": "噂",
+              "meaningKo": "소문",
+              "readingParts": {
+                "kanjiToKana": {
+                  "噂": "うわさ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 5,
+              "id": "d2-i5"
+            },
+            {
+              "expression": "餌",
+              "meaningKo": "먹이",
+              "readingParts": {
+                "kanjiToKana": {
+                  "餌": "えさ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 6,
+              "id": "d2-i6"
+            },
+            {
+              "expression": "枝",
+              "meaningKo": "나뭇가지",
+              "readingParts": {
+                "kanjiToKana": {
+                  "枝": "えだ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 7,
+              "id": "d2-i7"
+            },
+            {
+              "expression": "襟",
+              "meaningKo": "옷깃",
+              "readingParts": {
+                "kanjiToKana": {
+                  "襟": "えり"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 8,
+              "id": "d2-i8"
+            },
+            {
+              "expression": "奥",
+              "meaningKo": "안쪽, 속, 깊숙한 곳",
+              "readingParts": {
+                "kanjiToKana": {
+                  "奥": "おく"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 9,
+              "id": "d2-i9"
+            },
+            {
+              "expression": "親",
+              "meaningKo": "부모",
+              "readingParts": {
+                "kanjiToKana": {
+                  "親": "おや"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 10,
+              "id": "d2-i10"
+            },
+            {
+              "expression": "課",
+              "meaningKo": "과",
+              "readingParts": {
+                "kanjiToKana": {
+                  "課": "か"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 11,
+              "id": "d2-i11"
+            },
+            {
+              "expression": "数",
+              "meaningKo": "수; 숫자",
+              "readingParts": {
+                "kanjiToKana": {
+                  "数": "かず"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 12,
+              "id": "d2-i12"
+            },
+            {
+              "expression": "形",
+              "meaningKo": "형태",
+              "readingParts": {
+                "kanjiToKana": {
+                  "形": "かたち"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 13,
+              "id": "d2-i13"
+            },
+            {
+              "expression": "壁",
+              "meaningKo": "벽",
+              "readingParts": {
+                "kanjiToKana": {
+                  "壁": "かべ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 14,
+              "id": "d2-i14"
+            },
+            {
+              "expression": "雷",
+              "meaningKo": "천둥",
+              "readingParts": {
+                "kanjiToKana": {
+                  "雷": "かみなり"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 15,
+              "id": "d2-i15"
+            },
+            {
+              "expression": "皮",
+              "meaningKo": "껍질, 가죽",
+              "readingParts": {
+                "kanjiToKana": {
+                  "皮": "かわ"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 16,
+              "id": "d2-i16"
+            },
+            {
+              "expression": "缶",
+              "meaningKo": "캔; 깡통",
+              "readingParts": {
+                "kanjiToKana": {
+                  "缶": "かん"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 17,
+              "id": "d2-i17"
+            },
+            {
+              "expression": "曲",
+              "meaningKo": "곡; 노래",
+              "readingParts": {
+                "kanjiToKana": {
+                  "曲": "きょく"
+                }
+              },
+              "problem": null,
+              "lastResult": "NEUTRAL",
+              "memoDecomposition": "",
+              "memoPersonal": "",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 18,
+              "id": "d2-i18"
+            }
+          ],
+          "stage": 1,
+          "stageCompleteDate": null,
+          "nextReviewDate": null,
+          "lastAttemptDate": ""
+        }
+      ]
+    }
+  ]
+}
