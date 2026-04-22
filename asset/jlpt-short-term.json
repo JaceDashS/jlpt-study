@@ -58,7 +58,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ユ、ユウ |\n| 訓読 | あぶら<br>（全体）あぶら |\n| 뜻 | 기름 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 石油（せきゆ）: 석유<br>* 油断（ゆだん）: 방심 |\n| 구성(IDS) | ⿰氵由 |\n| 부수/부품 | さんずい(氵) + 由 |\n| 부품 역할 | 氵: 물, 액체<br>由: 소리/형태 요소 (추정) |\n| 재귀 구조 | 油[기름] → ⿰[구성] 氵[물] + 由[말미암을/소리](추정) |\n| 최종 최소 단위 | 氵[물], 由[말미암을/소리](추정) |",
-              "memoPersonal": "",
+              "memoPersonal": "액체+유 = 기름",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -86,7 +86,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | イ |\n| 訓読 | （全体）い |\n| 뜻 | 위, 위장 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 胃炎（いえん）: 위염<br>* 胃腸（いちょう）: 위와 장 |\n| 구성(IDS) | ⿱田月 |\n| 부수/부품 | 田 + 月(肉) |\n| 부품 역할 | 田: 구획된 모양, 기관 형태 (추정)<br>月(肉): 몸, 살, 장기 |\n| 재귀 구조 | 胃[위] → ⿱[구성] 田[밭/구획](추정) + 月[육달월/몸] |\n| 최종 최소 단위 | 田[밭/구획](추정), 月[육달월/몸] |",
-              "memoPersonal": "",
+              "memoPersonal": "밭처럼 넓은 장기",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -114,7 +114,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ソク |\n| 訓読 | いき<br>（全体）いき |\n| 뜻 | 숨, 호흡 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 息子（むすこ）: 아들<br>* ため息（ためいき）: 한숨 |\n| 구성(IDS) | ⿱自心 |\n| 부수/부품 | 自 + 心 |\n| 부품 역할 | 自: 코, 자신<br>心: 마음, 내부 작용 |\n| 재귀 구조 | 息[숨] → ⿱[구성] 自[코/자기] + 心[마음] |\n| 최종 최소 단위 | 自[코/자기], 心[마음] |",
-              "memoPersonal": "",
+              "memoPersonal": "자신의 마음속에 있는것 = 숨",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -170,7 +170,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ソン (추정) |\n| 訓読 | うわさ<br>（全体）うわさ |\n| 뜻 | 소문, 풍문 |\n| 상용한자 여부 | 常用外 |\n| 예시 | * 噂話（うわさばなし）: 소문 이야기<br>* 噂好き（うわさずき）: 소문 좋아함 |\n| 구성(IDS) | ⿰口尊 (추정) |\n| 부수/부품 | 口 + 尊 (추정) |\n| 부품 역할 | 口: 말, 입<br>尊: 소리/의미 보조, 높임 또는 전달 (추정) |\n| 재귀 구조 | 噂[소문] → ⿰[구성] 口[입] + 尊[높을/소리](추정) |\n| 최종 최소 단위 | 口[입], 尊[높을/소리](추정) |",
-              "memoPersonal": "",
+              "memoPersonal": "尊이거 존경등에 사용됨, 존경하는 사람의 말은 금방 소문이 되는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -198,7 +198,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ジ、シ (추정) |\n| 訓読 | えさ<br>（全体）えさ |\n| 뜻 | 먹이, 미끼 |\n| 상용한자 여부 | 常用外 |\n| 예시 | * 餌付け（えづけ）: 먹이 주기<br>* 餌箱（えさばこ）: 먹이통 |\n| 구성(IDS) | ⿰飠耳 |\n| 부수/부품 | 食偏(飠) + 耳 |\n| 부품 역할 | 飠: 먹다, 음식<br>耳: 소리/형태 요소 (추정) |\n| 재귀 구조 | 餌[먹이] → ⿰[구성] 飠[밥/음식] + 耳[귀/소리](추정) |\n| 최종 최소 단위 | 飠[밥/음식], 耳[귀/소리](추정) |",
-              "memoPersonal": "",
+              "memoPersonal": "귀부분은 먹이로 주는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -226,7 +226,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | シ |\n| 訓読 | えだ<br>（全体）えだ |\n| 뜻 | 가지 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 枝葉（しよう）: 지엽, 가지와 잎<br>* 小枝（こえだ）: 작은 가지 |\n| 구성(IDS) | ⿰木支 |\n| 부수/부품 | 木 + 支 |\n| 부품 역할 | 木: 나무<br>支: 뻗음, 지탱함 |\n| 재귀 구조 | 枝[가지] → ⿰[구성] 木[나무] + 支[지탱하다/갈래] |\n| 최종 최소 단위 | 木[나무], 支[지탱하다/갈래] |",
-              "memoPersonal": "",
+              "memoPersonal": "무언가를 지탱하는 나무 = 나뭇가지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -254,7 +254,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | キン |\n| 訓読 | えり<br>（全体）えり |\n| 뜻 | 옷깃, 칼라 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 開襟（かいきん）: 오픈 칼라<br>* 襟元（えりもと）: 옷깃 주변 |\n| 구성(IDS) | ⿰衤禁 |\n| 부수/부품 | 衤 + 禁 |\n| 부품 역할 | 衤: 옷, 의복<br>禁: 소리/형태 요소 (추정) |\n| 재귀 구조 | 襟[옷깃] → ⿰[구성] 衤[옷] + 禁[금하다/소리](추정) |\n| 최종 최소 단위 | 衤[옷], 禁[금하다/소리](추정) |",
-              "memoPersonal": "",
+              "memoPersonal": "옷에 건드는것을 금하는부분",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -282,7 +282,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | オウ |\n| 訓読 | おく<br>（全体）おく |\n| 뜻 | 안쪽, 깊은 곳 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 奥行き（おくゆき）: 깊이, 안쪽 길이<br>* 山奥（やまおく）: 산속 깊은 곳 |\n| 구성(IDS) | ⿱宀大米 (추정) |\n| 부수/부품 | 宀 + 大 + 米 (추정) |\n| 부품 역할 | 宀: 집, 덮개<br>大: 큰, 넓은<br>米: 안쪽 내용/형태 요소 (추정) |\n| 재귀 구조 | 奥[안쪽] → ⿱[구성] 宀[지붕] + 大[큰] + 米[쌀/내용](추정) |\n| 최종 최소 단위 | 宀[지붕], 大[큰], 米[쌀/내용](추정) |",
-              "memoPersonal": "",
+              "memoPersonal": "지붕아래 쌀이 못자라서 깊은곳까지 뿌리를 내리는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -570,10 +570,10 @@
               "id": "d1-i20"
             }
           ],
-          "stage": 1,
-          "stageCompleteDate": null,
-          "nextReviewDate": null,
-          "lastAttemptDate": ""
+          "stage": 2,
+          "stageCompleteDate": "2026-04-22",
+          "nextReviewDate": "2026-04-23",
+          "lastAttemptDate": "2026-04-22"
         }
       ]
     },
@@ -589,10 +589,20 @@
                   "煙": "けむり"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "煙が空へゆっくり上がっていった。",
+                "target": "煙",
+                "choices": [
+                  "けむり",
+                  "けぶり",
+                  "けもり",
+                  "けむい"
+                ],
+                "answer": "けむり"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 煙 |\n|---|---|\n| 音読 | エン |\n| 訓読 | けむり / けむ-る / （全体）けむり |\n| 뜻 | 연기 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 喫煙（きつえん）: 흡연<br>* 煙突（えんとつ）: 굴뚝 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
+              "memoPersonal": "서쪽땅에서 불난게 보이면 연기로 보이는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -607,10 +617,20 @@
                   "塩": "しお"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "料理に塩を少しだけ加えた。",
+                "target": "塩",
+                "choices": [
+                  "しお",
+                  "せお",
+                  "ちお",
+                  "しょ"
+                ],
+                "answer": "しお"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 塩 |\n|---|---|\n| 音読 | エン |\n| 訓読 | しお / （全体）しお |\n| 뜻 | 소금 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 食塩（しょくえん）: 식염<br>* 塩分（えんぶん）: 염분 |\n| 구성(IDS) | ⿰土皿 (추정) |\n| 부수/부품 | 土 + 皿 |\n| 부품 역할 | 土: 흙·광물 / 皿: 그릇·담는 틀 (추정) |\n| 재귀 구조 | 塩[소금] → ⿰[구성] 土[흙] + 皿[그릇](추정) |\n| 최종 최소 단위 | 土[흙], 皿[그릇](추정) |",
+              "memoPersonal": "접시위에 돌과 땅(소금) 이있는모습",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -625,9 +645,19 @@
                   "島": "しま"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "小さな島に渡る船に乗った。",
+                "target": "島",
+                "choices": [
+                  "しま",
+                  "しば",
+                  "じま",
+                  "しめ"
+                ],
+                "answer": "しま"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 島 |\n|---|---|\n| 音読 | トウ |\n| 訓読 | しま / （全体）しま |\n| 뜻 | 섬 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 半島（はんとう）: 반도<br>* 列島（れっとう）: 열도 |\n| 구성(IDS) | ⿹鳥山 (추정) |\n| 부수/부품 | 鳥 + 山 |\n| 부품 역할 | 鳥: 새·형태 / 山: 산·지형 |\n| 재귀 구조 | 島[섬] → ⿹[구성] 鳥[새] + 山[산] |\n| 최종 최소 단위 | 鳥[새], 山[산] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -643,10 +673,20 @@
                   "城": "しろ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "丘の上に古い城が見える。",
+                "target": "城",
+                "choices": [
+                  "しろ",
+                  "じろ",
+                  "しる",
+                  "せろ"
+                ],
+                "answer": "しろ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 城 |\n|---|---|\n| 音読 | ジョウ |\n| 訓読 | しろ / （全体）しろ |\n| 뜻 | 성 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 城下町（じょうかまち）: 성곽 도시<br>* 城壁（じょうへき）: 성벽 |\n| 구성(IDS) | ⿰土成 |\n| 부수/부품 | 土 + 成 |\n| 부품 역할 | 土: 흙·기초 / 成: 소리·형태 (추정) |\n| 재귀 구조 | 城[성] → ⿰[구성] 土[흙] + 成[이루다](추정) |\n| 최종 최소 단위 | 土[흙], 成[이루다](추정) |",
+              "memoPersonal": "땅위에 성 = 성",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -661,10 +701,20 @@
                   "隅": "すみ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "部屋の隅に小さな棚を置いた。",
+                "target": "隅",
+                "choices": [
+                  "すみ",
+                  "すむ",
+                  "ずみ",
+                  "すめ"
+                ],
+                "answer": "すみ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 隅 |\n|---|---|\n| 音読 | グウ |\n| 訓読 | すみ / （全体）すみ |\n| 뜻 | 구석 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 四隅（よすみ）: 네 모퉁이<br>* 隅々（すみずみ）: 구석구석 |\n| 구성(IDS) | ⿰阝禺 |\n| 부수/부품 | 阝 + 禺 |\n| 부품 역할 | 阝: 언덕·장소 / 禺: 소리·의미 보조 (추정) |\n| 재귀 구조 | 隅[구석] → ⿰[구성] 阝[언덕] + 禺[원숭이 모양](추정) |\n| 최종 최소 단위 | 阝[언덕], 禺[원숭이 모양](추정) |",
+              "memoPersonal": "언덕의 모퉁이 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -679,10 +729,20 @@
                   "咳": "せき"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "夜になると咳が少し出やすい。",
+                "target": "咳",
+                "choices": [
+                  "せき",
+                  "せぎ",
+                  "さき",
+                  "せけ"
+                ],
+                "answer": "せき"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 咳 |\n|---|---|\n| 音読 | ガイ / カイ |\n| 訓読 | せき / （全体）せき |\n| 뜻 | 기침 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 咳払い（せきばらい）: 헛기침<br>* 咳き込む（せきこむ）: 기침을 심하게 하다 |\n| 구성(IDS) | ⿰口亥 |\n| 부수/부품 | 口 + 亥 |\n| 부품 역할 | 口: 입·소리 / 亥: 소리 요소 (추정) |\n| 재귀 구조 | 咳[기침] → ⿰[구성] 口[입] + 亥[돼지 해](추정) |\n| 최종 최소 단위 | 口[입], 亥[돼지 해](추정) |",
+              "memoPersonal": "입에서 바람이 나오는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -697,10 +757,20 @@
                   "底": "そこ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "箱の底に鍵が落ちていた。",
+                "target": "底",
+                "choices": [
+                  "そこ",
+                  "そご",
+                  "そき",
+                  "せこ"
+                ],
+                "answer": "そこ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 底 |\n|---|---|\n| 音読 | テイ |\n| 訓読 | そこ / （全体）そこ |\n| 뜻 | 바닥 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 海底（かいてい）: 해저<br>* 根底（こんてい）: 근저 |\n| 구성(IDS) | ⿸广氐 |\n| 부수/부품 | 广 + 氐 |\n| 부품 역할 | 广: 집·덮개 / 氐: 밑바탕·소리 (추정) |\n| 재귀 구조 | 底[바닥] → ⿸[구성] 广[집] + 氐[밑](추정) |\n| 최종 최소 단위 | 广[집], 氐[밑](추정) |",
+              "memoPersonal": "집안에 있는 백성(개백수)보다 밑의 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -715,9 +785,19 @@
                   "像": "ぞう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "駅前に大きな像が建っている。",
+                "target": "像",
+                "choices": [
+                  "ぞう",
+                  "そう",
+                  "ぞく",
+                  "ぞお"
+                ],
+                "answer": "ぞう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 像 |\n|---|---|\n| 音読 | ゾウ |\n| 訓読 | （全体）ぞう (入力に従う) |\n| 뜻 | 형상·상 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 映像（えいぞう）: 영상<br>* 仏像（ぶつぞう）: 불상 |\n| 구성(IDS) | ⿰亻象 |\n| 부수/부품 | 亻 + 象 |\n| 부품 역할 | 亻: 사람 / 象: 형상·소리 보조 |\n| 재귀 구조 | 像[형상] → ⿰[구성] 亻[사람] + 象[코끼리·형상] |\n| 최종 최소 단위 | 亻[사람], 象[코끼리·형상] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -733,9 +813,19 @@
                   "旅": "たび"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "春休みに友人と長い旅に出た。",
+                "target": "旅",
+                "choices": [
+                  "たび",
+                  "たべ",
+                  "だび",
+                  "たみ"
+                ],
+                "answer": "たび"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 旅 |\n|---|---|\n| 音読 | リョ |\n| 訓読 | たび / （全体）たび |\n| 뜻 | 여행 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 旅行（りょこう）: 여행<br>* 旅館（りょかん）: 여관 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -751,10 +841,20 @@
                   "妻": "つま"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "彼は妻と一緒に店を切り盛りしている。",
+                "target": "妻",
+                "choices": [
+                  "つま",
+                  "づま",
+                  "つめ",
+                  "つも"
+                ],
+                "answer": "つま"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 妻 |\n|---|---|\n| 音読 | サイ |\n| 訓読 | つま / （全体）つま |\n| 뜻 | 아내 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 妻子（さいし）: 처자<br>* 人妻（ひとづま）: 유부녀 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
+              "memoPersonal": "책읽는 여자 이미지로 해볼까",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -769,9 +869,19 @@
                   "毒": "どく"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "このきのこには強い毒がある。",
+                "target": "毒",
+                "choices": [
+                  "どく",
+                  "とく",
+                  "どけ",
+                  "どこ"
+                ],
+                "answer": "どく"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 毒 |\n|---|---|\n| 音読 | ドク |\n| 訓読 | （全体）どく (入力に従う) |\n| 뜻 | 독 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 毒素（どくそ）: 독소<br>* 中毒（ちゅうどく）: 중독 |\n| 구성(IDS) | ⿱龶母 (추정) |\n| 부수/부품 | 龶 + 母 |\n| 부품 역할 | 龶: 윗부분 표기 (추정) / 母: 어미·소리 보조 (추정) |\n| 재귀 구조 | 毒[독] → ⿱[구성] 龶[윗부분 표기](추정) + 母[어미](추정) |\n| 최종 최소 단위 | 龶[윗부분 표기](추정), 母[어미](추정) |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -787,10 +897,20 @@
                   "謎": "なぞ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "その事件にはまだ多くの謎が残っている。",
+                "target": "謎",
+                "choices": [
+                  "なぞ",
+                  "なそ",
+                  "なの",
+                  "ねぞ"
+                ],
+                "answer": "なぞ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 謎 |\n|---|---|\n| 音読 | メイ |\n| 訓読 | なぞ / （全体）なぞ |\n| 뜻 | 수수께끼 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 謎解き（なぞとき）: 수수께끼 풀이<br>* 謎々（なぞなぞ）: 수수께끼 놀이 |\n| 구성(IDS) | ⿰言迷 |\n| 부수/부품 | 言 + 迷 |\n| 부품 역할 | 言: 말 / 迷: 헤매다·소리 보조 |\n| 재귀 구조 | 謎[수수께끼] → ⿰[구성] 言[말] + 迷[헤매다] |\n| 최종 최소 단위 | 言[말], 迷[헤매다] |",
+              "memoPersonal": "천천히 걸어오는 쌀의 대한 이야기를하는데 매우 수수깨끼의 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -805,10 +925,20 @@
                   "鍋": "なべ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "寒い夜は鍋を囲むと落ち着く。",
+                "target": "鍋",
+                "choices": [
+                  "なべ",
+                  "なへ",
+                  "のべ",
+                  "なめ"
+                ],
+                "answer": "なべ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 鍋 |\n|---|---|\n| 音読 | カ |\n| 訓読 | なべ / （全体）なべ |\n| 뜻 | 냄비 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 土鍋（どなべ）: 뚝배기·질냄비<br>* 鍋料理（なべりょうり）: 전골 요리 |\n| 구성(IDS) | ⿰金咼 |\n| 부수/부품 | 金 + 咼 |\n| 부품 역할 | 金: 쇠·금속 / 咼: 소리 요소 (추정) |\n| 재귀 구조 | 鍋[냄비] → ⿰[구성] 金[쇠] + 咼[입 벌린 모양](추정) |\n| 최종 최소 단위 | 金[쇠], 咼[입 벌린 모양](추정) |",
+              "memoPersonal": "과거에 썻던 철덩이의 모습을 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -823,10 +953,20 @@
                   "波": "なみ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "窓の外で波の音が静かに聞こえる。",
+                "target": "波",
+                "choices": [
+                  "なみ",
+                  "なび",
+                  "なめ",
+                  "なの"
+                ],
+                "answer": "なみ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 波 |\n|---|---|\n| 音読 | ハ |\n| 訓読 | なみ / （全体）なみ |\n| 뜻 | 파도 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 波線（はせん）: 물결선<br>* 電波（でんぱ）: 전파 |\n| 구성(IDS) | ⿰氵皮 |\n| 부수/부품 | 氵 + 皮 |\n| 부품 역할 | 氵: 물 / 皮: 표면·소리 보조 |\n| 재귀 구조 | 波[파도] → ⿰[구성] 氵[물] + 皮[가죽] |\n| 최종 최소 단위 | 氵[물], 皮[가죽] |",
+              "memoPersonal": "물의 껍대기 = 파도",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -841,10 +981,20 @@
                   "涙": "なみだ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "映画の終盤で思わず涙がこぼれた。",
+                "target": "涙",
+                "choices": [
+                  "なみだ",
+                  "なみた",
+                  "なびだ",
+                  "なまだ"
+                ],
+                "answer": "なみだ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 涙 |\n|---|---|\n| 音読 | ルイ |\n| 訓読 | なみだ / （全体）なみだ |\n| 뜻 | 눈물 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 涙腺（るいせん）: 눈물샘<br>* 涙声（なみだごえ）: 눈물 섞인 목소리 |\n| 구성(IDS) | ⿰氵戻 (추정) |\n| 부수/부품 | 氵 + 戻 |\n| 부품 역할 | 氵: 물 / 戻: 돌아오다·소리 보조 (추정) |\n| 재귀 구조 | 涙[눈물] → ⿰[구성] 氵[물] + 戻[돌아오다](추정) |\n| 최종 최소 단위 | 氵[물], 戻[돌아오다](추정) |",
+              "memoPersonal": "입으로 되돌아가는 물, 눈물",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -859,10 +1009,20 @@
                   "庭": "にわ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "祖母は毎朝庭の花に水をやっている。",
+                "target": "庭",
+                "choices": [
+                  "にわ",
+                  "にば",
+                  "によ",
+                  "みわ"
+                ],
+                "answer": "にわ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 庭 |\n|---|---|\n| 音読 | テイ |\n| 訓読 | にわ / （全体）にわ |\n| 뜻 | 정원 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 庭園（ていえん）: 정원<br>* 中庭（なかにわ）: 안뜰 |\n| 구성(IDS) | ⿸广廷 |\n| 부수/부품 | 广 + 廷 |\n| 부품 역할 | 广: 집·덮개 / 廷: 뜰·조정 (추정) |\n| 재귀 구조 | 庭[정원] → ⿸[구성] 广[집] + 廷[조정·뜰](추정) |\n| 최종 최소 단위 | 广[집], 廷[조정·뜰](추정) |",
+              "memoPersonal": "집에 있는 정원 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -877,9 +1037,19 @@
                   "熱": "ねつ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "朝から熱が下がらない。",
+                "target": "熱",
+                "choices": [
+                  "ねつ",
+                  "ねち",
+                  "れつ",
+                  "ねく"
+                ],
+                "answer": "ねつ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 熱 |\n|---|---|\n| 音読 | ネツ |\n| 訓読 | あつ-い / （全体）ねつ (入力に従う) |\n| 뜻 | 열 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 熱量（ねつりょう）: 열량<br>* 発熱（はつねつ）: 발열 |\n| 구성(IDS) | ⿱埶灬 |\n| 부수/부품 | 埶 + 灬 |\n| 부품 역할 | 埶: 잡다·세력 (추정) / 灬: 불 |\n| 재귀 구조 | 熱[열] → ⿱[구성] 埶[잡다·세력](추정) + 灬[불] |\n| 최종 최소 단위 | 埶[잡다·세력](추정), 灬[불] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -895,10 +1065,20 @@
                   "箸": "はし"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "正しい箸の持ち方を練習した。",
+                "target": "箸",
+                "choices": [
+                  "はし",
+                  "ばし",
+                  "はじ",
+                  "ほし"
+                ],
+                "answer": "はし"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 箸 |\n|---|---|\n| 音読 | チョ |\n| 訓読 | はし / （全体）はし |\n| 뜻 | 젓가락 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 菜箸（さいばし）: 요리용 긴 젓가락<br>* 箸置き（はしおき）: 젓가락 받침 |\n| 구성(IDS) | ⿱竹者 |\n| 부수/부품 | 竹 + 者 |\n| 부품 역할 | 竹: 대나무 / 者: 소리·의미 보조 (추정) |\n| 재귀 구조 | 箸[젓가락] → ⿱[구성] 竹[대나무] + 者[사람](추정) |\n| 최종 최소 단위 | 竹[대나무], 者[사람](추정) |",
+              "memoPersonal": "대나무er = 젓가락",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -913,9 +1093,19 @@
                   "畑": "はたけ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "祖父は畑で季節の野菜を育てている。",
+                "target": "畑",
+                "choices": [
+                  "はたけ",
+                  "はだけ",
+                  "はつけ",
+                  "はたこ"
+                ],
+                "answer": "はたけ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 畑 |\n|---|---|\n| 音読 | （音読みは一般的でない） |\n| 訓読 | はたけ / （全体）はたけ |\n| 뜻 | 밭 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 畑作（はたさく）: 밭농사<br>* 茶畑（ちゃばたけ）: 차밭 |\n| 구성(IDS) | ⿰火田 |\n| 부수/부품 | 火 + 田 |\n| 부품 역할 | 火: 불·마른 땅 (추정) / 田: 밭·논 |\n| 재귀 구조 | 畑[밭] → ⿰[구성] 火[불](추정) + 田[논밭] |\n| 최종 최소 단위 | 火[불](추정), 田[논밭] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -931,9 +1121,19 @@
                   "羽": "はね"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "白い羽が風に乗って舞い上がった。",
+                "target": "羽",
+                "choices": [
+                  "はね",
+                  "はて",
+                  "ばね",
+                  "はぬ"
+                ],
+                "answer": "はね"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 羽 |\n|---|---|\n| 音読 | ウ |\n| 訓読 | はね / （全体）はね |\n| 뜻 | 깃·날개 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 羽毛（うもう）: 우모<br>* 羽音（はおと）: 날갯소리 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -942,10 +1142,10 @@
               "id": "d2-i20"
             }
           ],
-          "stage": 1,
-          "stageCompleteDate": null,
-          "nextReviewDate": null,
-          "lastAttemptDate": ""
+          "stage": 2,
+          "stageCompleteDate": "2026-04-22",
+          "nextReviewDate": "2026-04-23",
+          "lastAttemptDate": "2026-04-22"
         }
       ]
     },
@@ -961,10 +1161,20 @@
                   "幅": "はば"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "机の幅を測ってから棚を置いた。",
+                "target": "幅",
+                "choices": [
+                  "はば",
+                  "ひば",
+                  "ほば",
+                  "はな"
+                ],
+                "answer": "はば"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 幅 |\n|---|---|\n| 音読 | フク |\n| 訓読 | （全体）はば |\n| 뜻 | 너비, 폭 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 振幅（しんぷく）: 진폭<br>* 横幅（よこはば）: 가로폭 |\n| 구성(IDS) | ⿰巾畐 |\n| 부수/부품 | 巾 + 畐 |\n| 부품 역할 | 巾[천·폭 관련], 畐[가득 참·소리](추정) |\n| 재귀 구조 | 幅[너비] → ⿰[구성] 巾[수건] + 畐[가득 참](추정) |\n| 최종 최소 단위 | 巾[수건], 畐[가득 참](추정) |",
+              "memoPersonal": "수건이 밭을 한번에 다 덮을만큼 너비가 개쩔어",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -979,10 +1189,20 @@
                   "膝": "ひざ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "階段で転んで膝を打ってしまった。",
+                "target": "膝",
+                "choices": [
+                  "ひざ",
+                  "ひさ",
+                  "ひぞ",
+                  "びざ"
+                ],
+                "answer": "ひざ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 膝 |\n|---|---|\n| 音読 | シツ |\n| 訓読 | （全体）ひざ |\n| 뜻 | 무릎 |\n| 상용한자 여부 | 常用(추정) |\n| 예시 | * 膝頭（ひざがしら）: 무릎머리<br>* 膝下（ひざした）: 무릎 아래 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
+              "memoPersonal": "나무처럼 큰 몸퉁이를 구하는(지탱)하는 몸부분 = 무릎",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -997,10 +1217,20 @@
                   "袋": "ふくろ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "紙袋に本を入れて持ち帰った。",
+                "target": "袋",
+                "choices": [
+                  "ふくろ",
+                  "ふぐろ",
+                  "ふころ",
+                  "ふくる"
+                ],
+                "answer": "ふくろ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 袋 |\n|---|---|\n| 音読 | タイ / ダイ |\n| 訓読 | （全体）ふくろ |\n| 뜻 | 자루, 봉지 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 紙袋（かみぶくろ）: 종이봉투<br>* 袋小路（ふくろこうじ）: 막다른 골목 |\n| 구성(IDS) | ⿱代衣 |\n| 부수/부품 | 代 + 衣 |\n| 부품 역할 | 代[소리](추정), 衣[옷·싸는 것] |\n| 재귀 구조 | 袋[봉지] → ⿱[구성] 代[대신] + 衣[옷] |\n| 최종 최소 단위 | 代[대신], 衣[옷] |",
+              "memoPersonal": "옷대신 봉투를 입은 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1015,9 +1245,19 @@
                   "骨": "ほね"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "魚の骨をきれいに取って食べた。",
+                "target": "骨",
+                "choices": [
+                  "ほね",
+                  "ほせ",
+                  "ほで",
+                  "はね"
+                ],
+                "answer": "ほね"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 骨 |\n|---|---|\n| 音読 | コツ |\n| 訓読 | （全体）ほね |\n| 뜻 | 뼈 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 骨折（こっせつ）: 골절<br>* 骨格（こっかく）: 골격 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1033,10 +1273,20 @@
                   "棒": "ぼう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "長い棒で高い所の箱を取った。",
+                "target": "棒",
+                "choices": [
+                  "ぼう",
+                  "もう",
+                  "ぼく",
+                  "ほう"
+                ],
+                "answer": "ぼう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 棒 |\n|---|---|\n| 音読 | ボウ |\n| 訓読 | （全体）ぼう |\n| 뜻 | 막대 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 鉄棒（てつぼう）: 철봉<br>* 棒線（ぼうせん）: 막대선 |\n| 구성(IDS) | ⿰木奉 |\n| 부수/부품 | 木 + 奉 |\n| 부품 역할 | 木[나무], 奉[소리·받들다](추정) |\n| 재귀 구조 | 棒[막대] → ⿰[구성] 木[나무] + 奉[받들다](추정) |\n| 최종 최소 단위 | 木[나무], 奉[받들다](추정) |",
+              "memoPersonal": "拳랑 비슷한데 나무를 쓰는거  = 봉",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1051,10 +1301,20 @@
                   "孫": "まご"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "祖母は孫の写真をいつも持ち歩いている。",
+                "target": "孫",
+                "choices": [
+                  "まご",
+                  "まこ",
+                  "まぐ",
+                  "まほ"
+                ],
+                "answer": "まご"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 孫 |\n|---|---|\n| 音読 | ソン |\n| 訓読 | （全体）まご |\n| 뜻 | 손자, 자손 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 子孫（しそん）: 자손<br>* 初孫（はつまご）: 첫 손주 |\n| 구성(IDS) | ⿰子系 |\n| 부수/부품 | 子 + 系 |\n| 부품 역할 | 子[아이], 系[잇다·계통] |\n| 재귀 구조 | 孫[손자] → ⿰[구성] 子[아이] + 系[잇다·계통] |\n| 최종 최소 단위 | 子[아이], 系[잇다·계통] |",
+              "memoPersonal": "계통을 잇는 자식 = 손자",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1069,10 +1329,20 @@
                   "街": "まち"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "駅前の街は夜でも人通りが多い。",
+                "target": "街",
+                "choices": [
+                  "まち",
+                  "まじ",
+                  "みち",
+                  "まつ"
+                ],
+                "answer": "まち"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 街 |\n|---|---|\n| 音読 | ガイ / カイ |\n| 訓読 | （全体）まち |\n| 뜻 | 거리, 마을 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 街道（かいどう）: 큰길<br>* 商店街（しょうてんがい）: 상점가 |\n| 구성(IDS) | ⿲彳圭亍 |\n| 부수/부품 | 彳 + 圭 + 亍 |\n| 부품 역할 | 彳[걸음], 圭[흙 더미](추정), 亍[길](추정) |\n| 재귀 구조 | 街[거리] → ⿲[구성] 彳[걸음] + 圭[흙 더미](추정) + 亍[길](추정) |\n| 최종 최소 단위 | 彳[걸음], 圭[흙 더미](추정), 亍[길](추정) |",
+              "memoPersonal": "땅이 많이서 천천히 걸어서 가는곳, 거리",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1087,10 +1357,20 @@
                   "湖": "みずうみ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "朝の湖はとても静かだった。",
+                "target": "湖",
+                "choices": [
+                  "みずうみ",
+                  "みずおみ",
+                  "みずうも",
+                  "みすうみ"
+                ],
+                "answer": "みずうみ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 湖 |\n|---|---|\n| 音読 | コ |\n| 訓読 | （全体）みずうみ |\n| 뜻 | 호수 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 湖面（こめん）: 호수의 수면<br>* 人工湖（じんこうこ）: 인공호 |\n| 구성(IDS) | ⿰氵胡 |\n| 부수/부품 | 氵 + 胡 |\n| 부품 역할 | 氵[물], 胡[소리] |\n| 재귀 구조 | 湖[호수] → ⿰[구성] 氵[물] + 胡[오랑캐·소리](추정) |\n| 최종 최소 단위 | 氵[물], 胡[오랑캐·소리](추정) |",
+              "memoPersonal": "오래된물(고인물)에 달이 비치는 모습",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1105,10 +1385,20 @@
                   "娘": "むすめ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "隣の家の娘は今年大学に入った。",
+                "target": "娘",
+                "choices": [
+                  "むすめ",
+                  "むずめ",
+                  "むつめ",
+                  "むため"
+                ],
+                "answer": "むすめ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 娘 |\n|---|---|\n| 音読 | ジョウ |\n| 訓読 | （全体）むすめ |\n| 뜻 | 딸, 처녀 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 娘さん（むすめさん）: 따님<br>* 娘婿（むすめむこ）: 사위 |\n| 구성(IDS) | ⿰女良 |\n| 부수/부품 | 女 + 良 |\n| 부품 역할 | 女[여자], 良[좋다·소리] |\n| 재귀 구조 | 娘[딸] → ⿰[구성] 女[여자] + 良[좋다] |\n| 최종 최소 단위 | 女[여자], 良[좋다] |",
+              "memoPersonal": "좋은 여자, 딸",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1123,10 +1413,20 @@
                   "胸": "むね"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "その知らせを聞いて胸が熱くなった。",
+                "target": "胸",
+                "choices": [
+                  "むね",
+                  "むせ",
+                  "むで",
+                  "もね"
+                ],
+                "answer": "むね"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 胸 |\n|---|---|\n| 音読 | キョウ |\n| 訓読 | （全体）むね |\n| 뜻 | 가슴 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 胸中（きょうちゅう）: 마음속<br>* 胸元（むなもと）: 가슴 언저리 |\n| 구성(IDS) | ⿰月匈 |\n| 부수/부품 | 月 + 匈 |\n| 부품 역할 | 月[몸], 匈[가슴·소리](추정) |\n| 재귀 구조 | 胸[가슴] → ⿰[구성] 月[몸] + 匈[가슴](추정) |\n| 최종 최소 단위 | 月[몸], 匈[가슴](추정) |",
+              "memoPersonal": "장기 + 감싸고 있는 흉(흉부) = 가슴",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1141,10 +1441,20 @@
                   "床": "ゆか"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "床に水をこぼしたので、すぐ拭いた。",
+                "target": "床",
+                "choices": [
+                  "ゆか",
+                  "ゆが",
+                  "ゆこ",
+                  "よか"
+                ],
+                "answer": "ゆか"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 床 |\n|---|---|\n| 音読 | ショウ |\n| 訓読 | （全体）ゆか |\n| 뜻 | 바닥, 마루 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 床屋（とこや）: 이발소<br>* 温床（おんしょう）: 온상 |\n| 구성(IDS) | ⿸广木 |\n| 부수/부품 | 广 + 木 |\n| 부품 역할 | 广[집], 木[나무] |\n| 재귀 구조 | 床[바닥] → ⿸[구성] 广[집] + 木[나무] |\n| 최종 최소 단위 | 广[집], 木[나무] |",
+              "memoPersonal": "집에서 나무로 만드는거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1159,9 +1469,19 @@
                   "夢": "ゆめ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "子どものころの夢を今でも覚えている。",
+                "target": "夢",
+                "choices": [
+                  "ゆめ",
+                  "ゆね",
+                  "よめ",
+                  "ゆも"
+                ],
+                "answer": "ゆめ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 夢 |\n|---|---|\n| 音読 | ム |\n| 訓読 | （全体）ゆめ |\n| 뜻 | 꿈 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 夢中（むちゅう）: 열중<br>* 悪夢（あくむ）: 악몽 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1177,10 +1497,20 @@
                   "寮": "りょう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "新入生は春から学生寮に入る予定だ。",
+                "target": "寮",
+                "choices": [
+                  "りょう",
+                  "りょく",
+                  "りょん",
+                  "りゅう"
+                ],
+                "answer": "りょう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 寮 |\n|---|---|\n| 音読 | リョウ |\n| 訓読 | （全体）りょう (入力に従う) |\n| 뜻 | 기숙사 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 寄宿寮（きしゅくりょう）: 기숙사<br>* 学生寮（がくせいりょう）: 학생 기숙사 |\n| 구성(IDS) | ⿱宀尞 |\n| 부수/부품 | 宀 + 尞 |\n| 부품 역할 | 宀[집], 尞[불빛·소리](추정) |\n| 재귀 구조 | 寮[기숙사] → ⿱[구성] 宀[집] + 尞[불빛](추정) |\n| 최종 최소 단위 | 宀[집], 尞[불빛](추정) |",
+              "memoPersonal": "집에 횟불이있는 이미지= 기숙사\n횟불은 = 큰 해(불을)작게만든거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1195,10 +1525,20 @@
                   "量": "りょう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "料理の塩の量を少し減らした。",
+                "target": "量",
+                "choices": [
+                  "りょう",
+                  "りょく",
+                  "りょん",
+                  "りゅう"
+                ],
+                "answer": "りょう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 量 |\n|---|---|\n| 音読 | リョウ |\n| 訓読 | （全体）りょう (入力に従う) |\n| 뜻 | 양, 분량 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 数量（すうりょう）: 수량<br>* 量産（りょうさん）: 양산 |\n| 구성(IDS) | ⿱旦里 |\n| 부수/부품 | 旦 + 里 |\n| 부품 역할 | 旦[아침], 里[마을] |\n| 재귀 구조 | 量[양] → ⿱[구성] 旦[아침] + 里[마을] |\n| 최종 최소 단위 | 旦[아침], 里[마을] |",
+              "memoPersonal": "해 = 양, 양소리는 무거운거 = 분량",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1213,10 +1553,20 @@
                   "列": "れつ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "店の前に長い列ができていた。",
+                "target": "列",
+                "choices": [
+                  "れつ",
+                  "れち",
+                  "ねつ",
+                  "れん"
+                ],
+                "answer": "れつ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 列 |\n|---|---|\n| 音読 | レツ / レ |\n| 訓読 | （全体）れつ (入力に従う) |\n| 뜻 | 줄, 열 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 列車（れっしゃ）: 열차<br>* 行列（ぎょうれつ）: 행렬 |\n| 구성(IDS) | ⿰歹刂 |\n| 부수/부품 | 歹 + 刂 |\n| 부품 역할 | 歹[죽음](추정), 刂[칼] |\n| 재귀 구조 | 列[줄] → ⿰[구성] 歹[죽음](추정) + 刂[칼] |\n| 최종 최소 단위 | 歹[죽음](추정), 刂[칼] |",
+              "memoPersonal": "칼로 죽은 사람의 열을 두는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1233,9 +1583,19 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "先生の合図で全員が一斉に立ち上がった。",
+                "target": "合図",
+                "choices": [
+                  "あいず",
+                  "あえず",
+                  "あいじ",
+                  "あいす"
+                ],
+                "answer": "あいず"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 合 | 図 |\n|---|---|---|\n| 音読 | ゴウ / ガッ / カッ | ズ / ト |\n| 訓読 | あ-う / あ-わせる / （全体）あいず<br>あい (入力に従う) | はか-る |\n| 뜻 | 맞추다, 합치다 | 그림, 도면 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 合計（ごうけい）: 합계<br>* 合格（ごうかく）: 합격 | * 地図（ちず）: 지도<br>* 図書（としょ）: 도서 |\n| 구성(IDS) | ⿱亼口 | ⿴囗斗 |\n| 부수/부품 | 亼 + 口 | 囗 + 斗 |\n| 부품 역할 | 亼[모이다], 口[입] | 囗[둘러싸다], 斗[말] |\n| 재귀 구조 | 合[맞추다] → ⿱[구성] 亼[모이다] + 口[입] | 図[그림] → ⿴[구성] 囗[둘러싸다] + 斗[말] |\n| 최종 최소 단위 | 亼[모이다], 口[입] | 囗[둘러싸다], 斗[말] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1252,9 +1612,19 @@
                   "空": "ぞら"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "雨のあとに青空が広がった。",
+                "target": "青空",
+                "choices": [
+                  "あおぞら",
+                  "あおそら",
+                  "あおずら",
+                  "あおごら"
+                ],
+                "answer": "あおぞら"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 青 | 空 |\n|---|---|---|\n| 音読 | セイ / ショウ | クウ |\n| 訓読 | あお / （全体）あおぞら | そら / あ-く / から<br>ぞら (入力に従う) |\n| 뜻 | 푸르다, 파랑 | 하늘, 비다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 青年（せいねん）: 청년<br>* 青葉（あおば）: 푸른 잎 | * 空気（くうき）: 공기<br>* 星空（ほしぞら）: 별하늘 |\n| 구성(IDS) | ⿱龶月 | ⿱穴工 |\n| 부수/부품 | 龶 + 月 | 穴 + 工 |\n| 부품 역할 | 龶[싹·푸름](추정), 月[달·빛](추정) | 穴[구멍], 工[장인·소리](추정) |\n| 재귀 구조 | 青[푸름] → ⿱[구성] 龶[싹](추정) + 月[달](추정) | 空[하늘] → ⿱[구성] 穴[구멍] + 工[장인](추정) |\n| 최종 최소 단위 | 龶[싹](추정), 月[달](추정) | 穴[구멍], 工[장인](추정) |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1271,9 +1641,19 @@
                   "外": "がい"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "田中さん以外は全員そろっている。",
+                "target": "以外",
+                "choices": [
+                  "いがい",
+                  "いかい",
+                  "えがい",
+                  "いがえ"
+                ],
+                "answer": "いがい"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 以 | 外 |\n|---|---|---|\n| 音読 | イ | ガイ / ゲ |\n| 訓読 | もっ-て / （全体）いがい | そと / はず-れる |\n| 뜻 | ~을 기준으로, ~로써 | 밖, 외부 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 以前（いぜん）: 이전<br>* 以上（いじょう）: 이상 | * 外国（がいこく）: 외국<br>* 屋外（おくがい）: 옥외 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | ⿰夕卜 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | 夕 + 卜 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | 夕[저녁], 卜[점](추정) |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | 外[밖] → ⿰[구성] 夕[저녁] + 卜[점](추정) |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | 夕[저녁], 卜[점](추정) |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1290,9 +1670,19 @@
                   "後": "ご"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "以後、この部屋では飲食禁止です。",
+                "target": "以後",
+                "choices": [
+                  "いご",
+                  "いこ",
+                  "えご",
+                  "いぼ"
+                ],
+                "answer": "いご"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 以 | 後 |\n|---|---|---|\n| 音読 | イ | ゴ / コウ |\n| 訓読 | もっ-て / （全体）いご | あと / のち |\n| 뜻 | ~을 기준으로, ~로써 | 뒤, 나중 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 以前（いぜん）: 이전<br>* 以上（いじょう）: 이상 | * 最後（さいご）: 최후<br>* 後半（こうはん）: 후반 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | ⿲彳幺夂 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | 彳 + 幺 + 夂 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | 彳[걸음], 幺[가는 실], 夂[뒤져오다](추정) |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | 後[뒤] → ⿲[구성] 彳[걸음] + 幺[가는 실] + 夂[뒤져오다](추정) |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | 彳[걸음], 幺[가는 실], 夂[뒤져오다](추정) |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1309,9 +1699,19 @@
                   "降": "こう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "四月以降は営業時間が変わります。",
+                "target": "以降",
+                "choices": [
+                  "いこう",
+                  "いこく",
+                  "えこう",
+                  "いごう"
+                ],
+                "answer": "いこう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 以 | 降 |\n|---|---|---|\n| 音読 | イ | コウ |\n| 訓読 | もっ-て / （全体）いこう | お-りる / ふ-る<br>こう (入力に従う) |\n| 뜻 | ~을 기준으로, ~로써 | 내리다, 이후 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 以前（いぜん）: 이전<br>* 以上（いじょう）: 이상 | * 降水（こうすい）: 강수<br>* 下降（かこう）: 하강 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | ⿰阝夅 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | 阝 + 夅 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | 阝[언덕], 夅[내리다·소리](추정) |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | 降[내리다] → ⿰[구성] 阝[언덕] + 夅[내리다](추정) |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | 阝[언덕], 夅[내리다](추정) |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1320,10 +1720,10 @@
               "id": "d3-i20"
             }
           ],
-          "stage": 1,
-          "stageCompleteDate": null,
-          "nextReviewDate": null,
-          "lastAttemptDate": ""
+          "stage": 2,
+          "stageCompleteDate": "2026-04-22",
+          "nextReviewDate": "2026-04-23",
+          "lastAttemptDate": "2026-04-22"
         }
       ]
     },
@@ -1341,10 +1741,20 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "健康を維持するには、毎日の睡眠が大切だ。",
+                "target": "維持",
+                "choices": [
+                  "いじ",
+                  "いぎ",
+                  "いし",
+                  "いぜ"
+                ],
+                "answer": "いじ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 維 | 持 |\n|---|---|---|\n| 音読 | い | じ |\n| 訓読 | （全体）いじ<br>つな-ぐ | も-つ |\n| 뜻 | 잇다, 유지하다 | 가지다, 유지하다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 維新（いしん）: 유신<br>* 繊維（せんい）: 섬유 | * 保持（ほじ）: 유지<br>* 持続（じぞく）: 지속 |\n| 구성(IDS) | ⿰糸隹 | ⿰扌寺 |\n| 부수/부품 | 糸 + 隹 | 扌 + 寺 |\n| 부품 역할 | 糸: 실, 연결의 뜻<br>隹: 음·형 보조 (추정) | 扌: 손, 동작<br>寺: 음·의 보조 (추정) |\n| 재귀 구조 | 維[유지] → ⿰[구성] 糸[실] + 隹[새] | 持[가지다] → ⿰[구성] 扌[손] + 寺[절] |\n| 최종 최소 단위 | 糸[실], 隹[새] | 扌[손], 寺[절] |",
+              "memoPersonal": "새가 실을 이어주는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1361,9 +1771,19 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "試合の前に、呼吸を意識して落ち着いた。",
+                "target": "意識",
+                "choices": [
+                  "いしき",
+                  "いせき",
+                  "いじき",
+                  "いしぎ"
+                ],
+                "answer": "いしき"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 意 | 識 |\n|---|---|---|\n| 音読 | い | しき |\n| 訓読 | （全体）いしき<br>こころ | し-る |\n| 뜻 | 뜻, 의식 | 분별하다, 식별하다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 意見（いけん）: 의견<br>* 注意（ちゅうい）: 주의 | * 知識（ちしき）: 지식<br>* 常識（じょうしき）: 상식 |\n| 구성(IDS) | ⿱音心 | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | 音 + 心 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | 音: 소리, 의미 형성 보조 (추정)<br>心: 마음 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | 意[뜻] → ⿱[구성] 音[소리] + 心[마음] | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | 音[소리], 心[마음] | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1380,9 +1800,19 @@
                   "前": "ぜん"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "この店には以前、一度だけ来たことがある。",
+                "target": "以前",
+                "choices": [
+                  "いぜん",
+                  "いせん",
+                  "いげん",
+                  "いぜい"
+                ],
+                "answer": "いぜん"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 以 | 前 |\n|---|---|---|\n| 音読 | い | ぜん |\n| 訓読 | （全体）いぜん | まえ |\n| 뜻 | ~이전, ~으로써 | 앞, 이전 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 以上（いじょう）: 이상<br>* 以後（いご）: 이후 | * 午前（ごぜん）: 오전<br>* 前後（ぜんご）: 전후 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1400,10 +1830,20 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "家具の位置を少しだけ右にずらした。",
+                "target": "位置",
+                "choices": [
+                  "いち",
+                  "いじ",
+                  "いつ",
+                  "いき"
+                ],
+                "answer": "いち"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 位 | 置 |\n|---|---|---|\n| 音読 | い | ち |\n| 訓読 | （全体）いち<br>くらい | お-く |\n| 뜻 | 자리, 지위 | 두다, 배치하다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 地位（ちい）: 지위<br>* 単位（たんい）: 단위 | * 配置（はいち）: 배치<br>* 放置（ほうち）: 방치 |\n| 구성(IDS) | ⿰亻立 | ⿱罒直 |\n| 부수/부품 | 亻 + 立 | 罒 + 直 |\n| 부품 역할 | 亻: 사람<br>立: 서다, 자리 | 罒: 그물, 덮어 둠 (추정)<br>直: 곧다, 바로 놓음 (추정) |\n| 재귀 구조 | 位[자리] → ⿰[구성] 亻[사람] + 立[서다] | 置[두다] → ⿱[구성] 罒[그물] + 直[곧다] |\n| 최종 최소 단위 | 亻[사람], 立[서다] | 罒[그물], 直[곧다] |",
+              "memoPersonal": "位사람이 서있는 자리, 위치\n置그물을 진짜로 둔곳, 배치해둔곳",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1419,9 +1859,19 @@
                   "流": "りゅう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "彼は若いころから一流の職人を目指していた。",
+                "target": "一流",
+                "choices": [
+                  "いちりゅう",
+                  "いつりゅう",
+                  "いちりょう",
+                  "いちゆう"
+                ],
+                "answer": "いちりゅう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 一 | 流 |\n|---|---|---|\n| 音読 | いち | りゅう |\n| 訓読 | （全体）いちりゅう<br>ひと-つ | なが-れる |\n| 뜻 | 하나, 첫째 | 흐르다, 유파 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 一部（いちぶ）: 일부<br>* 一年（いちねん）: 일 년 | * 流行（りゅうこう）: 유행<br>* 流出（りゅうしゅつ）: 유출 |\n| 구성(IDS) | 一 | ⿰氵㐬 |\n| 부수/부품 | 一 | 氵 + 㐬 |\n| 부품 역할 | 一: 하나의 획 | 氵: 물<br>㐬: 음·형 보조 (추정) |\n| 재귀 구조 | 一[하나] → 一[하나] | 流[흐르다] → ⿰[구성] 氵[물] + 㐬[흐름](추정) |\n| 최종 최소 단위 | 一[하나] | 氵[물], 㐬[흐름](추정) |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1438,9 +1888,19 @@
                   "般": "ぱん"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "その制度は来月から一般にも公開される。",
+                "target": "一般",
+                "choices": [
+                  "いっぱん",
+                  "いっばん",
+                  "いっぱい",
+                  "いっぱく"
+                ],
+                "answer": "いっぱん"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 一 | 般 |\n|---|---|---|\n| 音読 | いっ | ぱん |\n| 訓読 | （全体）いっぱん<br>ひと-つ | Wiktionary에 명시적 설명 없음 |\n| 뜻 | 하나, 첫째 | 전반, 일반 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 一方（いっぽう）: 한편<br>* 一定（いってい）: 일정 | * 全般（ぜんぱん）: 전반<br>* 諸般（しょはん）: 제반 |\n| 구성(IDS) | 一 | ⿰舟殳 |\n| 부수/부품 | 一 | 舟 + 殳 |\n| 부품 역할 | 一: 하나의 획 | 舟: 배<br>殳: 치다, 동작 (추정) |\n| 재귀 구조 | 一[하나] → 一[하나] | 般[일반] → ⿰[구성] 舟[배] + 殳[칠] |\n| 최종 최소 단위 | 一[하나] | 舟[배], 殳[칠] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1458,10 +1918,20 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "会議室へ移動する前に資料をまとめた。",
+                "target": "移動",
+                "choices": [
+                  "いどう",
+                  "いどお",
+                  "いとう",
+                  "いど"
+                ],
+                "answer": "いどう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 移 | 動 |\n|---|---|---|\n| 音読 | い | どう |\n| 訓読 | （全体）いどう<br>うつ-る<br>うつ-す | うご-く |\n| 뜻 | 옮기다, 이동하다 | 움직이다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 移住（いじゅう）: 이주<br>* 移転（いてん）: 이전 | * 動物（どうぶつ）: 동물<br>* 行動（こうどう）: 행동 |\n| 구성(IDS) | ⿰禾多 | ⿰重力 |\n| 부수/부품 | 禾 + 多 | 重 + 力 |\n| 부품 역할 | 禾: 벼, 곡식<br>多: 많다, 음 보조 (추정) | 重: 무겁다<br>力: 힘 |\n| 재귀 구조 | 移[옮기다] → ⿰[구성] 禾[벼] + 多[많다] | 動[움직이다] → ⿰[구성] 重[무겁다] + 力[힘] |\n| 최종 최소 단위 | 禾[벼], 多[많다] | 重[무겁다], 力[힘] |",
+              "memoPersonal": "移벼가 많아졌으니까 이동시키는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1477,9 +1947,19 @@
                   "内": "ない"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "この書類は三日以内に提出してください。",
+                "target": "以内",
+                "choices": [
+                  "いない",
+                  "いだい",
+                  "いまい",
+                  "いなり"
+                ],
+                "answer": "いない"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 以 | 内 |\n|---|---|---|\n| 音読 | い | ない |\n| 訓読 | （全体）いない | うち |\n| 뜻 | ~으로, ~이내의 기점 | 안, 내부 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 以来（いらい）: 이래<br>* 以下（いか）: 이하 | * 国内（こくない）: 국내<br>* 内容（ないよう）: 내용 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | ⿵冂人 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | 冂 + 人 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | 冂: 둘러싼 경계<br>人: 사람, 안쪽의 것 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | 内[안] → ⿵[구성] 冂[경계] + 人[사람] |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | 冂[경계], 人[사람] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1496,10 +1976,20 @@
                   "舎": "なか"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "夏休みには祖父母の田舎へ帰る予定だ。",
+                "target": "田舎",
+                "choices": [
+                  "いなか",
+                  "いなた",
+                  "いぬか",
+                  "いのか"
+                ],
+                "answer": "いなか"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 田 | 舎 |\n|---|---|---|\n| 音読 | い | なか |\n| 訓読 | （全体）いなか<br>た | やど |\n| 뜻 | 논, 밭 | 집, 건물 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 田園（でんえん）: 전원<br>* 水田（すいでん）: 논 | * 校舎（こうしゃ）: 교사<br>* 宿舎（しゅくしゃ）: 숙소 |\n| 구성(IDS) | 田 | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | 田 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | 田: 밭의 구획 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | 田[논] → 田[논] | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | 田[논] | Wiktionary에 명시적 설명 없음 |",
+              "memoPersonal": "舎낡은건물",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1516,10 +2006,20 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "必要な部数だけ資料を印刷してください。",
+                "target": "印刷",
+                "choices": [
+                  "いんさつ",
+                  "いんざつ",
+                  "いんせつ",
+                  "いんさち"
+                ],
+                "answer": "いんさつ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 印 | 刷 |\n|---|---|---|\n| 音読 | いん | さつ |\n| 訓読 | （全体）いんさつ<br>しるし | す-る |\n| 뜻 | 도장, 표시 | 인쇄하다, 닦다(고어) |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 印鑑（いんかん）: 인감<br>* 印字（いんじ）: 인자 | * 刷新（さっしん）: 쇄신<br>* 増刷（ぞうさつ）: 증쇄 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |",
+              "memoPersonal": "칼로수건에 인쇄하는 이미지로 해보자.",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1535,9 +2035,19 @@
                   "象": "しょう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "初対面の印象で、その人を決めつけてはいけない。",
+                "target": "印象",
+                "choices": [
+                  "いんしょう",
+                  "いんじょう",
+                  "いんそう",
+                  "いんしょ"
+                ],
+                "answer": "いんしょう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 印 | 象 |\n|---|---|---|\n| 音読 | いん | しょう |\n| 訓読 | （全体）いんしょう<br>しるし | ぞう |\n| 뜻 | 도장, 표시 | 코끼리, 형상 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 印章（いんしょう）: 인장<br>* 印形（いんぎょう）: 인형(도장 모양) | * 象徴（しょうちょう）: 상징<br>* 現象（げんしょう）: 현상 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1554,9 +2064,19 @@
                   "料": "りょう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "自動販売機には冷たい飲料が並んでいた。",
+                "target": "飲料",
+                "choices": [
+                  "いんりょう",
+                  "いんりょく",
+                  "いんよう",
+                  "いんろう"
+                ],
+                "answer": "いんりょう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 飲 | 料 |\n|---|---|---|\n| 音読 | いん | りょう |\n| 訓読 | （全体）いんりょう<br>の-む | はか-る |\n| 뜻 | 마시다 | 재료, 요금 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 飲食（いんしょく）: 음식 섭취<br>* 飲酒（いんしゅ）: 음주 | * 料理（りょうり）: 요리<br>* 資料（しりょう）: 자료 |\n| 구성(IDS) | ⿰飠欠 | ⿰米斗 |\n| 부수/부품 | 飠 + 欠 | 米 + 斗 |\n| 부품 역할 | 飠: 먹다<br>欠: 하품하다, 입 벌림 (추정) | 米: 쌀<br>斗: 되, 계량 |\n| 재귀 구조 | 飲[마시다] → ⿰[구성] 飠[밥] + 欠[하품] | 料[재료] → ⿰[구성] 米[쌀] + 斗[말] |\n| 최종 최소 단위 | 飠[밥], 欠[하품] | 米[쌀], 斗[말] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1573,10 +2093,20 @@
                   "側": "がわ"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "箱の内側に説明書が入っていた。",
+                "target": "内側",
+                "choices": [
+                  "うちがわ",
+                  "うちかわ",
+                  "うつがわ",
+                  "うちがは"
+                ],
+                "answer": "うちがわ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 内 | 側 |\n|---|---|---|\n| 音読 | うち | がわ |\n| 訓読 | （全体）うちがわ<br>ない | そば |\n| 뜻 | 안, 내부 | 곁, 쪽 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 案内（あんない）: 안내<br>* 内部（ないぶ）: 내부 | * 外側（そとがわ）: 바깥쪽<br>* 側面（そくめん）: 측면 |\n| 구성(IDS) | ⿵冂人 | ⿰亻則 |\n| 부수/부품 | 冂 + 人 | 亻 + 則 |\n| 부품 역할 | 冂: 둘러싼 경계<br>人: 사람, 안쪽의 것 | 亻: 사람<br>則: 법칙, 기준 (추정) |\n| 재귀 구조 | 内[안] → ⿵[구성] 冂[경계] + 人[사람] | 側[곁] → ⿰[구성] 亻[사람] + 則[법칙](추정) |\n| 최종 최소 단위 | 冂[경계], 人[사람] | 亻[사람], 則[법칙](추정) |",
+              "memoPersonal": "사람이 보는 법칙(측면)",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1592,9 +2122,19 @@
                   "宙": "ちゅう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "子どものころ、宇宙の本を読むのが好きだった。",
+                "target": "宇宙",
+                "choices": [
+                  "うちゅう",
+                  "うしゅう",
+                  "うちょう",
+                  "うじゅう"
+                ],
+                "answer": "うちゅう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 宇 | 宙 |\n|---|---|---|\n| 音読 | う | ちゅう |\n| 訓読 | （全体）うちゅう | そら |\n| 뜻 | 처마, 큰 공간 | 하늘, 허공 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 宇治（うじ）: 우지<br>* 堂宇（どうう）: 전당과 누각 | * 宙返り（ちゅうがえり）: 공중제비<br>* 宙吊り（ちゅうづり）: 공중 매달림 |\n| 구성(IDS) | ⿱宀于 | ⿱宀由 |\n| 부수/부품 | 宀 + 于 | 宀 + 由 |\n| 부품 역할 | 宀: 집<br>于: 음·형 보조 (추정) | 宀: 집<br>由: 말미암다, 음 보조 (추정) |\n| 재귀 구조 | 宇[집처마] → ⿱[구성] 宀[집] + 于[어조사](추정) | 宙[허공] → ⿱[구성] 宀[집] + 由[말미암다](추정) |\n| 최종 최소 단위 | 宀[집], 于[어조사](추정) | 宀[집], 由[말미암다](추정) |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1612,9 +2152,19 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "天候の変化が作物に大きな影響を与えた。",
+                "target": "影響",
+                "choices": [
+                  "えいきょう",
+                  "えいぎょう",
+                  "えんきょう",
+                  "えいこう"
+                ],
+                "answer": "えいきょう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 影 | 響 |\n|---|---|---|\n| 音読 | えい | きょう |\n| 訓読 | （全体）えいきょう<br>かげ | ひび-く |\n| 뜻 | 그림자, 비치다 | 울리다, 영향이 미치다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 影絵（かげえ）: 그림자 그림<br>* 影法師（かげぼうし）: 그림자 | * 反響（はんきょう）: 반향<br>* 音響（おんきょう）: 음향 |\n| 구성(IDS) | ⿰景彡 | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | 景 + 彡 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | 景: 빛과 경치<br>彡: 무늬, 빛살 (추정) | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | 影[그림자] → ⿰[구성] 景[볕] + 彡[무늬] | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | 景[볕], 彡[무늬] | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1632,9 +2182,19 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "この店は日曜日も営業している。",
+                "target": "営業",
+                "choices": [
+                  "えいぎょう",
+                  "えいきょう",
+                  "えんぎょう",
+                  "えいごう"
+                ],
+                "answer": "えいぎょう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 営 | 業 |\n|---|---|---|\n| 音読 | えい | ぎょう |\n| 訓読 | （全体）えいぎょう<br>いとな-む | わざ |\n| 뜻 | 경영하다, 운영하다 | 업, 일 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 経営（けいえい）: 경영<br>* 営む（いとなむ）: 영위하다 | * 産業（さんぎょう）: 산업<br>* 授業（じゅぎょう）: 수업 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1651,10 +2211,20 @@
                   "養": "よう"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "朝食を抜くと栄養が偏りやすい。",
+                "target": "栄養",
+                "choices": [
+                  "えいよう",
+                  "えいごう",
+                  "えんよう",
+                  "えいよ"
+                ],
+                "answer": "えいよう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 栄 | 養 |\n|---|---|---|\n| 音読 | えい | よう |\n| 訓読 | （全体）えいよう<br>さか-える | やしな-う |\n| 뜻 | 번영하다, 영광 | 기르다, 영양 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 栄光（えいこう）: 영광<br>* 繁栄（はんえい）: 번영 | * 養成（ようせい）: 양성<br>* 扶養（ふよう）: 부양 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 | ⿱羊食 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 | 羊 + 食 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 | 羊: 양, 아름다움의 뜻 보조 (추정)<br>食: 먹다 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 | 養[기르다] → ⿱[구성] 羊[양] + 食[먹다] |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 | 羊[양], 食[먹다] |",
+              "memoPersonal": "栄집안에서 나무처럼 무럭무럭자라는거 번영하는거\n養양을 좋게 하는거는 기르는거(유목이미지), 한국어로 양",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1670,9 +2240,19 @@
                   "顔": "がお"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "彼女の笑顔を見て、緊張が少しほぐれた。",
+                "target": "笑顔",
+                "choices": [
+                  "えがお",
+                  "えかお",
+                  "えごお",
+                  "えがう"
+                ],
+                "answer": "えがお"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 笑 | 顔 |\n|---|---|---|\n| 音読 | え | がお |\n| 訓読 | （全体）えがお<br>わら-う | かお |\n| 뜻 | 웃다 | 얼굴 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 微笑（びしょう）: 미소<br>* 爆笑（ばくしょう）: 폭소 | * 顔色（かおいろ）: 안색<br>* 洗顔（せんがん）: 세안 |\n| 구성(IDS) | ⿱竹夭 | ⿰彦頁 |\n| 부수/부품 | 竹 + 夭 | 彦 + 頁 |\n| 부품 역할 | 竹: 대나무, 형태 보조 (추정)<br>夭: 젊다, 몸짓 (추정) | 彦: 훌륭한 남자, 음 보조 (추정)<br>頁: 머리 |\n| 재귀 구조 | 笑[웃다] → ⿱[구성] 竹[대나무] + 夭[젊다](추정) | 顔[얼굴] → ⿰[구성] 彦[훌륭한 이](추정) + 頁[머리] |\n| 최종 최소 단위 | 竹[대나무], 夭[젊다](추정) | 彦[훌륭한 이](추정), 頁[머리] |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -1690,10 +2270,20 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "悪天候のため、試合は来週に延期された。",
+                "target": "延期",
+                "choices": [
+                  "えんき",
+                  "えいき",
+                  "えんぎ",
+                  "えんし"
+                ],
+                "answer": "えんき"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 延 | 期 |\n|---|---|---|\n| 音読 | えん | き |\n| 訓読 | （全体）えんき<br>の-びる<br>の-ばす | とき |\n| 뜻 | 늘이다, 연장하다 | 기한, 시기 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 延長（えんちょう）: 연장<br>* 延滞（えんたい）: 지체 | * 期間（きかん）: 기간<br>* 学期（がっき）: 학기 |\n| 구성(IDS) | ⿺廴正 | ⿰其月 |\n| 부수/부품 | 廴 + 正 | 其 + 月 |\n| 부품 역할 | 廴: 길게 걷다<br>正: 바르다 | 其: 그, 음 보조 (추정)<br>月: 달 |\n| 재귀 구조 | 延[늘이다] → ⿺[구성] 廴[길게 걷다] + 正[바르다] | 期[기한] → ⿰[구성] 其[그] + 月[달] |\n| 최종 최소 단위 | 廴[길게 걷다], 正[바르다] | 其[그], 月[달] |",
+              "memoPersonal": "延 바르게 잡기위해 길게 걷는것( 연장하는것)\n期기본적인 달(기간)",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1710,10 +2300,20 @@
                 },
                 "restKana": "する"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "会場では学生たちが静かに演奏を始めた。",
+                "target": "演奏",
+                "choices": [
+                  "えんそう",
+                  "えんぞう",
+                  "えいそう",
+                  "えんしょう"
+                ],
+                "answer": "えんそう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
-              "memoPersonal": "",
+              "memoDecomposition": "| 항목 | 演 | 奏 |\n|---|---|---|\n| 音読 | えん | そう |\n| 訓読 | （全体）えんそう | かな-でる |\n| 뜻 | 연기하다, 펼치다 | 연주하다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 演技（えんぎ）: 연기<br>* 講演（こうえん）: 강연 | * 奏者（そうしゃ）: 연주자<br>* 伴奏（ばんそう）: 반주 |\n| 구성(IDS) | ⿰氵寅 | ⿱𡗗天 |\n| 부수/부품 | 氵 + 寅 | 𡗗 + 天 |\n| 부품 역할 | 氵: 물<br>寅: 음 보조 (추정) | 𡗗: 받들어 올림 (추정)<br>天: 하늘 |\n| 재귀 구조 | 演[펼치다] → ⿰[구성] 氵[물] + 寅[범](추정) | 奏[아뢰다, 연주하다] → ⿱[구성] 𡗗[받들다](추정) + 天[하늘] |\n| 최종 최소 단위 | 氵[물], 寅[범](추정) | 𡗗[받들다](추정), 天[하늘] |",
+              "memoPersonal": "이건 그냥 통으로 외워야겟네",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -1721,10 +2321,10 @@
               "id": "d4-i20"
             }
           ],
-          "stage": 1,
-          "stageCompleteDate": null,
-          "nextReviewDate": null,
-          "lastAttemptDate": ""
+          "stage": 2,
+          "stageCompleteDate": "2026-04-22",
+          "nextReviewDate": "2026-04-23",
+          "lastAttemptDate": "2026-04-22"
         }
       ]
     },
