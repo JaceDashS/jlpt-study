@@ -33,6 +33,54 @@ function normalizeRelativePath(relPath) {
   return normalized;
 }
 
+async function writeFileAtomically(filePath, body, options) {
+  const dirPath = path.dirname(filePath);
+  const baseName = path.basename(filePath);
+  const stamp = `${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  const tempPath = path.join(dirPath, `.${baseName}.${stamp}.tmp`);
+  const backupPath = path.join(dirPath, `.${baseName}.${stamp}.bak`);
+
+  await fs.mkdir(dirPath, { recursive: true });
+  await fs.writeFile(tempPath, body, options);
+
+  try {
+    await fs.rename(tempPath, filePath);
+    return;
+  } catch (error) {
+    const code = String(error?.code ?? "");
+    if (!["EEXIST", "EPERM", "EBUSY"].includes(code)) {
+      await fs.rm(tempPath, { force: true }).catch(() => undefined);
+      throw error;
+    }
+  }
+
+  let movedOriginal = false;
+  try {
+    await fs.rename(filePath, backupPath);
+    movedOriginal = true;
+  } catch (error) {
+    const code = String(error?.code ?? "");
+    if (code !== "ENOENT") {
+      await fs.rm(tempPath, { force: true }).catch(() => undefined);
+      throw error;
+    }
+  }
+
+  try {
+    await fs.rename(tempPath, filePath);
+  } catch (error) {
+    if (movedOriginal) {
+      await fs.rename(backupPath, filePath).catch(() => undefined);
+    }
+    throw error;
+  } finally {
+    await fs.rm(tempPath, { force: true }).catch(() => undefined);
+    if (movedOriginal) {
+      await fs.rm(backupPath, { force: true }).catch(() => undefined);
+    }
+  }
+}
+
 async function walkFiles(rootDir, currentDir = rootDir, out = []) {
   const entries = await fs.readdir(currentDir, { withFileTypes: true });
   for (const entry of entries) {
@@ -162,7 +210,7 @@ async function restoreAssetSnapshot(assetRootDir, snapshotFiles) {
   for (const [relPath, base64Body] of desiredFiles.entries()) {
     const fullPath = path.join(assetRootDir, relPath);
     await fs.mkdir(path.dirname(fullPath), { recursive: true });
-    await fs.writeFile(fullPath, Buffer.from(base64Body, "base64"));
+    await writeFileAtomically(fullPath, Buffer.from(base64Body, "base64"));
   }
 }
 
@@ -488,7 +536,8 @@ function saveItemFieldPlugin() {
             }
 
             target[field] = value;
-            await fs.writeFile(filePath, `${JSON.stringify(json, null, 2)}\n`, "utf8");
+            // Avoid exposing partially written JSON to Vite's file watcher.
+            await writeFileAtomically(filePath, `${JSON.stringify(json, null, 2)}\n`, "utf8");
           });
 
           res.statusCode = 200;
