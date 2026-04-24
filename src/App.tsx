@@ -19,6 +19,7 @@ import {
   getContinueLearningPath,
   getDayLastAttemptDate,
   getDayLastCompletedDate,
+  getDayMissingDecompositionCount,
   getDayNextReviewDate,
   getDayPassRatio,
   getDayProgress,
@@ -168,12 +169,6 @@ export default function App() {
 
   const today = getTodayString();
 
-  // selectedUnit derived from session (for dayClipboard)
-  const selectedUnit = useMemo(
-    () => (session ? state.curriculum.find((unit) => unit.id === session.unitId) ?? null : null),
-    [state.curriculum, session?.unitId],
-  );
-
   const refreshCurriculumFromSource = async () => {
     try {
       const response = await fetch(`/__api/reload-curriculum?t=${Date.now()}`);
@@ -320,6 +315,7 @@ export default function App() {
         if (!dayLevelDue) return;
 
         list.push({
+          path: { unitId: unit.id, dayId: day.id },
           unitId: unit.id,
           dayId: day.id,
           unitTitle: unit.title,
@@ -327,6 +323,7 @@ export default function App() {
           dueCount: allDayItemIds.length,
           dueItemIds: allDayItemIds,
           progress: getDayProgress(day),
+          missingDecompositionCount: getDayMissingDecompositionCount(day),
         });
       });
     });
@@ -498,6 +495,8 @@ export default function App() {
           dayIndex: getDisplayDayIndex(day, daySeq.index),
           sequenceIndex: daySeq.index,
           totalDayCount: daySeq.total,
+          itemCount: day.items.filter(isQuizTarget).length,
+          missingDecompositionCount: getDayMissingDecompositionCount(day),
           stageCompleteDate: getDayStageCompleteDate(day),
           nextReviewDate: getDayNextReviewDate(day),
           lastAttemptDate: getDayLastAttemptDate(day),
@@ -700,15 +699,17 @@ export default function App() {
   const currentSessionDayIndex = sessionDay ? getDisplayDayIndex(sessionDay, 1) : 1;
 
   const {
+    copyDayWordsByPath,
     copyDay1Words,
     copyCurrentWord,
+    importDayDecompositionFromClipboardByPath,
+    importDayDecompositionFromTextByPath,
     importDay1DecompositionFromClipboard,
     importDay1DecompositionFromText,
     resetDayDecompositions,
     resetDayProblems,
   } = createDayClipboardActions({
     session,
-    selectedUnit,
     stateCurriculum: state.curriculum,
     currentItem,
     copyTextViaMiddleware,
@@ -966,6 +967,9 @@ export default function App() {
           learningPlanRows={learningPlanRows}
           openReviewDay={openReviewDay}
           openLearningDay={openLearningDay}
+          copyDayWordsByPath={copyDayWordsByPath}
+          importDayDecompositionFromClipboardByPath={importDayDecompositionFromClipboardByPath}
+          importDayDecompositionFromTextByPath={importDayDecompositionFromTextByPath}
           overallMeta={overallMeta}
           dateRangeMeta={dateRangeMeta}
           planRange={planRange}

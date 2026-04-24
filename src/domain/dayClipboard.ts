@@ -2,7 +2,6 @@
 
 export function createDayClipboardActions({
   session,
-  selectedUnit,
   stateCurriculum,
   currentItem,
   copyTextViaMiddleware,
@@ -41,6 +40,40 @@ export function createDayClipboardActions({
 
     return sentence.length === 0 && target.length === 0 && choices.length === 0 && answer.length === 0;
   };
+
+  const getSessionPath = () => {
+    if (!session) return null;
+    return {
+      unitId: session.unitId,
+      dayId: session.dayId,
+    };
+  };
+
+  const normalizeTargetPath = (pathOverride) => {
+    if (pathOverride?.unitId && pathOverride?.dayId) {
+      return {
+        unitId: pathOverride.unitId,
+        dayId: pathOverride.dayId,
+      };
+    }
+    return getSessionPath();
+  };
+
+  const getTargetDay = (pathOverride) => {
+    const targetPath = normalizeTargetPath(pathOverride);
+    if (!targetPath) {
+      return {
+        targetDay: null,
+        targetPath: null,
+      };
+    }
+
+    return {
+      targetDay: getPathDay(stateCurriculum, targetPath),
+      targetPath,
+    };
+  };
+
   const buildAnswerFromKanjiToKana = (expression, kanjiToKana) => {
     const text = String(expression ?? "");
     const mapping = kanjiToKana && typeof kanjiToKana === "object" ? kanjiToKana : {};
@@ -67,13 +100,9 @@ export function createDayClipboardActions({
     return answer.trim();
   };
 
-  const copyDay1Words = () => {
-    if (!session) return;
-    const targetDay = getPathDay(stateCurriculum, {
-      unitId: session.unitId,
-      dayId: session.dayId,
-    });
-    if (!targetDay || !Array.isArray(targetDay.items) || targetDay.items.length === 0) return;
+  const copyDayWordsForPath = async (pathOverride) => {
+    const { targetDay } = getTargetDay(pathOverride);
+    if (!targetDay || !Array.isArray(targetDay.items) || targetDay.items.length === 0) return false;
 
     const dayIndexLabel = getDisplayDayIndex(targetDay, 1);
     const payload = targetDay.items
@@ -91,12 +120,18 @@ export function createDayClipboardActions({
       })
       .filter((entry) => entry.expression.length > 0);
 
-    if (payload.length === 0) return;
-    copyTextViaMiddleware(JSON.stringify(payload)).then((ok) => {
-      if (ok) {
-        showToast(`Day${dayIndexLabel} 단어 ${payload.length}개 복사`);
-      }
-    });
+    if (payload.length === 0) return false;
+    const ok = await copyTextViaMiddleware(JSON.stringify(payload));
+    if (ok) {
+      showToast(`Day${dayIndexLabel} 단어 ${payload.length}개 복사`);
+    } else {
+      showToast(`Day${dayIndexLabel} 단어 복사 실패`, "error");
+    }
+    return ok;
+  };
+
+  const copyDay1Words = () => {
+    void copyDayWordsForPath();
   };
 
   const copyCurrentWord = () => {
@@ -112,15 +147,11 @@ export function createDayClipboardActions({
     });
   };
 
-  const applyDay1DecompositionImporter = async (rawText) => {
-    if (!session || !selectedUnit) return;
-    const targetDay = getPathDay(stateCurriculum, {
-      unitId: session.unitId,
-      dayId: session.dayId,
-    });
-    if (!targetDay) {
+  const applyDayDecompositionImporter = async (rawText, pathOverride) => {
+    const { targetDay, targetPath } = getTargetDay(pathOverride);
+    if (!targetDay || !targetPath) {
       showToast("현재 Day를 찾을 수 없습니다.", "error");
-      return;
+      return false;
     }
     const dayIndexLabel = getDisplayDayIndex(targetDay, 1);
 
@@ -130,12 +161,12 @@ export function createDayClipboardActions({
       parsed = JSON.parse(normalized);
     } catch (error) {
       showToast("붙여넣은 JSON 파싱 실패", "error");
-      return;
+      return false;
     }
 
     if (!Array.isArray(parsed)) {
       showToast("JSON은 배열 형태여야 합니다.", "error");
-      return;
+      return false;
     }
 
     const mapByExpression = new Map();
@@ -157,7 +188,7 @@ export function createDayClipboardActions({
 
     if (mapByExpression.size === 0) {
       showToast("가져올 항목이 없습니다.", "error");
-      return;
+      return false;
     }
 
     const matchedItems = targetDay.items
@@ -169,7 +200,7 @@ export function createDayClipboardActions({
 
     if (matchedItems.length === 0) {
       showToast(`Day${dayIndexLabel}에 일치하는 expression이 없어 반영하지 못했습니다.`, "error");
-      return;
+      return false;
     }
 
     const changedItems = matchedItems
@@ -187,13 +218,8 @@ export function createDayClipboardActions({
 
     if (changedItems.length === 0) {
       showToast(`Day${dayIndexLabel} 기존 데이터가 있어 반영할 항목이 없습니다.`);
-      return;
+      return true;
     }
-
-    const path = {
-      unitId: selectedUnit.id,
-      dayId: targetDay.id,
-    };
 
     const nextDay = {
       ...targetDay,
@@ -211,7 +237,7 @@ export function createDayClipboardActions({
 
     setState((prev) => ({
       ...prev,
-      curriculum: replaceDay(prev.curriculum, path, nextDay),
+      curriculum: replaceDay(prev.curriculum, targetPath, nextDay),
     }));
 
     await Promise.all(
@@ -228,9 +254,10 @@ export function createDayClipboardActions({
     );
 
     showToast(`Day${dayIndexLabel} 단어 입력 ${changedItems.length}개 반영됨`);
+    return true;
   };
 
-  const importDay1DecompositionFromClipboard = async () => {
+  const importDayDecompositionFromClipboardForPath = async (pathOverride) => {
     try {
       const response = await fetch("/__api/clipboard-read");
       if (response.ok) {
@@ -240,8 +267,7 @@ export function createDayClipboardActions({
           showToast("클립보드가 비어 있습니다.", "error");
           return false;
         }
-        await applyDay1DecompositionImporter(text);
-        return true;
+        return applyDayDecompositionImporter(text, pathOverride);
       }
       const body = await response.text().catch(() => "");
       console.error("Failed to read clipboard:", response.status, body);
@@ -260,31 +286,29 @@ export function createDayClipboardActions({
         showToast("클립보드가 비어 있습니다.", "error");
         return false;
       }
-      await applyDay1DecompositionImporter(text);
-      return true;
+      return applyDayDecompositionImporter(text, pathOverride);
     } catch (error) {
       showToast("클립보드 읽기 권한이 필요합니다.", "error");
       return false;
     }
   };
 
-  const importDay1DecompositionFromText = async (text) => {
+  const importDayDecompositionFromTextForPath = async (pathOverride, text) => {
     const normalized = String(text ?? "");
     if (!normalized.trim()) {
       showToast("붙여넣은 내용이 비어 있습니다.", "error");
       return false;
     }
-    await applyDay1DecompositionImporter(normalized);
-    return true;
+    return applyDayDecompositionImporter(normalized, pathOverride);
   };
 
+  const importDay1DecompositionFromClipboard = () => importDayDecompositionFromClipboardForPath();
+
+  const importDay1DecompositionFromText = (text) => importDayDecompositionFromTextForPath(undefined, text);
+
   const resetDayDecompositions = async () => {
-    if (!session) return;
-    const targetDay = getPathDay(stateCurriculum, {
-      unitId: session.unitId,
-      dayId: session.dayId,
-    });
-    if (!targetDay || !Array.isArray(targetDay.items) || targetDay.items.length === 0) return;
+    const { targetDay, targetPath } = getTargetDay();
+    if (!targetDay || !targetPath || !Array.isArray(targetDay.items) || targetDay.items.length === 0) return;
 
     const dayIndexLabel = getDisplayDayIndex(targetDay, 1);
     const changedItems = targetDay.items.filter((item) => isQuizTarget(item) && String(item.memoDecomposition ?? "").length > 0);
@@ -293,11 +317,6 @@ export function createDayClipboardActions({
       showToast(`Day${dayIndexLabel} 분해 초기화할 항목이 없습니다.`);
       return;
     }
-
-    const path = {
-      unitId: session.unitId,
-      dayId: session.dayId,
-    };
 
     const nextDay = {
       ...targetDay,
@@ -313,7 +332,7 @@ export function createDayClipboardActions({
 
     setState((prev) => ({
       ...prev,
-      curriculum: replaceDay(prev.curriculum, path, nextDay),
+      curriculum: replaceDay(prev.curriculum, targetPath, nextDay),
     }));
 
     await Promise.all(changedItems.map((item) => persistSourceField(item, "memoDecomposition", "")));
@@ -322,12 +341,8 @@ export function createDayClipboardActions({
   };
 
   const resetDayProblems = async () => {
-    if (!session) return;
-    const targetDay = getPathDay(stateCurriculum, {
-      unitId: session.unitId,
-      dayId: session.dayId,
-    });
-    if (!targetDay || !Array.isArray(targetDay.items) || targetDay.items.length === 0) return;
+    const { targetDay, targetPath } = getTargetDay();
+    if (!targetDay || !targetPath || !Array.isArray(targetDay.items) || targetDay.items.length === 0) return;
 
     const dayIndexLabel = getDisplayDayIndex(targetDay, 1);
     const changedItems = targetDay.items.filter((item) => isQuizTarget(item) && !isProblemEmpty(item.problem));
@@ -336,11 +351,6 @@ export function createDayClipboardActions({
       showToast(`Day${dayIndexLabel} 문제 초기화할 항목이 없습니다.`);
       return;
     }
-
-    const path = {
-      unitId: session.unitId,
-      dayId: session.dayId,
-    };
 
     const nextDay = {
       ...targetDay,
@@ -356,7 +366,7 @@ export function createDayClipboardActions({
 
     setState((prev) => ({
       ...prev,
-      curriculum: replaceDay(prev.curriculum, path, nextDay),
+      curriculum: replaceDay(prev.curriculum, targetPath, nextDay),
     }));
 
     await Promise.all(changedItems.map((item) => persistSourceField(item, "problem", null)));
@@ -365,8 +375,11 @@ export function createDayClipboardActions({
   };
 
   return {
+    copyDayWordsByPath: copyDayWordsForPath,
     copyDay1Words,
     copyCurrentWord,
+    importDayDecompositionFromClipboardByPath: importDayDecompositionFromClipboardForPath,
+    importDayDecompositionFromTextByPath: importDayDecompositionFromTextForPath,
     importDay1DecompositionFromClipboard,
     importDay1DecompositionFromText,
     resetDayDecompositions,

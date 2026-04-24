@@ -39,6 +39,11 @@ export function getDayPassRatio(day) {
   return passCount / targetItems.length;
 }
 
+export function getDayMissingDecompositionCount(day) {
+  const targetItems = day?.items?.filter(isQuizTarget) ?? [];
+  return targetItems.filter((item) => String(item?.memoDecomposition ?? "").trim().length === 0).length;
+}
+
 export function getUnitProgress(unit) {
   return getAverage(unit.days.map((day) => getDayProgress(day)));
 }

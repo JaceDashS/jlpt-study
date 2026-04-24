@@ -206,6 +206,52 @@ p {
   align-items: center;
 }
 
+.home-action-group {
+  display: grid;
+  gap: 10px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #1d2529;
+}
+
+.home-action-group-head {
+  display: grid;
+  gap: 4px;
+}
+
+.home-action-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.home-action-group-title strong {
+  font-size: 0.94rem;
+  color: var(--ink);
+}
+
+.home-action-button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.home-action-button {
+  min-height: 84px;
+  align-content: center;
+}
+
+.home-action-button-done {
+  border-color: #496756;
+  background: #23332b;
+}
+
+.home-action-button-done strong {
+  color: #cfe7da;
+}
+
 .mode-chip {
   display: inline-flex;
   align-items: center;
@@ -1252,6 +1298,10 @@ p {
 
   .row {
     flex-direction: column;
+  }
+
+  .home-action-button-grid {
+    grid-template-columns: 1fr;
   }
 
   .kanji-meaning {
