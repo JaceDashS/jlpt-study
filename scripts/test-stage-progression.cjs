@@ -12,7 +12,7 @@ function compileSrsForTest() {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
   const files = ["constants.ts", "date.ts", "srs.ts"];
   for (const name of files) {
-    const srcPath = path.join(process.cwd(), "src", "domain", name);
+    const srcPath = path.join(process.cwd(), "client", "src", "domain", name);
     const raw = fs.readFileSync(srcPath, "utf8");
     const out = ts.transpileModule(raw, {
       compilerOptions: {

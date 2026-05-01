@@ -537,10 +537,6 @@ async function handleSaveItemField(req, res, enqueueWrite) {
     }
 
     const filePath = resolveAssetWritePath(sourcePath);
-    if (isProtectedAssetJsonPath(path.relative(path.resolve(REPO_ROOT, "asset"), filePath))) {
-      sendJson(res, 403, { ok: false, error: "Protected asset src.json cannot be modified" });
-      return;
-    }
 
     const allowedItemFields = ["memoDecomposition", "memoPersonal", "problem", "lastResult", "lastAttemptDate"];
     const allowedDayFields = ["stage", "stageCompleteDate", "nextReviewDate", "lastAttemptDate"];
@@ -655,15 +651,6 @@ function resolveAssetWritePath(sourcePath) {
     throw new Error(`Invalid asset path: ${sourcePath}`);
   }
   return filePath;
-}
-
-function isIgnoredAssetJson(relPath) {
-  return isProtectedAssetJsonPath(relPath);
-}
-
-function isProtectedAssetJsonPath(relPath) {
-  const normalized = String(relPath ?? "").replaceAll("\\", "/").toLowerCase();
-  return normalized.endsWith("/src.json") || normalized === "src.json";
 }
 
 function normalizeRelativePath(relPath) {
@@ -806,7 +793,6 @@ async function findMojibakeInAssetJson(assetRootDir) {
     }
 
     if (!row.relPath.toLowerCase().endsWith(".json")) continue;
-    if (isIgnoredAssetJson(row.relPath)) continue;
 
     const rawText = await fs.readFile(row.fullPath, "utf8");
     if (isLikelyMojibakeText(rawText)) {
@@ -837,13 +823,8 @@ async function restoreAssetSnapshot(assetRootDir, snapshotFiles) {
   await fs.mkdir(assetRootDir, { recursive: true });
 
   const desiredFiles = new Map();
-  let skippedProtectedFileCount = 0;
   for (const [rawRelPath, base64Body] of Object.entries(snapshotFiles ?? {})) {
     const relPath = normalizeRelativePath(rawRelPath);
-    if (isProtectedAssetJsonPath(relPath)) {
-      skippedProtectedFileCount += 1;
-      continue;
-    }
     desiredFiles.set(relPath, String(base64Body ?? ""));
   }
 
@@ -852,7 +833,7 @@ async function restoreAssetSnapshot(assetRootDir, snapshotFiles) {
   const desiredSet = new Set(desiredFiles.keys());
 
   for (const relPath of existingSet) {
-    if (desiredSet.has(relPath) || isProtectedAssetJsonPath(relPath)) continue;
+    if (desiredSet.has(relPath)) continue;
     const fullPath = path.join(assetRootDir, relPath);
     await fs.rm(fullPath, { force: true });
   }
@@ -863,5 +844,5 @@ async function restoreAssetSnapshot(assetRootDir, snapshotFiles) {
     await writeFileAtomically(fullPath, Buffer.from(base64Body, "base64"));
   }
 
-  return { skippedProtectedFileCount };
+  return { skippedProtectedFileCount: 0 };
 }
