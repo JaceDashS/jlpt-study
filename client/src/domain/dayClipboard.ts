@@ -1,4 +1,5 @@
-﻿import { getExpressionStrict } from "./expression.ts";
+import { apiFetch, apiUrl } from "../api.ts";
+import { getExpressionStrict } from "./expression.ts";
 
 export function createDayClipboardActions({
   session,
@@ -59,7 +60,7 @@ export function createDayClipboardActions({
     return getSessionPath();
   };
 
-  const getTargetDay = (pathOverride) => {
+  const getTargetDay = (pathOverride = undefined) => {
     const targetPath = normalizeTargetPath(pathOverride);
     if (!targetPath) {
       return {
@@ -100,7 +101,7 @@ export function createDayClipboardActions({
     return answer.trim();
   };
 
-  const copyDayWordsForPath = async (pathOverride) => {
+  const copyDayWordsForPath = async (pathOverride = undefined) => {
     const { targetDay } = getTargetDay(pathOverride);
     if (!targetDay || !Array.isArray(targetDay.items) || targetDay.items.length === 0) return false;
 
@@ -257,9 +258,11 @@ export function createDayClipboardActions({
     return true;
   };
 
-  const importDayDecompositionFromClipboardForPath = async (pathOverride) => {
+  const importDayDecompositionFromClipboardForPath = async (pathOverride = undefined) => {
     try {
-      const response = await fetch("/__api/clipboard-read");
+      const response = await apiFetch(apiUrl("clipboard-read"), {
+        credentials: "same-origin",
+      });
       if (response.ok) {
         const payload = await response.json().catch(() => ({}));
         const text = String(payload?.text ?? "");

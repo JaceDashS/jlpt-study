@@ -1,0 +1,10 @@
+{
+  "name": "@jlpt-study/server",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/dev.js",
+    "start": "node src/dev.js"
+  }
+}

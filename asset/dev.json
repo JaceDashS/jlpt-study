@@ -1,0 +1,164 @@
+{
+  "format": "combined",
+  "meta": {
+    "level": "dev",
+    "title": "Dev 입력 테스트"
+  },
+  "days": [
+    {
+      "day": [
+        {
+          "items": [
+            {
+              "expression": "学",
+              "meaningKo": "배우다, 학문",
+              "readingParts": {
+                "kanjiToKana": {
+                  "学": "がく"
+                }
+              },
+              "problem": {
+                "sentence": "大学で日本語を学んでいます。",
+                "target": "学",
+                "choices": [
+                  "がく",
+                  "かく",
+                  "こう",
+                  "ぎゃく"
+                ],
+                "answer": "がく"
+              },
+              "lastResult": "FAIL",
+              "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ガク |\n| 訓読 | まなぶ |\n| 뜻 | 배우다, 학문 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 学生（がくせい）: 학생<br>* 大学（だいがく）: 대학 |\n| 구성(IDS) | ⿱𭕄子 |\n| 부수/부품 | 𭕄(덮개/손 모양) + 子 |\n| 부품 역할 | 𭕄: 위에서 감싸거나 이끄는 형태<br>子: 아이, 배우는 사람 |\n| 재귀 구조 | 学[배우다] → ⿱[구성] 𭕄[이끌림](추정) + 子[아이] |\n| 최종 최소 단위 | 𭕄, 子[아이] |",
+              "memoPersonal": "아이가 위에서 이끌림을 받으며 배운다고 기억",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 1,
+              "id": "dev-d1-i1"
+            },
+            {
+              "expression": "校",
+              "meaningKo": "학교, 교정하다",
+              "readingParts": {
+                "kanjiToKana": {
+                  "校": "こう"
+                }
+              },
+              "problem": {
+                "sentence": "新しい校舎が駅の近くにできました。",
+                "target": "校",
+                "choices": [
+                  "こう",
+                  "きょう",
+                  "こうう",
+                  "かう"
+                ],
+                "answer": "こう"
+              },
+              "lastResult": "FAIL",
+              "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | コウ |\n| 訓読 | 없음 |\n| 뜻 | 학교, 교정하다 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 学校（がっこう）: 학교<br>* 校正（こうせい）: 교정 |\n| 구성(IDS) | ⿰木交 |\n| 부수/부품 | 木 + 交 |\n| 부품 역할 | 木: 목재, 건물의 재료<br>交: 서로 오가다, 교차하다 |\n| 재귀 구조 | 校[학교] → ⿰[구성] 木[나무] + 交[교차/교류] |\n| 최종 최소 단위 | 木[나무], 交[교차하다] |",
+              "memoPersonal": "사람이 오가는 나무 건물 = 학교",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 2,
+              "id": "dev-d1-i2"
+            },
+            {
+              "expression": "時",
+              "meaningKo": "때, 시간",
+              "readingParts": {
+                "kanjiToKana": {
+                  "時": "じ"
+                }
+              },
+              "problem": {
+                "sentence": "会議は三時に始まります。",
+                "target": "時",
+                "choices": [
+                  "じ",
+                  "し",
+                  "とき",
+                  "ち"
+                ],
+                "answer": "じ"
+              },
+              "lastResult": "FAIL",
+              "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ジ |\n| 訓読 | とき |\n| 뜻 | 때, 시간 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 時間（じかん）: 시간<br>* 三時（さんじ）: 세 시 |\n| 구성(IDS) | ⿰日寺 |\n| 부수/부품 | 日 + 寺 |\n| 부품 역할 | 日: 해, 날<br>寺: 소리 요소(ジ)와 정해진 장소의 느낌 |\n| 재귀 구조 | 時[시간] → ⿰[구성] 日[해/날] + 寺[절/소리](추정) |\n| 최종 최소 단위 | 日[해], 寺[절](추정) |",
+              "memoPersonal": "테스트",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 3,
+              "id": "dev-d1-i3"
+            },
+            {
+              "expression": "電",
+              "meaningKo": "전기",
+              "readingParts": {
+                "kanjiToKana": {
+                  "電": "でん"
+                }
+              },
+              "problem": {
+                "sentence": "電車で会社へ行きます。",
+                "target": "電",
+                "choices": [
+                  "でん",
+                  "てん",
+                  "だん",
+                  "でい"
+                ],
+                "answer": "でん"
+              },
+              "lastResult": "FAIL",
+              "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | デン |\n| 訓読 | 없음 |\n| 뜻 | 전기 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 電車（でんしゃ）: 전철<br>* 電話（でんわ）: 전화 |\n| 구성(IDS) | ⿱雨申 |\n| 부수/부품 | 雨 + 申 |\n| 부품 역할 | 雨: 비, 하늘 현상<br>申: 번개가 뻗는 모양과 소리 요소(추정) |\n| 재귀 구조 | 電[전기] → ⿱[구성] 雨[비/하늘] + 申[펼치다/번개](추정) |\n| 최종 최소 단위 | 雨[비], 申[펼치다](추정) |",
+              "memoPersonal": "비구름 아래 번개처럼 뻗는 전기",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 4,
+              "id": "dev-d1-i4"
+            },
+            {
+              "expression": "話",
+              "meaningKo": "말하다, 이야기",
+              "readingParts": {
+                "kanjiToKana": {
+                  "話": "わ"
+                }
+              },
+              "problem": {
+                "sentence": "先生と少し話をしました。",
+                "target": "話",
+                "choices": [
+                  "わ",
+                  "は",
+                  "か",
+                  "ば"
+                ],
+                "answer": "わ"
+              },
+              "lastResult": "FAIL",
+              "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ワ |\n| 訓読 | はなす, はなし |\n| 뜻 | 말하다, 이야기 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 会話（かいわ）: 회화<br>* 電話（でんわ）: 전화 |\n| 구성(IDS) | ⿰言舌 |\n| 부수/부품 | 言 + 舌 |\n| 부품 역할 | 言: 말, 언어<br>舌: 혀, 발화 기관 |\n| 재귀 구조 | 話[말하다] → ⿰[구성] 言[말] + 舌[혀] |\n| 최종 최소 단위 | 言[말], 舌[혀] |",
+              "memoPersonal": "이건 테스트임",
+              "stage": 1,
+              "nextReviewDate": null,
+              "lastAttemptDate": "",
+              "index": 5,
+              "id": "dev-d1-i5"
+            }
+          ],
+          "stage": 1,
+          "stageCompleteDate": "",
+          "nextReviewDate": "",
+          "lastAttemptDate": "2026-05-02",
+          "lastCompletedDate": ""
+        }
+      ]
+    }
+  ],
+  "totalWords": 5,
+  "totalProblems": 5
+}

@@ -1,19 +1,6 @@
 import { assertNoDisallowedExpressionKeys } from "../domain/expression.ts";
 
-const STUDY_MODULES = import.meta.glob("../../asset/**/study.json", {
-  eager: true,
-  import: "default",
-});
-const COMBINED_MODULES = import.meta.glob("../../asset/*.json", {
-  eager: true,
-  import: "default",
-});
-const MANIFEST_MODULES = import.meta.glob("../../asset/*/manifest.json", {
-  eager: true,
-  import: "default",
-});
-
-function createExpressionItem(id, expression, reading, meaningKo, kanjiToKana = {}, problem = null, sourceRef = null) {
+function createExpressionItem(id, expression, reading, meaningKo, kanjiToKana = {}, problem = null, sourceRef = null, sourceItem = null) {
   return {
     id,
     expression,
@@ -22,10 +9,20 @@ function createExpressionItem(id, expression, reading, meaningKo, kanjiToKana = 
     problem,
     kanjiToKana,
     sourceRef,
-    lastResult: "NEUTRAL",
-    memoDecomposition: "",
-    memoPersonal: "",
+    lastResult: toLastResult(sourceItem?.lastResult),
+    lastAttemptDate: isValidAttemptDate(sourceItem?.lastAttemptDate) ? sourceItem.lastAttemptDate : "",
+    memoDecomposition: toMemoText(sourceItem?.memoDecomposition),
+    memoPersonal: toMemoText(sourceItem?.memoPersonal),
   };
+}
+
+function toLastResult(value) {
+  return value === "PASS" || value === "FAIL" || value === "NEUTRAL" ? value : "NEUTRAL";
+}
+
+function toMemoText(value) {
+  if (value === null || value === undefined) return "";
+  return tryFixMojibake(String(value));
 }
 
 function getDayStageFromRaw(day) {
@@ -125,9 +122,46 @@ function extractBookId(modulePath: string): string {
   return filename.replace(/\.json$/, "");
 }
 
-export function getAvailableBooks(): Array<{ id: string; title: string }> {
+function normalizeAssetPath(value) {
+  return String(value ?? "").split("\\").join("/").replace(/^\.\/+/, "");
+}
+
+function toModulePath(assetPath) {
+  const normalized = normalizeAssetPath(assetPath);
+  return normalized.startsWith("../../") ? normalized : `../../${normalized}`;
+}
+
+function getAssetModules(files, predicate) {
+  if (!files || typeof files !== "object") return {};
+  return Object.fromEntries(
+    Object.entries(files).filter(([assetPath]) => predicate(normalizeAssetPath(assetPath))).map(([assetPath, value]) => [
+      toModulePath(assetPath),
+      value,
+    ]),
+  );
+}
+
+function getStudyModules(files?: Record<string, unknown>) {
+  return getAssetModules(files, (assetPath) => assetPath.startsWith("asset/") && assetPath.toLowerCase().endsWith("/study.json"));
+}
+
+function getCombinedModules(files?: Record<string, unknown>) {
+  return getAssetModules(files, (assetPath) => {
+    const parts = assetPath.split("/").filter(Boolean);
+    return parts.length === 2 && parts[0] === "asset" && parts[1].toLowerCase().endsWith(".json");
+  });
+}
+
+function getManifestModules(files?: Record<string, unknown>) {
+  return getAssetModules(files, (assetPath) => {
+    const parts = assetPath.split("/").filter(Boolean);
+    return parts.length === 3 && parts[0] === "asset" && parts[2].toLowerCase() === "manifest.json";
+  });
+}
+
+export function getAvailableBooks(files?: Record<string, unknown>): Array<{ id: string; title: string }> {
   const books: Array<{ id: string; title: string }> = [];
-  Object.entries(COMBINED_MODULES).forEach(([modulePath, rawData]) => {
+  Object.entries(getCombinedModules(files)).forEach(([modulePath, rawData]) => {
     const sourceRoot = rawData && typeof rawData === "object" ? (rawData as Record<string, unknown>) : null;
     if (!sourceRoot || sourceRoot.format !== "combined") return;
     const id = extractBookId(modulePath);
@@ -267,9 +301,9 @@ function toTitleFromId(value, fallback = "") {
     .replace(/\b\w/g, (ch) => ch.toUpperCase());
 }
 
-function buildManifestByLevel() {
+function buildManifestByLevel(files?: Record<string, unknown>) {
   const manifestByLevel = new Map();
-  Object.values(MANIFEST_MODULES).forEach((value) => {
+  Object.values(getManifestModules(files)).forEach((value) => {
     if (!value || typeof value !== "object") return;
     const level = String((value as { level?: unknown }).level ?? "").trim();
     if (!level) return;
@@ -284,11 +318,11 @@ function toPositiveInteger(value) {
   return parsed;
 }
 
-function buildCurriculumFromAssets(bookId?: string) {
+function buildCurriculumFromAssets(bookId?: string, files?: Record<string, unknown>) {
   const unitMap = new Map();
 
   // Load individual unit study.json files (legacy / other curricula)
-  Object.entries(STUDY_MODULES).forEach(([modulePath, rawData]) => {
+  Object.entries(getStudyModules(files)).forEach(([modulePath, rawData]) => {
     const parts = extractPathParts(modulePath);
     const sourceRoot = rawData && typeof rawData === "object" ? (rawData as Record<string, unknown>) : null;
     const meta =
@@ -322,7 +356,7 @@ function buildCurriculumFromAssets(bookId?: string) {
   });
 
   // Load combined curriculum files (format: "combined")
-  Object.entries(COMBINED_MODULES).forEach(([modulePath, rawData]) => {
+  Object.entries(getCombinedModules(files)).forEach(([modulePath, rawData]) => {
     const sourceRoot = rawData && typeof rawData === "object" ? (rawData as Record<string, unknown>) : null;
     if (!sourceRoot || sourceRoot.format !== "combined") return;
     if (bookId && extractBookId(modulePath) !== bookId) return;
@@ -385,7 +419,7 @@ function buildCurriculumFromAssets(bookId?: string) {
     }
   });
 
-  const manifestByLevel = buildManifestByLevel();
+  const manifestByLevel = buildManifestByLevel(files);
   const defaultLevel = "jlpt-n1";
   const manifest = manifestByLevel.get(defaultLevel);
   const totalDay = toPositiveInteger(manifest?.totalDay);
@@ -441,6 +475,7 @@ function buildCurriculumFromAssets(bookId?: string) {
                   displayDayIndex: displayDayNumber,
                   itemIndex,
                 },
+                item,
               ),
             ),
           };
@@ -495,6 +530,7 @@ function buildCurriculumFromAssets(bookId?: string) {
               displayDayIndex: displayDayNumber,
               itemIndex,
             },
+            item,
           ),
         ),
       };
@@ -509,8 +545,8 @@ function buildCurriculumFromAssets(bookId?: string) {
   return { curriculum, totalDay };
 }
 
-export function createInitialState(bookId?: string) {
-  const { curriculum, totalDay } = buildCurriculumFromAssets(bookId);
+export function createInitialState(bookId?: string, files?: Record<string, unknown>) {
+  const { curriculum, totalDay } = buildCurriculumFromAssets(bookId, files);
   return {
     schemaVersion: 19,
     curriculum,

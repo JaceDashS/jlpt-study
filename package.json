@@ -3,11 +3,17 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "typecheck": "tsc --noEmit",
-    "preview": "vite preview",
+    "dev": "node scripts/dev-monorepo.js",
+    "dev:server": "npm run dev --workspace server",
+    "dev:client": "npm run dev --workspace client",
+    "build": "npm run build --workspace client",
+    "typecheck": "npm run typecheck --workspace client",
+    "preview": "npm run preview --workspace client",
     "validate:structure": "node scripts/validate-problem.cjs --layer structure",
     "validate:consistency": "node scripts/validate-problem.cjs --layer consistency",
     "validate:choices": "node scripts/validate-problem.cjs --layer choices",
@@ -27,14 +33,5 @@
     "fix:problem-missing": "node scripts/fix-missing-problems.cjs",
     "sync:problem-by-kanji": "node scripts/sync-problem-by-kanji.cjs",
     "sync:problem-by-kanji:write": "node scripts/sync-problem-by-kanji.cjs --write"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "typescript": "^5.9.3",
-    "vite": "^5.4.10"
   }
 }

@@ -1,4 +1,6 @@
-﻿export function createSourcePersistence(fetchImpl = fetch) {
+import { apiFetch, apiUrl } from "../api.ts";
+
+export function createSourcePersistence(fetchImpl = apiFetch) {
   const persistSourceField = async (item, field, value) => {
     const sourceRef = item?.sourceRef;
     if (!sourceRef || !sourceRef.sourcePath) {
@@ -7,8 +9,9 @@
     }
 
     try {
-      const response = await fetchImpl("/__api/save-item-field", {
+      const response = await fetchImpl(apiUrl("save-item-field"), {
         method: "POST",
+        credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },
@@ -39,8 +42,9 @@
     }
 
     try {
-      const response = await fetchImpl("/__api/save-item-field", {
+      const response = await fetchImpl(apiUrl("save-item-field"), {
         method: "POST",
+        credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },

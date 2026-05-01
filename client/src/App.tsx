@@ -12,6 +12,7 @@ import { createDayClipboardActions } from "./domain/dayClipboard.ts";
 import { createSessionController } from "./domain/sessionController.ts";
 import { createSourcePersistence } from "./domain/sourcePersistence.ts";
 import { createProgressActions } from "./domain/progressActions.ts";
+import { apiFetch, apiUrl } from "./api.ts";
 import {
   areLearningPathListsEqual,
   buildDailyLearningPlanPaths,
@@ -69,11 +70,35 @@ function normalizeLayoutMaxWidth(value) {
 }
 
 const SELECTED_BOOK_STORAGE_KEY = "jlpt-selected-book";
-const availableBooks = getAvailableBooks();
-const defaultBookId = availableBooks.find((b) => b.id === "jlpt-one-book-n1")?.id ?? availableBooks[0]?.id ?? "";
+type AssetFileMap = Record<string, unknown>;
+type AvailableBook = { id: string; title: string };
+type BootState =
+  | { status: "loading"; files: null; availableBooks: AvailableBook[]; selectedBookId: "" }
+  | { status: "ready"; files: AssetFileMap; availableBooks: AvailableBook[]; selectedBookId: string }
+  | { status: "error"; files: null; availableBooks: AvailableBook[]; selectedBookId: ""; error: unknown };
 
-function buildAppState(bookId: string) {
-  const initial = createInitialState(bookId);
+async function loadCurriculumFiles() {
+  const response = await apiFetch(apiUrl("reload-curriculum", { t: Date.now() }), {
+    credentials: "same-origin",
+  });
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`Failed to load curriculum: ${response.status} ${body}`);
+  }
+
+  const payload = await response.json();
+  if (!payload?.ok || !payload?.files) {
+    throw new Error("Failed to load curriculum: invalid response");
+  }
+  return payload.files as AssetFileMap;
+}
+
+function getDefaultBookId(availableBooks: AvailableBook[]) {
+  return availableBooks.find((b) => b.id === "jlpt-one-book-n1")?.id ?? availableBooks[0]?.id ?? "";
+}
+
+function buildAppState(bookId: string, assetFiles: AssetFileMap) {
+  const initial = createInitialState(bookId, assetFiles);
   const sanitizedInitial = {
     ...initial,
     curriculum: sanitizeCurriculum(initial.curriculum),
@@ -85,10 +110,11 @@ function buildAppState(bookId: string) {
   const saved = loadState(bookId);
   if (!saved) return sanitizedInitial;
   if (isStateCompatible(saved, initial)) {
+    const sourceCurriculum = sanitizeCurriculum(mergeCurriculumFromSource(saved.curriculum, assetFiles));
     const merged = {
       ...sanitizedInitial,
       ...saved,
-      curriculum: sanitizeCurriculum(saved.curriculum),
+      curriculum: sourceCurriculum,
     };
     const normalizedCount = normalizeDailyNewLearningCount(merged.dailyNewLearningCount);
     const savedPaths = Array.isArray(merged.learningPlan?.paths)
@@ -110,10 +136,67 @@ function buildAppState(bookId: string) {
 }
 
 export default function App() {
-  const [selectedBookId, setSelectedBookId] = useState(
-    () => localStorage.getItem(SELECTED_BOOK_STORAGE_KEY) ?? defaultBookId,
+  const [boot, setBoot] = useState<BootState>({
+    status: "loading",
+    files: null,
+    availableBooks: [],
+    selectedBookId: "",
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    loadCurriculumFiles()
+      .then((files) => {
+        if (cancelled) return;
+        const availableBooks = getAvailableBooks(files);
+        const defaultBookId = getDefaultBookId(availableBooks);
+        const savedBookId = localStorage.getItem(SELECTED_BOOK_STORAGE_KEY);
+        const selectedBookId = availableBooks.some((book) => book.id === savedBookId) ? savedBookId : defaultBookId;
+        if (!selectedBookId) {
+          throw new Error("No curriculum books found");
+        }
+        setBoot({ status: "ready", files, availableBooks, selectedBookId });
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error("Failed to boot app:", error);
+        setBoot({ status: "error", files: null, availableBooks: [], selectedBookId: "", error });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (boot.status === "loading") {
+    return <div className="app-shell">커리큘럼을 불러오는 중...</div>;
+  }
+
+  if (boot.status === "error") {
+    return <div className="app-shell">커리큘럼을 불러오지 못했습니다. QR을 다시 스캔해 주세요.</div>;
+  }
+
+  return (
+    <StudyApp
+      initialAssetFiles={boot.files}
+      initialSelectedBookId={boot.selectedBookId}
+      availableBooks={boot.availableBooks}
+    />
   );
-  const [state, setState] = useState(() => buildAppState(selectedBookId));
+}
+
+function StudyApp({
+  initialAssetFiles,
+  initialSelectedBookId,
+  availableBooks,
+}: {
+  initialAssetFiles: AssetFileMap;
+  initialSelectedBookId: string;
+  availableBooks: AvailableBook[];
+}) {
+  const [sourceFiles, setSourceFiles] = useState(initialAssetFiles);
+  const [selectedBookId, setSelectedBookId] = useState(initialSelectedBookId);
+  const [state, setState] = useState(() => buildAppState(initialSelectedBookId, initialAssetFiles));
   const [session, setSession] = useState(null);
   const [problemEditor, setProblemEditor] = useState({
     open: false,
@@ -171,7 +254,9 @@ export default function App() {
 
   const refreshCurriculumFromSource = async () => {
     try {
-      const response = await fetch(`/__api/reload-curriculum?t=${Date.now()}`);
+      const response = await apiFetch(apiUrl("reload-curriculum", { t: Date.now() }), {
+        credentials: "same-origin",
+      });
       if (!response.ok) {
         const body = await response.text();
         console.error("Failed to reload curriculum:", response.status, body);
@@ -183,6 +268,7 @@ export default function App() {
         return;
       }
 
+      setSourceFiles(payload.files);
       setState((prev) => ({
         ...prev,
         curriculum: sanitizeCurriculum(mergeCurriculumFromSource(prev.curriculum, payload.files)),
@@ -205,7 +291,7 @@ export default function App() {
   const switchBook = (newBookId: string) => {
     if (newBookId === selectedBookId) return;
     saveState(state, selectedBookId);
-    const newState = buildAppState(newBookId);
+    const newState = buildAppState(newBookId, sourceFiles);
     setState(newState);
     setSelectedBookId(newBookId);
     localStorage.setItem(SELECTED_BOOK_STORAGE_KEY, newBookId);
@@ -217,8 +303,9 @@ export default function App() {
     if (!ok) return;
     try {
       const runBackup = (force = false) =>
-        fetch("/__api/asset-backup/export", {
+        apiFetch(apiUrl("asset-backup/export"), {
           method: "POST",
+          credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
           },
@@ -266,8 +353,9 @@ export default function App() {
     const ok = window.confirm("백업 파일로 asset 전체를 복구할까요? 현재 파일이 덮어써질 수 있습니다.");
     if (!ok) return;
     try {
-      const response = await fetch("/__api/asset-backup/import", {
+      const response = await apiFetch(apiUrl("asset-backup/import"), {
         method: "POST",
+        credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },
@@ -609,8 +697,9 @@ export default function App() {
     };
 
     try {
-      const response = await fetch("/__api/clipboard-write", {
+      const response = await apiFetch(apiUrl("clipboard-write"), {
         method: "POST",
+        credentials: "same-origin",
         headers: {
           "Content-Type": "application/json",
         },
@@ -661,7 +750,7 @@ export default function App() {
     }, 2000);
   };
 
-  const { persistSourceField, persistSourceDayField } = createSourcePersistence(fetch);
+  const { persistSourceField, persistSourceDayField } = createSourcePersistence(apiFetch);
 
   const { markDayAttemptNow, updateMemo, updateProblem, updateLastResultNow } = createProgressActions({
     session,

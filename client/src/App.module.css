@@ -1308,6 +1308,43 @@ p {
     font-size: 0.92rem;
   }
 
+  .study-top-inline {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "center center"
+      "left right";
+    row-gap: 8px;
+    column-gap: 8px;
+    white-space: normal;
+  }
+
+  .study-top-left {
+    grid-area: left;
+    justify-self: start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .study-top-center {
+    grid-area: center;
+    justify-self: stretch;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 0.4em 0.62em;
+  }
+
+  .study-top-right {
+    grid-area: right;
+    justify-self: end;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .study-top-inline .action {
+    padding: 0.54em 0.72em;
+  }
+
   .study-nav-arrow.left {
     left: 8px;
   }
