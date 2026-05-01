@@ -1,7 +1,6 @@
 ﻿import { useEffect, useMemo, useRef, useState } from "react";
-import { createInitialState, getAvailableBooks } from "./data/initialState.ts";
-import { loadState, saveState, clearState } from "./data/storage.ts";
-import { getTodayString, isDueOnOrBefore } from "./domain/date.ts";
+import { saveState, clearState } from "./data/storage.ts";
+import { getTodayString } from "./domain/date.ts";
 import { applyQuizResultForDay, applyReviewResultForDay } from "./domain/srs.ts";
 import { buildProblemPayload, createProblemDraft, normalizeJsonBlock, normalizeProblem } from "./domain/problem.ts";
 import { HomePage } from "./components/HomePage.tsx";
@@ -12,35 +11,41 @@ import { createDayClipboardActions } from "./domain/dayClipboard.ts";
 import { createSessionController } from "./domain/sessionController.ts";
 import { createSourcePersistence } from "./domain/sourcePersistence.ts";
 import { createProgressActions } from "./domain/progressActions.ts";
+import { createAssetBackupActions } from "./domain/assetBackup.ts";
+import {
+  type AssetFileMap,
+  type AvailableBook,
+  buildAppState,
+  getDefaultBookId,
+  listAvailableBooks,
+  loadCurriculumFiles,
+} from "./domain/curriculumFiles.ts";
+import {
+  buildDateRangeMeta,
+  buildDebugLogs,
+  buildHomeDueDebug,
+  buildLearningPlanRows,
+  buildOverallMeta,
+  buildReviewDue,
+} from "./domain/homeDashboard.ts";
+import { createClipboardActions } from "./domain/clipboardActions.ts";
+import { createQuizInputActions, createSessionKeyboardHandler } from "./domain/sessionInput.ts";
 import { apiFetch, apiUrl } from "./api.ts";
 import {
   areLearningPathListsEqual,
   buildDailyLearningPlanPaths,
-  diffDays,
-  getContinueLearningPath,
-  getDayLastAttemptDate,
-  getDayLastCompletedDate,
   getDayMissingDecompositionCount,
-  getDayNextReviewDate,
   getDayPassRatio,
-  getDayProgress,
-  getDayStageCompleteDate,
-  getDaySequenceIndex,
-  getDayStage,
   getDisplayDayIndex,
   getDisplayItemId,
   getPathDay,
-  getTodayStartedLearningPath,
   getAllDayPaths,
   isFutureReviewDate,
   isQuizTarget,
-  isStateCompatible,
   isValidLearningPath,
-  parseYmd,
   replaceDay,
   sanitizeCurriculum,
   shuffleArray,
-  toLearningPathKey,
   normalizeDailyNewLearningCount,
 } from "./domain/studyHelpers.ts";
 import { cx } from "./styles.ts";
@@ -70,70 +75,10 @@ function normalizeLayoutMaxWidth(value) {
 }
 
 const SELECTED_BOOK_STORAGE_KEY = "jlpt-selected-book";
-type AssetFileMap = Record<string, unknown>;
-type AvailableBook = { id: string; title: string };
 type BootState =
   | { status: "loading"; files: null; availableBooks: AvailableBook[]; selectedBookId: "" }
   | { status: "ready"; files: AssetFileMap; availableBooks: AvailableBook[]; selectedBookId: string }
   | { status: "error"; files: null; availableBooks: AvailableBook[]; selectedBookId: ""; error: unknown };
-
-async function loadCurriculumFiles() {
-  const response = await apiFetch(apiUrl("reload-curriculum", { t: Date.now() }), {
-    credentials: "same-origin",
-  });
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Failed to load curriculum: ${response.status} ${body}`);
-  }
-
-  const payload = await response.json();
-  if (!payload?.ok || !payload?.files) {
-    throw new Error("Failed to load curriculum: invalid response");
-  }
-  return payload.files as AssetFileMap;
-}
-
-function getDefaultBookId(availableBooks: AvailableBook[]) {
-  return availableBooks.find((b) => b.id === "jlpt-one-book-n1")?.id ?? availableBooks[0]?.id ?? "";
-}
-
-function buildAppState(bookId: string, assetFiles: AssetFileMap) {
-  const initial = createInitialState(bookId, assetFiles);
-  const sanitizedInitial = {
-    ...initial,
-    curriculum: sanitizeCurriculum(initial.curriculum),
-    dailyNewLearningCount: 1,
-    learningPlan: { date: "", count: 1, paths: [] },
-    studyDrawerWidth: DEFAULT_STUDY_DRAWER_WIDTH,
-    dayListDrawerWidth: DEFAULT_DAY_LIST_DRAWER_WIDTH,
-  };
-  const saved = loadState(bookId);
-  if (!saved) return sanitizedInitial;
-  if (isStateCompatible(saved, initial)) {
-    const sourceCurriculum = sanitizeCurriculum(mergeCurriculumFromSource(saved.curriculum, assetFiles));
-    const merged = {
-      ...sanitizedInitial,
-      ...saved,
-      curriculum: sourceCurriculum,
-    };
-    const normalizedCount = normalizeDailyNewLearningCount(merged.dailyNewLearningCount);
-    const savedPaths = Array.isArray(merged.learningPlan?.paths)
-      ? merged.learningPlan.paths.filter(isValidLearningPath)
-      : [];
-    return {
-      ...merged,
-      dailyNewLearningCount: normalizedCount,
-      studyDrawerWidth: normalizeStudyDrawerWidth(merged.studyDrawerWidth),
-      dayListDrawerWidth: normalizeDayListDrawerWidth(merged.dayListDrawerWidth),
-      learningPlan: {
-        date: typeof merged.learningPlan?.date === "string" ? merged.learningPlan.date : "",
-        count: normalizeDailyNewLearningCount(merged.learningPlan?.count ?? normalizedCount),
-        paths: savedPaths,
-      },
-    };
-  }
-  return sanitizedInitial;
-}
 
 export default function App() {
   const [boot, setBoot] = useState<BootState>({
@@ -148,7 +93,7 @@ export default function App() {
     loadCurriculumFiles()
       .then((files) => {
         if (cancelled) return;
-        const availableBooks = getAvailableBooks(files);
+        const availableBooks = listAvailableBooks(files);
         const defaultBookId = getDefaultBookId(availableBooks);
         const savedBookId = localStorage.getItem(SELECTED_BOOK_STORAGE_KEY);
         const selectedBookId = availableBooks.some((book) => book.id === savedBookId) ? savedBookId : defaultBookId;
@@ -298,83 +243,6 @@ function StudyApp({
     setSession(null);
   };
 
-  const backupAssets = async () => {
-    const ok = window.confirm("asset 전체를 단일 백업 파일로 저장할까요?");
-    if (!ok) return;
-    try {
-      const runBackup = (force = false) =>
-        apiFetch(apiUrl("asset-backup/export"), {
-          method: "POST",
-          credentials: "same-origin",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ force }),
-        });
-
-      let response = await runBackup(false);
-      if (response.status === 409) {
-        const warningPayload = await response.json().catch(() => ({}));
-        const findings = Array.isArray(warningPayload?.findings) ? warningPayload.findings : [];
-        const warningCount = Number(warningPayload?.findingCount ?? findings.length);
-        const warningPreview = findings.slice(0, 5).join("\n");
-        const proceed = window.confirm(
-          [
-            `모지바케 ${warningCount}건이 감지되었습니다.`,
-            "계속하면 모지바케를 포함한 상태로 백업이 진행됩니다.",
-            warningPreview ? "" : undefined,
-            warningPreview || undefined,
-            "",
-            "계속 진행할까요?",
-          ]
-            .filter(Boolean)
-            .join("\n"),
-        );
-        if (!proceed) return;
-        response = await runBackup(true);
-      }
-
-      if (!response.ok) {
-        const body = await response.text();
-        console.error("Failed to backup assets:", response.status, body);
-        showToast("에셋 백업 실패", "error");
-        return;
-      }
-      const payload = await response.json();
-      const warningSuffix = payload?.mojibakeIncluded ? ` (모지바케 ${payload?.mojibakeCount ?? 0}건 포함)` : "";
-      showToast(`에셋 백업 완료: ${payload?.backupFile ?? "backup/asset-full-backup.json"}${warningSuffix}`);
-    } catch (error) {
-      console.error("Failed to backup assets:", error);
-      showToast("에셋 백업 실패", "error");
-    }
-  };
-
-  const restoreAssets = async () => {
-    const ok = window.confirm("백업 파일로 asset 전체를 복구할까요? 현재 파일이 덮어써질 수 있습니다.");
-    if (!ok) return;
-    try {
-      const response = await apiFetch(apiUrl("asset-backup/import"), {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      });
-      if (!response.ok) {
-        const body = await response.text();
-        console.error("Failed to restore assets:", response.status, body);
-        showToast("에셋 복구 실패", "error");
-        return;
-      }
-      await refreshCurriculumFromSource();
-      showToast("에셋 복구 완료");
-    } catch (error) {
-      console.error("Failed to restore assets:", error);
-      showToast("에셋 복구 실패", "error");
-    }
-  };
-
   useEffect(() => {
     if (session) return undefined;
     const onFocus = () => {
@@ -388,144 +256,18 @@ function StudyApp({
     };
   }, [session]);
 
-  const reviewDue = useMemo(() => {
-    const list = [];
+  const reviewDue = useMemo(() => buildReviewDue(state.curriculum, today), [state.curriculum, today]);
 
-    state.curriculum.forEach((unit) => {
-      unit.days.forEach((day) => {
-        const allDayQuizItems = day.items.filter(isQuizTarget);
-        const allDayItemIds = allDayQuizItems.map((item) => item.id);
-        const dayLevelDue =
-          allDayItemIds.length > 0 &&
-          getDayStage(day) < 5 &&
-          isDueOnOrBefore(getDayNextReviewDate(day), today);
-
-        if (!dayLevelDue) return;
-
-        list.push({
-          path: { unitId: unit.id, dayId: day.id },
-          unitId: unit.id,
-          dayId: day.id,
-          unitTitle: unit.title,
-          dayTitle: day.title,
-          dueCount: allDayItemIds.length,
-          dueItemIds: allDayItemIds,
-          progress: getDayProgress(day),
-          missingDecompositionCount: getDayMissingDecompositionCount(day),
-        });
-      });
-    });
-
-    return list;
-  }, [state.curriculum, today]);
-
-  const homeDueDebug = useMemo(() => {
-    const rows = [];
-    state.curriculum.forEach((unit) => {
-      unit.days.forEach((day) => {
-        const allDayItems = day.items.filter(isQuizTarget);
-        const dayLevelDue =
-          allDayItems.length > 0 &&
-          getDayStage(day) < 5 &&
-          isDueOnOrBefore(getDayNextReviewDate(day), today);
-
-        rows.push({
-          unitTitle: unit.title,
-          dayTitle: day.title,
-          stage: getDayStage(day),
-          nextReviewDate: getDayNextReviewDate(day),
-          itemDueCount: dayLevelDue ? allDayItems.length : 0,
-          dayLevelDue,
-          totalItems: allDayItems.length,
-        });
-      });
-    });
-    return rows;
-  }, [state.curriculum, today]);
+  const homeDueDebug = useMemo(() => buildHomeDueDebug(state.curriculum, today), [state.curriculum, today]);
 
   useEffect(() => {
     if (session) return;
     console.log("[home] today:", today, "reviewDue:", reviewDue.length);
   }, [session, state.curriculum, today, reviewDue.length]);
 
-  const overallMeta = useMemo(() => {
-    let totalDays = 0;
-    const stageRatios = [];
-    let maxDayIndex = 0;
-    const stageByDayIndex = new Map();
+  const overallMeta = useMemo(() => buildOverallMeta(state.curriculum, state.totalDay), [state.curriculum, state.totalDay]);
 
-    state.curriculum.forEach((unit) => {
-      unit.days.forEach((day) => {
-        totalDays += 1;
-        const stage = getDayStage(day);
-        const dayIndexValue = Number(day?.dayIndex);
-        if (Number.isFinite(dayIndexValue) && dayIndexValue > maxDayIndex) {
-          maxDayIndex = dayIndexValue;
-        }
-        if (Number.isFinite(dayIndexValue)) {
-          const prevStage = stageByDayIndex.get(dayIndexValue) ?? 1;
-          if (stage > prevStage) {
-            stageByDayIndex.set(dayIndexValue, stage);
-          } else if (!stageByDayIndex.has(dayIndexValue)) {
-            stageByDayIndex.set(dayIndexValue, prevStage);
-          }
-        }
-        stageRatios.push(getDayProgress(day));
-      });
-    });
-
-    const completedUniqueDays = [...stageByDayIndex.values()].filter((stage) => stage >= 2).length;
-    const configuredTotalDay = Number(state.totalDay);
-    const uniqueDayTotal =
-      Number.isInteger(configuredTotalDay) && configuredTotalDay > 0
-        ? configuredTotalDay
-        : maxDayIndex > 0
-          ? maxDayIndex
-          : stageByDayIndex.size;
-    const completedRatio = uniqueDayTotal > 0 ? completedUniqueDays / uniqueDayTotal : 0;
-    const avgStageRatio = stageRatios.length > 0 ? stageRatios.reduce((sum, value) => sum + value, 0) / stageRatios.length : 0;
-    const uniqueDayCompletedRatio = uniqueDayTotal > 0 ? completedUniqueDays / uniqueDayTotal : 0;
-
-    return {
-      totalDays,
-      completedDays: completedUniqueDays,
-      completedRatio,
-      avgStageRatio,
-      maxDayIndex,
-      uniqueDayTotal,
-      uniqueDayCompletedRatio,
-    };
-  }, [state.curriculum]);
-
-  const dateRangeMeta = useMemo(() => {
-    const startDate = parseYmd(planRange.start);
-    const endDate = parseYmd(planRange.end);
-    const todayDate = parseYmd(today);
-
-    if (!startDate || !endDate || !todayDate || endDate < startDate) {
-      return {
-        valid: false,
-        ratio: 0,
-        elapsedDays: 0,
-        totalDays: 0,
-        remainingDays: 0,
-      };
-    }
-
-    const totalDays = diffDays(startDate, endDate) + 1;
-    const elapsedRaw = diffDays(startDate, todayDate) + 1;
-    const elapsedDays = Math.max(0, Math.min(totalDays, elapsedRaw));
-    const remainingDays = Math.max(0, totalDays - elapsedDays);
-    const ratio = totalDays > 0 ? elapsedDays / totalDays : 0;
-
-    return {
-      valid: true,
-      ratio,
-      elapsedDays,
-      totalDays,
-      remainingDays,
-    };
-  }, [planRange.end, planRange.start, today]);
+  const dateRangeMeta = useMemo(() => buildDateRangeMeta(planRange, today), [planRange, today]);
 
   const dailyNewLearningCount = normalizeDailyNewLearningCount(state.dailyNewLearningCount);
 
@@ -561,70 +303,28 @@ function StudyApp({
     });
   }, [today, state.curriculum, state.dailyNewLearningCount]);
 
-  const learningPlanRows = useMemo(() => {
-    const planPaths = state.learningPlan?.date === today
-      ? Array.isArray(state.learningPlan?.paths)
-        ? state.learningPlan.paths
-        : []
-      : buildDailyLearningPlanPaths(state.curriculum, dailyNewLearningCount, today);
-
-    return planPaths
-      .filter(isValidLearningPath)
-      .map((path) => {
-        const unit = state.curriculum.find((item) => item.id === path.unitId);
-        const day = unit?.days.find((item) => item.id === path.dayId);
-        if (!unit || !day) return null;
-
-        const daySeq = getDaySequenceIndex(state.curriculum, path);
-        return {
-          path,
-          unitTitle: unit.title,
-          dayTitle: day.title,
-          dayIndex: getDisplayDayIndex(day, daySeq.index),
-          sequenceIndex: daySeq.index,
-          totalDayCount: daySeq.total,
-          itemCount: day.items.filter(isQuizTarget).length,
-          missingDecompositionCount: getDayMissingDecompositionCount(day),
-          stageCompleteDate: getDayStageCompleteDate(day),
-          nextReviewDate: getDayNextReviewDate(day),
-          lastAttemptDate: getDayLastAttemptDate(day),
-          lastCompletedDate: getDayLastCompletedDate(day),
-        };
-      })
-      .filter(Boolean);
-  }, [state.learningPlan, state.curriculum, today, dailyNewLearningCount]);
+  const learningPlanRows = useMemo(
+    () => buildLearningPlanRows(state.curriculum, state.learningPlan, dailyNewLearningCount, today),
+    [state.curriculum, state.learningPlan, dailyNewLearningCount, today],
+  );
 
   const pendingLearningRows = useMemo(
     () => learningPlanRows.filter((row) => row.stageCompleteDate !== today),
     [learningPlanRows, today],
   );
-  const debugLogs = useMemo(() => {
-    const lines = [];
-    const continuePath = getContinueLearningPath(state.curriculum, today);
-    const todayStartedPath = getTodayStartedLearningPath(state.curriculum, today);
-    const rawPlanPaths = state.learningPlan?.date === today && Array.isArray(state.learningPlan?.paths)
-      ? state.learningPlan.paths.filter(isValidLearningPath)
-      : [];
-
-    lines.push(`today=${today}`);
-    lines.push(`dailyNewLearningCount=${dailyNewLearningCount}`);
-    lines.push(`learningPlan.date=${String(state.learningPlan?.date ?? "")}`);
-    lines.push(`learningPlan.count=${String(state.learningPlan?.count ?? "")}`);
-    lines.push(`todayStartedPath=${todayStartedPath ? toLearningPathKey(todayStartedPath) : "-"}`);
-    lines.push(`continuePath=${continuePath ? toLearningPathKey(continuePath) : "-"}`);
-    lines.push(`savedPlanPaths=${rawPlanPaths.length > 0 ? rawPlanPaths.map(toLearningPathKey).join(", ") : "-"}`);
-    lines.push(`renderedPlanRows=${learningPlanRows.map((row) => toLearningPathKey(row.path)).join(", ") || "-"}`);
-    lines.push(`pendingRows=${pendingLearningRows.map((row) => toLearningPathKey(row.path)).join(", ") || "-"}`);
-    lines.push(`reviewDueCount=${reviewDue.length}`);
-
-    learningPlanRows.forEach((row) => {
-      lines.push(
-        `[row] ${toLearningPathKey(row.path)} day=${row.dayTitle} next=${String(row.nextReviewDate)} lastAttempt=${String(row.lastAttemptDate)}`,
-      );
-    });
-
-    return lines;
-  }, [dailyNewLearningCount, learningPlanRows, pendingLearningRows, reviewDue.length, state.curriculum, state.learningPlan, today]);
+  const debugLogs = useMemo(
+    () =>
+      buildDebugLogs({
+        curriculum: state.curriculum,
+        learningPlan: state.learningPlan,
+        today,
+        dailyNewLearningCount,
+        learningPlanRows,
+        pendingLearningRows,
+        reviewDueCount: reviewDue.length,
+      }),
+    [dailyNewLearningCount, learningPlanRows, pendingLearningRows, reviewDue.length, state.curriculum, state.learningPlan, today],
+  );
 
   const handleDailyNewLearningCountChange = (event) => {
     const nextCount = normalizeDailyNewLearningCount(event.target.value);
@@ -683,61 +383,6 @@ function StudyApp({
     });
   };
 
-  const copyTextViaMiddleware = async (text) => {
-    const normalized = String(text ?? "");
-    const copyWithNavigator = async () => {
-      try {
-        if (!navigator?.clipboard?.writeText) return false;
-        await navigator.clipboard.writeText(normalized);
-        return true;
-      } catch (error) {
-        console.error("Failed to copy text with navigator.clipboard:", error);
-        return false;
-      }
-    };
-
-    try {
-      const response = await apiFetch(apiUrl("clipboard-write"), {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: normalized }),
-      });
-
-      if (!response.ok) {
-        const body = await response.text();
-        console.error("Failed to copy text:", response.status, body);
-        return copyWithNavigator();
-      }
-      return true;
-    } catch (error) {
-      console.error("Failed to copy text:", error);
-      return copyWithNavigator();
-    }
-  };
-
-  const copyDebugLogs = async () => {
-    const reviewRows = homeDueDebug
-      .filter((row) => row.itemDueCount > 0 || row.dayLevelDue)
-      .slice(0, 20)
-      .map(
-        (row) =>
-          `[review] ${row.unitTitle} / ${row.dayTitle} | stage ${row.stage} | next ${String(row.nextReviewDate)} | itemDue ${row.itemDueCount} | dayLevelDue ${String(row.dayLevelDue)} | total ${row.totalItems}`,
-      );
-    const text = [...debugLogs, ...reviewRows].join("\n");
-    const ok = await copyTextViaMiddleware(text);
-    showToast(ok ? "디버깅 로그 복사 완료" : "디버깅 로그 복사 실패", ok ? "success" : "error");
-  };
-
-  const copyDisplayId = async (displayId: string) => {
-    const text = String(displayId ?? "").trim();
-    if (!text) return;
-    const ok = await copyTextViaMiddleware(text);
-    showToast(ok ? `${text} 복사` : "ID 복사 실패", ok ? "success" : "error");
-  };
-
   const showToast = (message, type = "success") => {
     const next = {
       message: String(message ?? ""),
@@ -749,6 +394,19 @@ function StudyApp({
       setToast((prev) => (prev?.token === next.token ? null : prev));
     }, 2000);
   };
+
+  const { copyTextViaMiddleware, copyDebugLogs, copyDisplayId } = createClipboardActions({
+    apiFetch,
+    debugLogs,
+    homeDueDebug,
+    showToast,
+  });
+
+  const { backupAssets, restoreAssets } = createAssetBackupActions({
+    apiFetch,
+    refreshCurriculumFromSource,
+    showToast,
+  });
 
   const { persistSourceField, persistSourceDayField } = createSourcePersistence(apiFetch);
 
@@ -845,68 +503,14 @@ function StudyApp({
     goHome,
   });
 
-  const selectQuizChoice = (choice) => {
-    if (!session || session.phase !== "quiz" || !currentItem) return false;
-    const problem = normalizeProblem(currentItem.problem);
-    if (!problem || problem.choices.length === 0) return false;
-
-    const choiceOrder = session.choiceOrders?.[currentItem.id] ?? problem.choices;
-    if (!choiceOrder.includes(choice)) return false;
-
-    const alreadySelected = session.selectedChoices?.[currentItem.id] === choice;
-    if (alreadySelected) {
-      goNextQuizItem();
-      return true;
-    }
-
-    const isPass = problem.answer ? choice === problem.answer : true;
-    const result = isPass ? "PASS" : "FAIL";
-    updateLastResultNow(currentItem.id, result);
-    setSession((prev) => ({
-      ...prev,
-      graded: {
-        ...(prev.graded ?? {}),
-        [currentItem.id]: result,
-      },
-      selectedChoices: {
-        ...(prev.selectedChoices ?? {}),
-        [currentItem.id]: choice,
-      },
-      showChoices: {
-        ...(prev.showChoices ?? {}),
-        [currentItem.id]: true,
-      },
-    }));
-    return true;
-  };
-
-  const selectQuizChoiceByIndex = (choiceIndex) => {
-    if (!session || session.phase !== "quiz" || !currentItem || choiceIndex < 0) return false;
-    const problem = normalizeProblem(currentItem.problem);
-    if (!problem || problem.choices.length === 0) return false;
-    const choiceOrder = session.choiceOrders?.[currentItem.id] ?? problem.choices;
-    if (choiceIndex >= choiceOrder.length) return false;
-    return selectQuizChoice(choiceOrder[choiceIndex]);
-  };
-
-  const isQuizChoiceVisible = () => {
-    if (!session || session.phase !== "quiz" || !currentItem) return false;
-    return Boolean(session.showChoices?.[currentItem.id] || session.selectedChoices?.[currentItem.id]);
-  };
-
-  const openQuizChoices = () => {
-    if (!session || session.phase !== "quiz" || !currentItem) return false;
-    const problem = normalizeProblem(currentItem.problem);
-    if (!problem || problem.choices.length === 0) return false;
-    setSession((prev) => ({
-      ...prev,
-      showChoices: {
-        ...(prev.showChoices ?? {}),
-        [currentItem.id]: true,
-      },
-    }));
-    return true;
-  };
+  const { isQuizChoiceVisible, openQuizChoices, selectQuizChoice, selectQuizChoiceByIndex } = createQuizInputActions({
+    currentItem,
+    goNextQuizItem,
+    normalizeProblem,
+    session,
+    setSession,
+    updateLastResultNow,
+  });
 
   useEffect(() => {
     if (!currentItem) {
@@ -943,83 +547,18 @@ function StudyApp({
   useEffect(() => {
     if (!session) return undefined;
 
-    const isTextInputTarget = (target) => {
-      if (!target || !(target instanceof HTMLElement)) return false;
-      const tag = target.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
-      return target.isContentEditable;
-    };
-
-    const onKeyDown = (event) => {
-      if (event.altKey || event.ctrlKey || event.metaKey) return;
-      if (isTextInputTarget(event.target)) return;
-
-      if (session.phase === "done") {
-        if (event.key === "Enter" || event.code === "Space") {
-          event.preventDefault();
-          goHome();
-        }
-        return;
-      }
-
-      if (session.phase === "quiz") {
-        const key = String(event.key ?? "");
-        const choiceIndex = /^[1-4]$/.test(key) ? Number(key) - 1 : -1;
-        if (choiceIndex >= 0) {
-          if (!isQuizChoiceVisible()) {
-            if (openQuizChoices()) {
-              event.preventDefault();
-              return;
-            }
-          }
-          if (selectQuizChoiceByIndex(choiceIndex)) {
-            event.preventDefault();
-            return;
-          }
-        }
-      }
-
-      if (event.key === "ArrowLeft") {
-        if (session.phase === "study") {
-          if (session.index > 0) {
-            event.preventDefault();
-            goPrevStudyItem();
-          }
-          return;
-        }
-        if (session.phase === "quiz") {
-          if (session.index > 0) {
-            event.preventDefault();
-            goPrevQuizItem();
-          }
-        }
-        return;
-      }
-
-      if (event.key === "ArrowRight") {
-        if (session.phase === "study") {
-          event.preventDefault();
-          goNextStudyItem();
-          return;
-        }
-        if (session.phase === "quiz" && canGoQuizNext()) {
-          event.preventDefault();
-          goNextQuizItem();
-        }
-        return;
-      }
-
-      if (event.code === "Space") {
-        event.preventDefault();
-        if (session.phase === "study") {
-          goNextStudyItem();
-          return;
-        }
-        if (session.phase === "quiz" && canGoQuizNext()) {
-          goNextQuizItem();
-        }
-      }
-    };
+    const onKeyDown = createSessionKeyboardHandler({
+      canGoQuizNext,
+      goHome,
+      goNextQuizItem,
+      goNextStudyItem,
+      goPrevQuizItem,
+      goPrevStudyItem,
+      isQuizChoiceVisible,
+      openQuizChoices,
+      selectQuizChoiceByIndex,
+      session,
+    });
 
     window.addEventListener("keydown", onKeyDown);
     return () => {
