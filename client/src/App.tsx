@@ -99,6 +99,7 @@ function StudyApp({
   const {
     backupAssets,
     canGoQuizNext,
+    commitStudyChanges,
     copyDebugLogs,
     copyDayWordsByPath,
     copyDay1Words,
@@ -155,7 +156,7 @@ function StudyApp({
       {!session && (
         <HomePage
           today={today}
-          assetActions={{ backupAssets, resetLocalCache, restoreAssets }}
+          assetActions={{ backupAssets, commitStudyChanges, resetLocalCache, restoreAssets }}
           bookSelection={{ availableBooks, onSwitchBook: switchBook, selectedBookId }}
           dashboard={{
             allDayRows,

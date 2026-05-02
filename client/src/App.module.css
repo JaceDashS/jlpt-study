@@ -156,6 +156,12 @@ p {
   box-shadow: none;
 }
 
+.action:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .progress-button {
   position: relative;
   overflow: hidden;
@@ -322,10 +328,12 @@ p {
 }
 
 .home-top-right {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(2, minmax(0, auto));
+  grid-auto-columns: minmax(128px, 1fr);
   justify-content: flex-end;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px 8px;
 }
 
 .home-count-inline {

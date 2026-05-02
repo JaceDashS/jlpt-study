@@ -11,6 +11,7 @@ import { createAssetBackupActions } from "./assetBackup.ts";
 import { createClipboardActions, type HomeDueDebugRow } from "./clipboardActions.ts";
 import { createQuizInputActions } from "./sessionInput.ts";
 import { createCurriculumActions } from "./curriculumActions.ts";
+import { createGitActions } from "./gitActions.ts";
 import { createSessionOpeners } from "./sessionOpeners.ts";
 import { useProblemEditorSync, useQuizChoiceOrders, useSessionKeyboardShortcuts } from "./sessionEffects.ts";
 import { useSessionSelection } from "./sessionSelectors.ts";
@@ -86,6 +87,11 @@ export function useStudyAppControllers({
   const assetBackupActions = createAssetBackupActions({
     apiFetch,
     refreshCurriculumFromSource: curriculumActions.refreshCurriculumFromSource,
+    showToast,
+  });
+
+  const gitActions = createGitActions({
+    apiFetch,
     showToast,
   });
 
@@ -188,6 +194,7 @@ export function useStudyAppControllers({
     ...clipboardActions,
     ...curriculumActions,
     ...dayClipboardActions,
+    ...gitActions,
     ...progressActions,
     ...quizInputActions,
     ...sessionController,

@@ -38,6 +38,7 @@ type StudyActions = {
 
 type AssetActions = {
   backupAssets: () => void;
+  commitStudyChanges: () => Promise<void>;
   resetLocalCache: () => void;
   restoreAssets: () => void;
 };
@@ -135,6 +136,7 @@ export function HomePage({
           handleDailyNewLearningCountChange={planControls.handleDailyNewLearningCountChange}
           homeDueDebug={dashboard.homeDueDebug}
           onSwitchBook={bookSelection.onSwitchBook}
+          commitStudyChanges={assetActions.commitStudyChanges}
           resetLocalCache={assetActions.resetLocalCache}
           restoreAssets={assetActions.restoreAssets}
           selectedBookId={bookSelection.selectedBookId}

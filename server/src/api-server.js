@@ -21,6 +21,7 @@ import {
 import {
   stripBom,
 } from "./asset-services.js";
+import { handleGitStudyCommitPush } from "./git-routes.js";
 
 const API_PREFIX = "/api";
 const REPO_ROOT = path.resolve(fileURLToPath(new URL("../..", import.meta.url)));
@@ -88,6 +89,15 @@ export function createApiRequestHandler() {
 
     if (pathname === "/api/asset-backup/import" && req.method === "POST") {
       await handleAssetBackupImport(res, { repoRoot: REPO_ROOT });
+      return;
+    }
+
+    if (pathname === "/api/git-study-commit-push") {
+      if (req.method !== "POST") {
+        sendJson(res, 405, { ok: false, error: "Method Not Allowed" });
+        return;
+      }
+      await handleGitStudyCommitPush(res, { repoRoot: REPO_ROOT });
       return;
     }
 

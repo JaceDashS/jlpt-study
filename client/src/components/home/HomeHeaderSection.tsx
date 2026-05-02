@@ -6,6 +6,7 @@ import type { HomeDueDebugRow } from "../../domain/clipboardActions.ts";
 export function HomeHeaderSection({
   availableBooks,
   backupAssets,
+  commitStudyChanges,
   copyDebugLogs,
   dailyNewLearningCount,
   debugLogs,
@@ -19,6 +20,7 @@ export function HomeHeaderSection({
 }: {
   availableBooks: AvailableBook[];
   backupAssets: () => void;
+  commitStudyChanges: () => Promise<void>;
   copyDebugLogs: () => void;
   dailyNewLearningCount: number;
   debugLogs: string[];
@@ -30,6 +32,18 @@ export function HomeHeaderSection({
   selectedBookId: string;
   today: string;
 }) {
+  const [isCommittingStudy, setIsCommittingStudy] = React.useState(false);
+
+  const handleCommitStudyChanges = async () => {
+    if (isCommittingStudy) return;
+    setIsCommittingStudy(true);
+    try {
+      await commitStudyChanges();
+    } finally {
+      setIsCommittingStudy(false);
+    }
+  };
+
   return (
     <>
       <div className={cx("home-top-bar")}>
@@ -49,6 +63,9 @@ export function HomeHeaderSection({
         <div className={cx("home-top-right")}>
           <button type="button" className={cx("action")} onClick={resetLocalCache}>
             캐시 초기화
+          </button>
+          <button type="button" className={cx("action")} onClick={handleCommitStudyChanges} disabled={isCommittingStudy}>
+            {isCommittingStudy ? "커밋/푸쉬 중..." : "study 커밋/푸쉬"}
           </button>
           <button type="button" className={cx("action")} onClick={backupAssets}>
             에셋 백업
