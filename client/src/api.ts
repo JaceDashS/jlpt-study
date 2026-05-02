@@ -43,10 +43,6 @@ export async function apiFetch(input: RequestInfo | URL, init?: RequestInit) {
     body: await readBodyForLog(request),
   };
 
-  writeLogGroup(`[jlpt api client] #${id} -> ${method} ${target}`, () => {
-    console.log("request", requestLog);
-  });
-
   try {
     const response = await fetch(request);
     const durationMs = Date.now() - startedAt;

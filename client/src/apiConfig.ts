@@ -37,7 +37,7 @@ export function attachApiAccessToken(request: Request) {
 }
 
 function deriveLanApiBaseUrl() {
-  if (typeof window === "undefined" || !readAccessToken()) {
+  if (typeof window === "undefined") {
     return "";
   }
 

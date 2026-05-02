@@ -76,6 +76,7 @@ function isPrivateIpv4(hostname) {
 export function isAuthorizedApiRequest(req, requestUrl) {
   const expectedToken = String(process.env.JLPT_ACCESS_TOKEN ?? "");
   if (!expectedToken) return true;
+  if (isTrustedInternalLanRequest(req)) return true;
 
   const actualToken = readApiAccessToken(req, requestUrl);
   if (!actualToken) return false;
@@ -83,6 +84,10 @@ export function isAuthorizedApiRequest(req, requestUrl) {
   const expected = Buffer.from(expectedToken);
   const actual = Buffer.from(actualToken);
   return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
+}
+
+function isTrustedInternalLanRequest(req) {
+  return isPrivateIpv4(readClientAddress(req));
 }
 
 function readApiAccessToken(req, requestUrl) {
@@ -128,13 +133,13 @@ export function logApiRequest(req, res, requestUrl) {
   let logged = false;
 
   res[API_LOG_CONTEXT] = context;
-  console.log(`[jlpt api] -> ${method} ${target} client=${client}`);
 
   function writeLog(event) {
     if (logged) return;
     logged = true;
     const durationMs = Date.now() - startedAt;
     const status = Number(res.statusCode) || 0;
+    if (shouldSkipApiLog({ method, status, event })) return;
     const fields = [
       `status=${status}`,
       `duration=${durationMs}ms`,
@@ -148,6 +153,10 @@ export function logApiRequest(req, res, requestUrl) {
 
   res.once("finish", () => writeLog(""));
   res.once("close", () => writeLog("closed"));
+}
+
+function shouldSkipApiLog({ method, status, event }) {
+  return method === "OPTIONS" && status < 400 && !event;
 }
 
 export function setApiLogDetail(res, detail) {

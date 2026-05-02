@@ -17,6 +17,7 @@ const AUTHORIZED_CLIENT_TTL_MS = 12 * 60 * 60 * 1000;
 const CLOUDFLARED_OPEN_TIMEOUT_MS = 45_000;
 const CLOUDFLARED_URL_PATTERN = /https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.trycloudflare\.com/i;
 const authorizedClients = new Map();
+const cloudflaredLogSignatures = new Set();
 let activeCloudflareTunnel = null;
 let cloudflareTunnelStartPromise = null;
 
@@ -50,8 +51,16 @@ export function mobileAccessPlugin() {
         const hasValidHeaderToken = isValidAccessToken(readHeaderToken(req));
         const hasValidCookieToken = isValidAccessToken(readCookieToken(req));
         const hasAuthorizedClient = isAuthorizedClient(req);
+        const hasTrustedInternalLanClient = isTrustedInternalLanRequest(req);
 
-        if (!hasValidQueryToken && !hasValidPathToken && !hasValidHeaderToken && !hasValidCookieToken && !hasAuthorizedClient) {
+        if (
+          !hasValidQueryToken &&
+          !hasValidPathToken &&
+          !hasValidHeaderToken &&
+          !hasValidCookieToken &&
+          !hasAuthorizedClient &&
+          !hasTrustedInternalLanClient
+        ) {
           rejectUnauthorizedHttp(res);
           return;
         }
@@ -70,7 +79,8 @@ export function mobileAccessPlugin() {
           isValidAccessToken(readPathToken(req)) ||
           isValidAccessToken(readHeaderToken(req)) ||
           isValidAccessToken(readCookieToken(req)) ||
-          isAuthorizedClient(req)
+          isAuthorizedClient(req) ||
+          isTrustedInternalLanRequest(req)
         ) {
           return;
         }
@@ -117,6 +127,10 @@ function cleanupAuthorizedClients() {
       authorizedClients.delete(address);
     }
   }
+}
+
+function isTrustedInternalLanRequest(req) {
+  return isPrivateIpv4(readClientAddress(req));
 }
 
 function readClientAddress(req) {
@@ -233,7 +247,7 @@ async function printMobileAccessInfo(server) {
   console.log("");
   console.log("[jlpt access] Mobile/network dev server is bound to 0.0.0.0");
   console.log(`[jlpt access] Token: ${ACCESS_TOKEN}`);
-  console.log("[jlpt access] Scan the INTERNAL_LAN QR when your phone is on the same Wi-Fi/LAN.");
+  console.log("[jlpt access] Scan the INTERNAL_LAN QR when your phone is on the same Wi-Fi/LAN. No token is required on LAN.");
   console.log("");
 
   printAccessTarget(readLanAccessTarget(port, apiPort));
@@ -293,10 +307,9 @@ function readLanAccessTarget(port, apiPort) {
     const host = formatUrlHost(manualHost);
     return {
       label: "INTERNAL_LAN",
-      description: "Use this when your phone is on the same Wi-Fi/LAN as this PC.",
-      url: addAccessParamsToUrl(`http://${host}:${port}/`, {
+      description: "Use this without a token when your phone is on the same Wi-Fi/LAN as this PC.",
+      url: addApiBaseParamToUrl(`http://${host}:${port}/`, {
         apiBaseUrl: `http://${host}:${apiPort}/api`,
-        token: ACCESS_TOKEN,
       }),
       note: "LAN host override: JLPT_LAN_HOST",
     };
@@ -309,10 +322,9 @@ function readLanAccessTarget(port, apiPort) {
 
   return {
     label: "INTERNAL_LAN",
-    description: "Use this when your phone is on the same Wi-Fi/LAN as this PC.",
-    url: addAccessParamsToUrl(`http://${formattedHost}:${port}/`, {
+    description: "Use this without a token when your phone is on the same Wi-Fi/LAN as this PC.",
+    url: addApiBaseParamToUrl(`http://${formattedHost}:${port}/`, {
       apiBaseUrl: `http://${formattedHost}:${apiPort}/api`,
-      token: ACCESS_TOKEN,
     }),
     note,
   };
@@ -528,8 +540,27 @@ function printCloudflaredLine(line) {
   const text = String(line ?? "").trim();
   if (!text) return;
   if (CLOUDFLARED_URL_PATTERN.test(text) || /requesting|created|registered|error|failed|err/i.test(text)) {
+    const signature = createCloudflaredLogSignature(text);
+    if (cloudflaredLogSignatures.has(signature)) return;
+    rememberCloudflaredLogSignature(signature);
     console.log(`[jlpt access] cloudflared: ${text}`);
   }
+}
+
+function createCloudflaredLogSignature(text) {
+  return String(text)
+    .replace(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\s+/, "")
+    .replace(/\bconnIndex=\d+\b/g, "connIndex=*")
+    .replace(/\bevent=\d+\b/g, "event=*")
+    .replace(/\bip=\S+/g, "ip=*");
+}
+
+function rememberCloudflaredLogSignature(signature) {
+  if (cloudflaredLogSignatures.size >= 200) {
+    const first = cloudflaredLogSignatures.values().next().value;
+    cloudflaredLogSignatures.delete(first);
+  }
+  cloudflaredLogSignatures.add(signature);
 }
 
 function readCloudflaredCommandCandidates() {
@@ -598,6 +629,14 @@ function normalizeUrl(rawUrl) {
 function addAccessParamsToUrl(baseUrl, { apiBaseUrl, token }) {
   const url = new URL(baseUrl);
   url.searchParams.set(ACCESS_TOKEN_PARAM, token);
+  if (apiBaseUrl) {
+    url.searchParams.set(API_BASE_PARAM, normalizeApiBaseUrl(apiBaseUrl));
+  }
+  return url.toString();
+}
+
+function addApiBaseParamToUrl(baseUrl, { apiBaseUrl }) {
+  const url = new URL(baseUrl);
   if (apiBaseUrl) {
     url.searchParams.set(API_BASE_PARAM, normalizeApiBaseUrl(apiBaseUrl));
   }
