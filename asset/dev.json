@@ -142,7 +142,7 @@
               },
               "lastResult": "FAIL",
               "memoDecomposition": "| 항목 | 한자 |\n|---|---|\n| 音読 | ワ |\n| 訓読 | はなす, はなし |\n| 뜻 | 말하다, 이야기 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 会話（かいわ）: 회화<br>* 電話（でんわ）: 전화 |\n| 구성(IDS) | ⿰言舌 |\n| 부수/부품 | 言 + 舌 |\n| 부품 역할 | 言: 말, 언어<br>舌: 혀, 발화 기관 |\n| 재귀 구조 | 話[말하다] → ⿰[구성] 言[말] + 舌[혀] |\n| 최종 최소 단위 | 言[말], 舌[혀] |",
-              "memoPersonal": "이건 테스트임",
+              "memoPersonal": "또다른 테스트",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
