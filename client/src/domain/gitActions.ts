@@ -7,8 +7,13 @@ type GitActionsOptions = {
   showToast: (message: string, type?: ToastType) => void;
 };
 
+export type StudyCommitPushResult =
+  | { status: "committed"; stagedFileCount: number }
+  | { status: "no-changes" }
+  | { status: "error"; message: string };
+
 export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
-  const commitStudyChanges = async () => {
+  const commitStudyChanges = async (): Promise<StudyCommitPushResult> => {
     showToast("study 커밋/푸쉬 시작...");
     try {
       const response = await apiFetch(apiUrl("git-study-commit-push"), {
@@ -23,19 +28,23 @@ export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
 
       if (!response.ok) {
         console.error("Failed to commit and push study changes:", response.status, payload);
-        showToast(String(payload?.error ?? "study 커밋/푸쉬 실패"), "error");
-        return;
+        const message = String(payload?.error ?? "study 커밋/푸쉬 실패");
+        showToast(message, "error");
+        return { status: "error", message };
       }
 
       if (!payload?.committed) {
-        showToast("커밋할 변경사항이 없습니다.");
-        return;
+        showToast("커밋할 변경사항이 없습니다. push는 확인했습니다.");
+        return { status: "no-changes" };
       }
 
-      showToast(`study 커밋/푸쉬 완료 (${Number(payload?.stagedFileCount ?? 0)}개 파일)`);
+      const stagedFileCount = Number(payload?.stagedFileCount ?? 0);
+      showToast(`study 커밋/푸쉬 완료 (${stagedFileCount}개 파일)`);
+      return { status: "committed", stagedFileCount };
     } catch (error) {
       console.error("Failed to commit and push study changes:", error);
       showToast("study 커밋/푸쉬 실패", "error");
+      return { status: "error", message: String(error instanceof Error ? error.message : error) };
     }
   };
 

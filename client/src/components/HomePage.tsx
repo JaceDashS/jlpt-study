@@ -4,6 +4,7 @@ import { cx } from "../styles.ts";
 import type { AvailableBook } from "../domain/curriculumFiles.ts";
 import type { HomeDueDebugRow } from "../domain/clipboardActions.ts";
 import type { LearningPlanRow, ReviewDueRow } from "../domain/homeDashboard.ts";
+import type { StudyCommitPushResult } from "../domain/gitActions.ts";
 import type { LearningPath } from "../domain/studyTypes.ts";
 import {
   DaySelectionSection,
@@ -38,7 +39,7 @@ type StudyActions = {
 
 type AssetActions = {
   backupAssets: () => void;
-  commitStudyChanges: () => Promise<void>;
+  commitStudyChanges: () => Promise<StudyCommitPushResult>;
   resetLocalCache: () => void;
   restoreAssets: () => void;
 };

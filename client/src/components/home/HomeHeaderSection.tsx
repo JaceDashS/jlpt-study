@@ -2,6 +2,7 @@ import React from "react";
 import { cx } from "../../styles.ts";
 import type { AvailableBook } from "../../domain/curriculumFiles.ts";
 import type { HomeDueDebugRow } from "../../domain/clipboardActions.ts";
+import type { StudyCommitPushResult } from "../../domain/gitActions.ts";
 
 export function HomeHeaderSection({
   availableBooks,
@@ -20,7 +21,7 @@ export function HomeHeaderSection({
 }: {
   availableBooks: AvailableBook[];
   backupAssets: () => void;
-  commitStudyChanges: () => Promise<void>;
+  commitStudyChanges: () => Promise<StudyCommitPushResult>;
   copyDebugLogs: () => void;
   dailyNewLearningCount: number;
   debugLogs: string[];
@@ -33,12 +34,41 @@ export function HomeHeaderSection({
   today: string;
 }) {
   const [isCommittingStudy, setIsCommittingStudy] = React.useState(false);
+  const [studyCommitLabel, setStudyCommitLabel] = React.useState("study 커밋/푸쉬");
+  const labelResetTimerRef = React.useRef<number | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (labelResetTimerRef.current !== null) {
+        window.clearTimeout(labelResetTimerRef.current);
+      }
+    };
+  }, []);
+
+  const queueStudyCommitLabelReset = () => {
+    if (labelResetTimerRef.current !== null) {
+      window.clearTimeout(labelResetTimerRef.current);
+    }
+    labelResetTimerRef.current = window.setTimeout(() => {
+      setStudyCommitLabel("study 커밋/푸쉬");
+      labelResetTimerRef.current = null;
+    }, 5000);
+  };
 
   const handleCommitStudyChanges = async () => {
     if (isCommittingStudy) return;
     setIsCommittingStudy(true);
+    setStudyCommitLabel("커밋/푸쉬 중...");
     try {
-      await commitStudyChanges();
+      const result = await commitStudyChanges();
+      if (result.status === "committed") {
+        setStudyCommitLabel(`완료 (${result.stagedFileCount}개 파일)`);
+      } else if (result.status === "no-changes") {
+        setStudyCommitLabel("변경사항 없음");
+      } else {
+        setStudyCommitLabel("실패");
+      }
+      queueStudyCommitLabelReset();
     } finally {
       setIsCommittingStudy(false);
     }
@@ -65,7 +95,7 @@ export function HomeHeaderSection({
             캐시 초기화
           </button>
           <button type="button" className={cx("action")} onClick={handleCommitStudyChanges} disabled={isCommittingStudy}>
-            {isCommittingStudy ? "커밋/푸쉬 중..." : "study 커밋/푸쉬"}
+            {studyCommitLabel}
           </button>
           <button type="button" className={cx("action")} onClick={backupAssets}>
             에셋 백업

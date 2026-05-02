@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 import { sendJson, setApiLogDetail } from "./api-http.js";
 
 const COMMIT_MESSAGE = "study";
+const STUDY_COMMIT_PATHSPEC = "asset";
 const GIT_EXEC_BUFFER_LIMIT = 1_000_000;
 const GIT_RESPONSE_OUTPUT_LIMIT = 20_000;
 
@@ -33,13 +34,13 @@ export async function handleGitStudyCommitPush(res, { repoRoot }) {
 }
 
 async function runStudyCommitPush(repoRoot) {
-  await runGit(repoRoot, ["add", "-A"]);
+  await runGit(repoRoot, ["add", "-A", "--", STUDY_COMMIT_PATHSPEC]);
 
-  const staged = await runGit(repoRoot, ["diff", "--cached", "--name-only"]);
+  const staged = await runGit(repoRoot, ["diff", "--cached", "--name-only", "--", STUDY_COMMIT_PATHSPEC]);
   const stagedFiles = splitOutputLines(staged.stdout);
   let commit = null;
   if (stagedFiles.length > 0) {
-    commit = await runGit(repoRoot, ["commit", "-m", COMMIT_MESSAGE]);
+    commit = await runGit(repoRoot, ["commit", "-m", COMMIT_MESSAGE, "--", STUDY_COMMIT_PATHSPEC]);
   }
 
   const pushTarget = await resolvePushTarget(repoRoot);
