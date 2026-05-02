@@ -9,9 +9,7 @@ type GitActionsOptions = {
 
 export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
   const commitStudyChanges = async () => {
-    const ok = window.confirm('현재 변경사항 전체를 git commit -m "study" 후 push할까요?');
-    if (!ok) return;
-
+    showToast("study 커밋/푸쉬 시작...");
     try {
       const response = await apiFetch(apiUrl("git-study-commit-push"), {
         method: "POST",
