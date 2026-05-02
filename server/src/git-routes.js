@@ -37,28 +37,78 @@ async function runStudyCommitPush(repoRoot) {
 
   const staged = await runGit(repoRoot, ["diff", "--cached", "--name-only"]);
   const stagedFiles = splitOutputLines(staged.stdout);
-  if (stagedFiles.length === 0) {
-    return {
-      committed: false,
-      pushed: false,
-      message: "No changes to commit",
-      stagedFileCount: 0,
-      stagedFiles: [],
-    };
+  let commit = null;
+  if (stagedFiles.length > 0) {
+    commit = await runGit(repoRoot, ["commit", "-m", COMMIT_MESSAGE]);
   }
 
-  const commit = await runGit(repoRoot, ["commit", "-m", COMMIT_MESSAGE]);
-  const push = await runGit(repoRoot, ["push"]);
+  const pushTarget = await resolvePushTarget(repoRoot);
+  const push = await runGit(repoRoot, pushTarget.args);
 
   return {
-    committed: true,
+    committed: Boolean(commit),
     pushed: true,
     commitMessage: COMMIT_MESSAGE,
     stagedFileCount: stagedFiles.length,
     stagedFiles,
-    commitOutput: formatGitOutput(commit),
+    pushTarget: pushTarget.label,
+    commitOutput: commit ? formatGitOutput(commit) : "",
     pushOutput: formatGitOutput(push),
   };
+}
+
+async function resolvePushTarget(repoRoot) {
+  const currentBranch = (await runGit(repoRoot, ["branch", "--show-current"])).stdout.trim();
+  if (currentBranch) {
+    const upstream = await tryGit(repoRoot, ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"]);
+    if (upstream?.stdout.trim()) {
+      return { args: ["push"], label: upstream.stdout.trim() };
+    }
+    return { args: ["push", "origin", `HEAD:${currentBranch}`], label: `origin/${currentBranch}` };
+  }
+
+  const remoteBranch = await findNearestMergedRemoteBranch(repoRoot);
+  if (!remoteBranch) {
+    throw new Error("Cannot push from detached HEAD because no merged remote branch was found");
+  }
+
+  return {
+    args: ["push", remoteBranch.remote, `HEAD:${remoteBranch.branch}`],
+    label: `${remoteBranch.remote}/${remoteBranch.branch}`,
+  };
+}
+
+async function findNearestMergedRemoteBranch(repoRoot) {
+  const refs = splitOutputLines((await runGit(repoRoot, ["for-each-ref", "--format=%(refname:short)", "refs/remotes"])).stdout)
+    .filter((ref) => !ref.endsWith("/HEAD"));
+  const candidates = [];
+
+  for (const ref of refs) {
+    const isAncestor = await tryGit(repoRoot, ["merge-base", "--is-ancestor", ref, "HEAD"]);
+    if (!isAncestor) continue;
+
+    const countResult = await runGit(repoRoot, ["rev-list", "--count", `${ref}..HEAD`]);
+    const count = Number(countResult.stdout.trim());
+    const slash = ref.indexOf("/");
+    if (slash < 0 || !Number.isFinite(count)) continue;
+    candidates.push({
+      branch: ref.slice(slash + 1),
+      count,
+      ref,
+      remote: ref.slice(0, slash),
+    });
+  }
+
+  candidates.sort((left, right) => left.count - right.count || left.ref.localeCompare(right.ref));
+  return candidates[0] ?? null;
+}
+
+async function tryGit(cwd, args) {
+  try {
+    return await runGit(cwd, args);
+  } catch {
+    return null;
+  }
 }
 
 function runGit(cwd, args) {
