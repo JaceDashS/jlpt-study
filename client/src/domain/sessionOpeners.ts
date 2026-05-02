@@ -1,10 +1,12 @@
+import type { LearningPath, SessionView, StudyDay, StudyItem, StudyUnit } from "./studyTypes.ts";
+
 type SessionOpenersOptions = {
-  getPathDay: (curriculum: any, path: any) => any;
-  isQuizTarget: (item: any) => boolean;
-  markDayAttemptNow: (path: any) => void;
-  setSession: (session: any) => void;
+  getPathDay: (curriculum: StudyUnit[], path: LearningPath) => StudyDay | null;
+  isQuizTarget: (item: StudyItem) => boolean;
+  markDayAttemptNow: (path: LearningPath) => void;
+  setSession: (session: SessionView) => void;
   shuffleArray: <T>(items: T[]) => T[];
-  stateCurriculum: any;
+  stateCurriculum: StudyUnit[];
 };
 
 export function createSessionOpeners({
@@ -15,7 +17,7 @@ export function createSessionOpeners({
   shuffleArray,
   stateCurriculum,
 }: SessionOpenersOptions) {
-  const openLearningDay = (path) => {
+  const openLearningDay = (path: LearningPath) => {
     const day = getPathDay(stateCurriculum, path);
     const shuffledItemIds = day ? shuffleArray(day.items.filter(isQuizTarget).map((item) => item.id)) : [];
 
@@ -37,7 +39,7 @@ export function createSessionOpeners({
     });
   };
 
-  const openReviewDay = (path, dueItemIds) => {
+  const openReviewDay = (path: LearningPath, dueItemIds: string[]) => {
     const shuffledDueIds = shuffleArray(dueItemIds);
     markDayAttemptNow(path);
 

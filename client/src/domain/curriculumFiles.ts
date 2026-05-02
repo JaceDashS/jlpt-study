@@ -3,29 +3,20 @@ import { createInitialState, getAvailableBooks } from "../data/initialState.ts";
 import { loadState } from "../data/storage.ts";
 import { mergeCurriculumFromSource } from "./curriculumSource.ts";
 import {
+  DEFAULT_DAY_LIST_DRAWER_WIDTH,
+  DEFAULT_STUDY_DRAWER_WIDTH,
+  normalizeDayListDrawerWidth,
+  normalizeStudyDrawerWidth,
+} from "./drawerPreferences.ts";
+import {
   isStateCompatible,
-  isValidLearningPath,
   normalizeDailyNewLearningCount,
   sanitizeCurriculum,
 } from "./studyHelpers.ts";
+import { isValidLearningPath } from "./learningPath.ts";
 
 export type AssetFileMap = Record<string, unknown>;
 export type AvailableBook = { id: string; title: string };
-
-const DEFAULT_STUDY_DRAWER_WIDTH = 520;
-const DEFAULT_DAY_LIST_DRAWER_WIDTH = 420;
-
-function normalizeStudyDrawerWidth(value) {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return DEFAULT_STUDY_DRAWER_WIDTH;
-  return Math.max(360, Math.min(980, Math.round(parsed)));
-}
-
-function normalizeDayListDrawerWidth(value) {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return DEFAULT_DAY_LIST_DRAWER_WIDTH;
-  return Math.max(280, Math.min(860, Math.round(parsed)));
-}
 
 export async function loadCurriculumFiles() {
   const response = await apiFetch(apiUrl("reload-curriculum", { t: Date.now() }), {

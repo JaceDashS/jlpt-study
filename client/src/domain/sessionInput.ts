@@ -1,10 +1,13 @@
+import type React from "react";
+import type { QuizResult, SessionView, StudyItem, StudyProblem } from "./studyTypes.ts";
+
 type QuizInputActionsOptions = {
-  currentItem: any;
+  currentItem: StudyItem | null;
   goNextQuizItem: () => void;
-  normalizeProblem: (problem: unknown) => any;
-  session: any;
-  setSession: (updater: (prev: any) => any) => void;
-  updateLastResultNow: (itemId: string, result: "PASS" | "FAIL") => void;
+  normalizeProblem: (problem: unknown) => StudyProblem | null;
+  session: SessionView | null;
+  setSession: React.Dispatch<React.SetStateAction<SessionView | null>>;
+  updateLastResultNow: (itemId: string, result: Extract<QuizResult, "PASS" | "FAIL">) => void;
 };
 
 export function createQuizInputActions({
@@ -15,7 +18,7 @@ export function createQuizInputActions({
   setSession,
   updateLastResultNow,
 }: QuizInputActionsOptions) {
-  const selectQuizChoice = (choice) => {
+  const selectQuizChoice = (choice: string) => {
     if (!session || session.phase !== "quiz" || !currentItem) return false;
     const problem = normalizeProblem(currentItem.problem);
     if (!problem || problem.choices.length === 0) return false;
@@ -32,7 +35,7 @@ export function createQuizInputActions({
     const isPass = problem.answer ? choice === problem.answer : true;
     const result = isPass ? "PASS" : "FAIL";
     updateLastResultNow(currentItem.id, result);
-    setSession((prev) => ({
+    setSession((prev) => prev && ({
       ...prev,
       graded: {
         ...(prev.graded ?? {}),
@@ -50,7 +53,7 @@ export function createQuizInputActions({
     return true;
   };
 
-  const selectQuizChoiceByIndex = (choiceIndex) => {
+  const selectQuizChoiceByIndex = (choiceIndex: number) => {
     if (!session || session.phase !== "quiz" || !currentItem || choiceIndex < 0) return false;
     const problem = normalizeProblem(currentItem.problem);
     if (!problem || problem.choices.length === 0) return false;
@@ -68,7 +71,7 @@ export function createQuizInputActions({
     if (!session || session.phase !== "quiz" || !currentItem) return false;
     const problem = normalizeProblem(currentItem.problem);
     if (!problem || problem.choices.length === 0) return false;
-    setSession((prev) => ({
+    setSession((prev) => prev && ({
       ...prev,
       showChoices: {
         ...(prev.showChoices ?? {}),
@@ -91,10 +94,10 @@ type SessionKeyboardHandlerOptions = {
   isQuizChoiceVisible: () => boolean;
   openQuizChoices: () => boolean;
   selectQuizChoiceByIndex: (choiceIndex: number) => boolean;
-  session: any;
+  session: SessionView;
 };
 
-function isTextInputTarget(target) {
+function isTextInputTarget(target: EventTarget | null) {
   if (!target || !(target instanceof HTMLElement)) return false;
   const tag = target.tagName;
   if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return true;
@@ -113,7 +116,7 @@ export function createSessionKeyboardHandler({
   selectQuizChoiceByIndex,
   session,
 }: SessionKeyboardHandlerOptions) {
-  return (event) => {
+  return (event: KeyboardEvent) => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     if (isTextInputTarget(event.target)) return;
 

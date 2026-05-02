@@ -1,26 +1,8 @@
 import type React from "react";
+import type { QuizResult, SessionMode, SessionPhase, SessionView as DomainSessionView } from "../../domain/studyTypes.ts";
 
-export type SessionPhase = "study" | "quiz" | "done";
-export type SessionMode = "learning" | "review";
-export type QuizResult = "PASS" | "FAIL" | "NEUTRAL";
-
-export type SessionView = {
-  allPass?: boolean | null;
-  choiceOrders?: Record<string, string[]>;
-  dayId: string;
-  graded?: Record<string, QuizResult>;
-  index: number;
-  itemIds?: string[];
-  mode: SessionMode;
-  passCount?: number;
-  phase: SessionPhase;
-  postQuizStudy?: boolean;
-  reviewedCount?: number;
-  selectedChoices?: Record<string, string>;
-  showChoices?: Record<string, boolean>;
-  showMemoPersonal?: Record<string, boolean>;
-  unitId: string;
-};
+export type { QuizResult, SessionMode, SessionPhase };
+export type SessionView = DomainSessionView;
 
 export type SessionItemView = {
   id: string;

@@ -2,18 +2,20 @@ import { apiUrl } from "../api.ts";
 
 type ToastType = "success" | "error";
 
+export type HomeDueDebugRow = {
+  dayLevelDue: boolean;
+  dayTitle: string;
+  itemDueCount: number;
+  nextReviewDate: unknown;
+  stage: unknown;
+  totalItems: number;
+  unitTitle: string;
+};
+
 type ClipboardActionsOptions = {
   apiFetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
   debugLogs: string[];
-  homeDueDebug: Array<{
-    dayLevelDue: boolean;
-    dayTitle: string;
-    itemDueCount: number;
-    nextReviewDate: unknown;
-    stage: unknown;
-    totalItems: number;
-    unitTitle: string;
-  }>;
+  homeDueDebug: HomeDueDebugRow[];
   showToast: (message: string, type?: ToastType) => void;
 };
 

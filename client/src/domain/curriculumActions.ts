@@ -3,6 +3,7 @@ import { clearState, saveState } from "../data/storage.ts";
 import { mergeCurriculumFromSource } from "./curriculumSource.ts";
 import { buildAppState } from "./curriculumFiles.ts";
 import { sanitizeCurriculum } from "./studyHelpers.ts";
+import type { SetSession, SetStudyState, StudyState } from "./studyTypes.ts";
 
 const SELECTED_BOOK_STORAGE_KEY = "jlpt-selected-book";
 
@@ -10,11 +11,11 @@ type CurriculumActionsOptions = {
   apiFetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
   selectedBookId: string;
   setSelectedBookId: (bookId: string) => void;
-  setSession: (session: unknown) => void;
+  setSession: SetSession;
   setSourceFiles: (files: Record<string, unknown>) => void;
-  setState: (updater: any) => void;
+  setState: SetStudyState;
   sourceFiles: Record<string, unknown>;
-  state: any;
+  state: StudyState;
 };
 
 export function createCurriculumActions({

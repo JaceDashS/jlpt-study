@@ -1,4 +1,20 @@
-﻿export function createProgressActions({
+import type { LearningPath, QuizResult, SessionView, SetStudyState, StudyDay, StudyItem, StudyUnit } from "./studyTypes.ts";
+
+type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<void>;
+type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<void>;
+
+type ProgressActionsOptions = {
+  session: SessionView | null;
+  stateCurriculum: StudyUnit[];
+  today: string;
+  setState: SetStudyState;
+  getPathDay: (curriculum: StudyUnit[], path: LearningPath) => StudyDay | null;
+  replaceDay: (curriculum: StudyUnit[], targetPath: LearningPath, nextDay: StudyDay) => StudyUnit[];
+  persistSourceField: PersistSourceField;
+  persistSourceDayField: PersistSourceDayField;
+};
+
+export function createProgressActions({
   session,
   stateCurriculum,
   today,
@@ -7,8 +23,8 @@
   replaceDay,
   persistSourceField,
   persistSourceDayField,
-}) {
-  const markDayAttemptNow = (path) => {
+}: ProgressActionsOptions) {
+  const markDayAttemptNow = (path: LearningPath) => {
     const day = getPathDay(stateCurriculum, path);
     if (!day || day.lastAttemptDate === today) return;
 
@@ -22,10 +38,10 @@
       curriculum: replaceDay(prev.curriculum, path, nextDay),
     }));
 
-    persistSourceDayField(day, "lastAttemptDate", today);
+    void persistSourceDayField(day, "lastAttemptDate", today);
   };
 
-  const updateMemo = (itemId, field, value) => {
+  const updateMemo = (itemId: string, field: "memoPersonal" | "memoDecomposition", value: string) => {
     if (!session) return;
     const path = {
       unitId: session.unitId,
@@ -47,10 +63,10 @@
       ...prev,
       curriculum: replaceDay(prev.curriculum, path, nextDay),
     }));
-    persistSourceField(targetItem, field, value);
+    void persistSourceField(targetItem, field, value);
   };
 
-  const updateProblem = (itemId, value) => {
+  const updateProblem = (itemId: string, value: unknown) => {
     if (!session) return;
     const path = {
       unitId: session.unitId,
@@ -72,10 +88,10 @@
       ...prev,
       curriculum: replaceDay(prev.curriculum, path, nextDay),
     }));
-    persistSourceField(targetItem, "problem", value);
+    void persistSourceField(targetItem, "problem", value);
   };
 
-  const updateLastResultNow = (itemId, result) => {
+  const updateLastResultNow = (itemId: string, result: Extract<QuizResult, "PASS" | "FAIL">) => {
     if (!session) return;
     const path = {
       unitId: session.unitId,
@@ -105,8 +121,8 @@
       curriculum: replaceDay(prev.curriculum, path, nextDay),
     }));
 
-    persistSourceField(targetItem, "lastResult", result);
-    persistSourceDayField(day, "lastAttemptDate", today);
+    void persistSourceField(targetItem, "lastResult", result);
+    void persistSourceDayField(day, "lastAttemptDate", today);
   };
 
   return {

@@ -1,4 +1,47 @@
-﻿export function createSessionController({
+import type React from "react";
+import type { ProblemDraft, ProblemEditorState } from "../components/session/sessionViewTypes.ts";
+import type {
+  LearningPath,
+  QuizResult,
+  SessionView,
+  SetSession,
+  SetStudyState,
+  StudyDay,
+  StudyItem,
+  StudyProblem,
+  StudyUnit,
+} from "./studyTypes.ts";
+
+type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<void>;
+type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<void>;
+type DayResult = { day: StudyDay; allPass?: boolean };
+type ProblemPayload = { error: string; problem: unknown };
+
+type SessionControllerOptions = {
+  session: SessionView | null;
+  sessionItems: StudyItem[];
+  currentItem: StudyItem | null;
+  problemEditor: ProblemEditorState;
+  setProblemEditor: React.Dispatch<React.SetStateAction<ProblemEditorState>>;
+  setSession: SetSession;
+  setState: SetStudyState;
+  stateCurriculum: StudyUnit[];
+  today: string;
+  markDayAttemptNow: (path: LearningPath) => void;
+  normalizeProblem: (problem: unknown) => StudyProblem | null;
+  createProblemDraft: (problem: unknown) => ProblemDraft;
+  buildProblemPayload: (draft: ProblemDraft, previousProblem: unknown) => ProblemPayload;
+  updateProblem: (itemId: string, value: unknown) => void;
+  getPathDay: (curriculum: StudyUnit[], path: LearningPath) => StudyDay | null;
+  replaceDay: (curriculum: StudyUnit[], targetPath: LearningPath, nextDay: StudyDay) => StudyUnit[];
+  applyReviewResultForDay: (day: StudyDay, today: string, gradedMap: Record<string, QuizResult>) => DayResult;
+  applyQuizResultForDay: (day: StudyDay, today: string, gradedMap: Record<string, QuizResult>) => DayResult;
+  persistSourceField: PersistSourceField;
+  persistSourceDayField: PersistSourceDayField;
+  goHome: () => void;
+};
+
+export function createSessionController({
   session,
   sessionItems,
   currentItem,
@@ -20,7 +63,7 @@
   persistSourceField,
   persistSourceDayField,
   goHome,
-}) {
+}: SessionControllerOptions) {
   const canFinalizeQuiz = () => {
     if (!session || session.phase !== "quiz") return false;
     return sessionItems.every((item) => {
@@ -37,73 +80,32 @@
     return canFinalizeQuiz();
   };
 
-  const finalizeQuiz = (gradedMap) => {
-    if (!session || !canFinalizeQuiz()) return;
+  const persistDaySchedule = (sourceDay: StudyDay, nextDay: StudyDay) => {
+    void persistSourceDayField(sourceDay, "stage", nextDay.stage);
+    void persistSourceDayField(sourceDay, "stageCompleteDate", nextDay.stageCompleteDate ?? null);
+    void persistSourceDayField(sourceDay, "nextReviewDate", nextDay.nextReviewDate);
+    void persistSourceDayField(sourceDay, "lastAttemptDate", nextDay.lastAttemptDate);
+  };
 
-    const path = {
-      unitId: session.unitId,
-      dayId: session.dayId,
-    };
+  const resetPersistedResults = (items: StudyItem[]) => {
+    items.forEach((item) => {
+      void persistSourceField(item, "lastResult", "NEUTRAL");
+    });
+  };
 
-    const day = getPathDay(stateCurriculum, path);
-    if (!day) return;
-
-    const passCount = Object.values(gradedMap).filter((result) => result === "PASS").length;
-    const reviewedCount = Object.keys(gradedMap).length;
-    const failedItemIds = sessionItems
-      .filter((item) => gradedMap?.[item.id] === "FAIL")
-      .map((item) => item.id);
-
-    if (session.mode === "review") {
-      const { day: nextDay } = applyReviewResultForDay(day, today, gradedMap);
-      const stageRaised = Number(nextDay?.stage ?? 1) > Number(day?.stage ?? 1);
-
-      setState((prev) => ({
-        ...prev,
-        curriculum: replaceDay(prev.curriculum, path, nextDay),
-      }));
-
-      setSession((prev) => {
-        if (failedItemIds.length > 0) {
-          return {
-            ...prev,
-            phase: "study",
-            index: 0,
-            itemIds: failedItemIds,
-            passCount,
-            reviewedCount,
-            postQuizStudy: true,
-          };
-        }
-        return {
-          ...prev,
-          phase: "done",
-          passCount,
-          reviewedCount,
-          postQuizStudy: false,
-        };
-      });
-      persistSourceDayField(day, "stage", nextDay.stage);
-      persistSourceDayField(day, "stageCompleteDate", nextDay.stageCompleteDate ?? null);
-      persistSourceDayField(day, "nextReviewDate", nextDay.nextReviewDate);
-      persistSourceDayField(day, "lastAttemptDate", nextDay.lastAttemptDate);
-      if (stageRaised) {
-        nextDay.items.forEach((item) => {
-          persistSourceField(item, "lastResult", "NEUTRAL");
-        });
-      }
-      return;
-    }
-
-    const { day: nextDay, allPass } = applyQuizResultForDay(day, today, gradedMap);
-    const stageRaised = Number(nextDay?.stage ?? 1) > Number(day?.stage ?? 1);
-
-    setState((prev) => ({
-      ...prev,
-      curriculum: replaceDay(prev.curriculum, path, nextDay),
-    }));
-
+  const finishSession = ({
+    allPass,
+    failedItemIds,
+    passCount,
+    reviewedCount,
+  }: {
+    allPass?: boolean;
+    failedItemIds: string[];
+    passCount: number;
+    reviewedCount: number;
+  }) => {
     setSession((prev) => {
+      if (!prev) return prev;
       if (failedItemIds.length > 0) {
         return {
           ...prev,
@@ -125,20 +127,52 @@
         postQuizStudy: false,
       };
     });
-    persistSourceDayField(day, "stage", nextDay.stage);
-    persistSourceDayField(day, "stageCompleteDate", nextDay.stageCompleteDate ?? null);
-    persistSourceDayField(day, "nextReviewDate", nextDay.nextReviewDate);
-    persistSourceDayField(day, "lastAttemptDate", nextDay.lastAttemptDate);
+  };
+
+  const finalizeQuiz = (gradedMap: Record<string, QuizResult> = {}) => {
+    if (!session || !canFinalizeQuiz()) return;
+
+    const path = {
+      unitId: session.unitId,
+      dayId: session.dayId,
+    };
+
+    const day = getPathDay(stateCurriculum, path);
+    if (!day) return;
+
+    const passCount = Object.values(gradedMap).filter((result) => result === "PASS").length;
+    const reviewedCount = Object.keys(gradedMap).length;
+    const failedItemIds = sessionItems
+      .filter((item) => gradedMap?.[item.id] === "FAIL")
+      .map((item) => item.id);
+
+    const { day: nextDay, allPass } =
+      session.mode === "review"
+        ? applyReviewResultForDay(day, today, gradedMap)
+        : applyQuizResultForDay(day, today, gradedMap);
+    const stageRaised = Number(nextDay?.stage ?? 1) > Number(day?.stage ?? 1);
+
+    setState((prev) => ({
+      ...prev,
+      curriculum: replaceDay(prev.curriculum, path, nextDay),
+    }));
+
+    finishSession({
+      allPass,
+      failedItemIds,
+      passCount,
+      reviewedCount,
+    });
+
+    persistDaySchedule(day, nextDay);
     if (stageRaised) {
-      nextDay.items.forEach((item) => {
-        persistSourceField(item, "lastResult", "NEUTRAL");
-      });
+      resetPersistedResults(nextDay.items);
     }
   };
 
   const goPrevStudyItem = () => {
     if (!session || session.phase !== "study") return;
-    setSession((prev) => ({
+    setSession((prev) => prev && ({
       ...prev,
       index: Math.max(0, prev.index - 1),
     }));
@@ -161,7 +195,7 @@
         dayId: session.dayId,
       });
     }
-    setSession((prev) => ({
+    setSession((prev) => prev && ({
       ...prev,
       phase: isLast ? "quiz" : "study",
       index: isLast ? 0 : prev.index + 1,
@@ -170,7 +204,7 @@
 
   const goPrevQuizItem = () => {
     if (!session || session.phase !== "quiz") return;
-    setSession((prev) => ({
+    setSession((prev) => prev && ({
       ...prev,
       index: Math.max(0, prev.index - 1),
     }));
@@ -180,16 +214,16 @@
     if (!session || session.phase !== "quiz" || !canGoQuizNext()) return;
     const isLast = session.index === sessionItems.length - 1;
     if (isLast) {
-      finalizeQuiz(session.graded);
+      finalizeQuiz(session.graded ?? {});
       return;
     }
-    setSession((prev) => ({
+    setSession((prev) => prev && ({
       ...prev,
       index: prev.index + 1,
     }));
   };
 
-  const openProblemEditor = (problem) => {
+  const openProblemEditor = (problem: unknown) => {
     setProblemEditor({
       open: true,
       draft: createProblemDraft(problem),

@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import {
-  areLearningPathListsEqual,
   buildDailyLearningPlanPaths,
-  isValidLearningPath,
   normalizeDailyNewLearningCount,
 } from "./studyHelpers.ts";
+import { areLearningPathListsEqual, isValidLearningPath } from "./learningPath.ts";
 
 export function updateDailyLearningCount({ event, setState, today }) {
   const nextCount = normalizeDailyNewLearningCount(event.target.value);
