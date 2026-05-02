@@ -2,6 +2,7 @@
 import { normalizeProblem } from "../../domain/problem.ts";
 import { getExpressionStrict } from "../../domain/expression.ts";
 import { cx } from "../../styles.ts";
+import type { SessionItemView, SessionView, SetSession } from "./sessionViewTypes.ts";
 
 export function QuizPane({
   session,
@@ -16,6 +17,19 @@ export function QuizPane({
   selectQuizChoice,
   openProblemEditor,
   renderSentenceWithTarget,
+}: {
+  canGoQuizNext: () => boolean;
+  copyDisplayId: (id: string) => void;
+  currentItem: SessionItemView | null;
+  getDisplayItemId: (item: SessionItemView) => string;
+  goNextQuizItem: () => void;
+  goPrevQuizItem: () => void;
+  openProblemEditor: (problem: unknown) => void;
+  renderSentenceWithTarget: (sentence: string, target: string) => React.ReactNode;
+  selectQuizChoice: (choice: string) => void;
+  session: SessionView;
+  sessionItems: SessionItemView[];
+  setSession: SetSession;
 }) {
   if (!currentItem) return null;
   const displayWord = getExpressionStrict(currentItem, "QuizPane.currentItem");

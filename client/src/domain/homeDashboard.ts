@@ -1,12 +1,15 @@
+import { useMemo } from "react";
 import { isDueOnOrBefore } from "./date.ts";
 import {
   buildDailyLearningPlanPaths,
   diffDays,
+  getAllDayPaths,
   getContinueLearningPath,
   getDayLastAttemptDate,
   getDayLastCompletedDate,
   getDayMissingDecompositionCount,
   getDayNextReviewDate,
+  getDayPassRatio,
   getDayProgress,
   getDayStage,
   getDayStageCompleteDate,
@@ -220,4 +223,57 @@ export function buildDebugLogs({
   });
 
   return lines;
+}
+
+export function buildAllDayRows(curriculum) {
+  return getAllDayPaths(curriculum).map((path) => {
+    const unit = curriculum.find((item) => item.id === path.unitId);
+    const day = unit?.days.find((item) => item.id === path.dayId);
+    return {
+      path,
+      dayTitle: path.dayTitle,
+      passRatio: day ? getDayPassRatio(day) : 0,
+      failCount: day ? day.items.filter((item) => isQuizTarget(item) && item.lastResult === "FAIL").length : 0,
+    };
+  });
+}
+
+export function useHomeDashboardData({ dailyNewLearningCount, planRange, state, today }) {
+  const reviewDue = useMemo(() => buildReviewDue(state.curriculum, today), [state.curriculum, today]);
+  const homeDueDebug = useMemo(() => buildHomeDueDebug(state.curriculum, today), [state.curriculum, today]);
+  const overallMeta = useMemo(() => buildOverallMeta(state.curriculum, state.totalDay), [state.curriculum, state.totalDay]);
+  const dateRangeMeta = useMemo(() => buildDateRangeMeta(planRange, today), [planRange, today]);
+  const learningPlanRows = useMemo(
+    () => buildLearningPlanRows(state.curriculum, state.learningPlan, dailyNewLearningCount, today),
+    [state.curriculum, state.learningPlan, dailyNewLearningCount, today],
+  );
+  const pendingLearningRows = useMemo(
+    () => learningPlanRows.filter((row) => row.stageCompleteDate !== today),
+    [learningPlanRows, today],
+  );
+  const debugLogs = useMemo(
+    () =>
+      buildDebugLogs({
+        curriculum: state.curriculum,
+        learningPlan: state.learningPlan,
+        today,
+        dailyNewLearningCount,
+        learningPlanRows,
+        pendingLearningRows,
+        reviewDueCount: reviewDue.length,
+      }),
+    [dailyNewLearningCount, learningPlanRows, pendingLearningRows, reviewDue.length, state.curriculum, state.learningPlan, today],
+  );
+  const allDayRows = useMemo(() => buildAllDayRows(state.curriculum), [state.curriculum]);
+
+  return {
+    allDayRows,
+    dateRangeMeta,
+    debugLogs,
+    homeDueDebug,
+    learningPlanRows,
+    overallMeta,
+    pendingLearningRows,
+    reviewDue,
+  };
 }

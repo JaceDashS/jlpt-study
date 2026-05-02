@@ -2,8 +2,19 @@
 import { AutoGrowTextarea } from "../EditorControls.tsx";
 import { createProblemDraft } from "../../domain/problem.ts";
 import { cx } from "../../styles.ts";
+import type { ProblemEditorState, SessionItemView, SetProblemEditor } from "./sessionViewTypes.ts";
 
-export function ProblemEditorPane({ problemEditor, setProblemEditor, currentItem, saveProblemEditor }) {
+export function ProblemEditorPane({
+  problemEditor,
+  setProblemEditor,
+  currentItem,
+  saveProblemEditor,
+}: {
+  currentItem: SessionItemView | null;
+  problemEditor: ProblemEditorState;
+  saveProblemEditor: () => void;
+  setProblemEditor: SetProblemEditor;
+}) {
   if (!problemEditor.open || !currentItem) return null;
 
   return (
