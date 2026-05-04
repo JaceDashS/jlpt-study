@@ -16,7 +16,7 @@ export type StudyCommitPushResult = StudySyncResult;
 
 export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
   const commitStudyChanges = async (): Promise<StudySyncResult> => {
-    showToast("커밋/푸쉬/풀 시작...");
+    showToast("커밋/풀/푸쉬 시작...");
     try {
       const response = await apiFetch(apiUrl("git-study-commit-push"), {
         method: "POST",
@@ -30,7 +30,7 @@ export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
 
       if (!response.ok) {
         console.error("Failed to sync study changes:", response.status, payload);
-        const message = String(payload?.error ?? "커밋/푸쉬/풀 실패");
+        const message = String(payload?.error ?? "커밋/풀/푸쉬 실패");
         showToast(message, "error");
         return { status: "error", message };
       }
@@ -41,11 +41,11 @@ export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
       }
 
       const stagedFileCount = Number(payload?.stagedFileCount ?? 0);
-      showToast(`커밋/푸쉬/풀 완료 (${stagedFileCount}개 파일)`);
+      showToast(`커밋/풀/푸쉬 완료 (${stagedFileCount}개 파일)`);
       return { status: "committed", stagedFileCount };
     } catch (error) {
       console.error("Failed to sync study changes:", error);
-      showToast("커밋/푸쉬/풀 실패", "error");
+      showToast("커밋/풀/푸쉬 실패", "error");
       return { status: "error", message: String(error instanceof Error ? error.message : error) };
     }
   };

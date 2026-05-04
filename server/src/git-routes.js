@@ -35,29 +35,36 @@ export async function handleGitStudyCommitPush(res, { repoRoot }) {
 
 async function runStudyCommitPush(repoRoot) {
   await assertNoUnmergedFiles(repoRoot);
+  const syncTarget = await resolveSyncTarget(repoRoot);
+  const fetch = await runGit(repoRoot, ["fetch", syncTarget.remote]);
+
   await runGit(repoRoot, ["add", "-A", "--", STUDY_COMMIT_PATHSPEC]);
 
   const staged = await runGit(repoRoot, ["diff", "--cached", "--name-only", "--", STUDY_COMMIT_PATHSPEC]);
   const stagedFiles = splitOutputLines(staged.stdout);
   let commit = null;
+  let pull = null;
   let push = null;
-  const syncTarget = await resolveSyncTarget(repoRoot);
   if (stagedFiles.length > 0) {
     commit = await runGit(repoRoot, ["commit", "-m", COMMIT_MESSAGE, "--", STUDY_COMMIT_PATHSPEC]);
+    pull = await runPullRebase(repoRoot, syncTarget);
     push = await runGit(repoRoot, ["push", syncTarget.remote, `HEAD:${syncTarget.branch}`]);
+  } else {
+    pull = await runGit(repoRoot, ["pull", "--ff-only", syncTarget.remote, syncTarget.branch]);
   }
 
-  const pull = await runGit(repoRoot, ["pull", "--ff-only", syncTarget.remote, syncTarget.branch]);
-
   return {
+    fetched: true,
     committed: Boolean(commit),
     pushed: Boolean(push),
     pulled: true,
     commitMessage: COMMIT_MESSAGE,
     stagedFileCount: stagedFiles.length,
     stagedFiles,
+    fetchOutput: formatGitOutput(fetch),
     pushTarget: push ? syncTarget.label : "",
     pullTarget: syncTarget.label,
+    pullMode: commit ? "rebase" : "ff-only",
     commitOutput: commit ? formatGitOutput(commit) : "",
     pushOutput: push ? formatGitOutput(push) : "",
     pullOutput: formatGitOutput(pull),
@@ -106,6 +113,15 @@ async function findNearestMergedRemoteBranch(repoRoot) {
 
   candidates.sort((left, right) => left.count - right.count || left.ref.localeCompare(right.ref));
   return candidates[0] ?? null;
+}
+
+async function runPullRebase(repoRoot, syncTarget) {
+  try {
+    return await runGit(repoRoot, ["pull", "--rebase", syncTarget.remote, syncTarget.branch]);
+  } catch (error) {
+    await tryGit(repoRoot, ["rebase", "--abort"]);
+    throw error;
+  }
 }
 
 async function assertNoUnmergedFiles(repoRoot) {

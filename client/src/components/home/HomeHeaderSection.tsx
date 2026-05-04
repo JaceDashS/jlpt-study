@@ -34,7 +34,7 @@ export function HomeHeaderSection({
   today: string;
 }) {
   const [isSyncingStudy, setIsSyncingStudy] = React.useState(false);
-  const [studySyncLabel, setStudySyncLabel] = React.useState("커밋/푸쉬/풀");
+  const [studySyncLabel, setStudySyncLabel] = React.useState("커밋/풀/푸쉬");
   const labelResetTimerRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
@@ -50,7 +50,7 @@ export function HomeHeaderSection({
       window.clearTimeout(labelResetTimerRef.current);
     }
     labelResetTimerRef.current = window.setTimeout(() => {
-      setStudySyncLabel("커밋/푸쉬/풀");
+      setStudySyncLabel("커밋/풀/푸쉬");
       labelResetTimerRef.current = null;
     }, 5000);
   };
