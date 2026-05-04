@@ -33,8 +33,8 @@ export function HomeHeaderSection({
   selectedBookId: string;
   today: string;
 }) {
-  const [isCommittingStudy, setIsCommittingStudy] = React.useState(false);
-  const [studyCommitLabel, setStudyCommitLabel] = React.useState("study 커밋/푸쉬");
+  const [isSyncingStudy, setIsSyncingStudy] = React.useState(false);
+  const [studySyncLabel, setStudySyncLabel] = React.useState("커밋/푸쉬/풀");
   const labelResetTimerRef = React.useRef<number | null>(null);
 
   React.useEffect(() => {
@@ -50,27 +50,27 @@ export function HomeHeaderSection({
       window.clearTimeout(labelResetTimerRef.current);
     }
     labelResetTimerRef.current = window.setTimeout(() => {
-      setStudyCommitLabel("study 커밋/푸쉬");
+      setStudySyncLabel("커밋/푸쉬/풀");
       labelResetTimerRef.current = null;
     }, 5000);
   };
 
   const handleCommitStudyChanges = async () => {
-    if (isCommittingStudy) return;
-    setIsCommittingStudy(true);
-    setStudyCommitLabel("커밋/푸쉬 중...");
+    if (isSyncingStudy) return;
+    setIsSyncingStudy(true);
+    setStudySyncLabel("동기화 중...");
     try {
       const result = await commitStudyChanges();
       if (result.status === "committed") {
-        setStudyCommitLabel(`완료 (${result.stagedFileCount}개 파일)`);
-      } else if (result.status === "no-changes") {
-        setStudyCommitLabel("변경사항 없음");
+        setStudySyncLabel(`완료 (${result.stagedFileCount}개 파일)`);
+      } else if (result.status === "pulled") {
+        setStudySyncLabel("풀 완료");
       } else {
-        setStudyCommitLabel("실패");
+        setStudySyncLabel("실패");
       }
       queueStudyCommitLabelReset();
     } finally {
-      setIsCommittingStudy(false);
+      setIsSyncingStudy(false);
     }
   };
 
@@ -94,8 +94,8 @@ export function HomeHeaderSection({
           <button type="button" className={cx("action")} onClick={resetLocalCache}>
             캐시 초기화
           </button>
-          <button type="button" className={cx("action")} onClick={handleCommitStudyChanges} disabled={isCommittingStudy}>
-            {studyCommitLabel}
+          <button type="button" className={cx("action")} onClick={handleCommitStudyChanges} disabled={isSyncingStudy}>
+            {studySyncLabel}
           </button>
           <button type="button" className={cx("action")} onClick={backupAssets}>
             에셋 백업

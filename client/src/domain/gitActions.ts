@@ -7,14 +7,16 @@ type GitActionsOptions = {
   showToast: (message: string, type?: ToastType) => void;
 };
 
-export type StudyCommitPushResult =
+export type StudySyncResult =
   | { status: "committed"; stagedFileCount: number }
-  | { status: "no-changes" }
+  | { status: "pulled" }
   | { status: "error"; message: string };
 
+export type StudyCommitPushResult = StudySyncResult;
+
 export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
-  const commitStudyChanges = async (): Promise<StudyCommitPushResult> => {
-    showToast("study 커밋/푸쉬 시작...");
+  const commitStudyChanges = async (): Promise<StudySyncResult> => {
+    showToast("커밋/푸쉬/풀 시작...");
     try {
       const response = await apiFetch(apiUrl("git-study-commit-push"), {
         method: "POST",
@@ -27,23 +29,23 @@ export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
       const payload = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        console.error("Failed to commit and push study changes:", response.status, payload);
-        const message = String(payload?.error ?? "study 커밋/푸쉬 실패");
+        console.error("Failed to sync study changes:", response.status, payload);
+        const message = String(payload?.error ?? "커밋/푸쉬/풀 실패");
         showToast(message, "error");
         return { status: "error", message };
       }
 
       if (!payload?.committed) {
-        showToast("커밋할 변경사항이 없습니다. push는 확인했습니다.");
-        return { status: "no-changes" };
+        showToast("커밋할 변경사항이 없습니다. 풀 완료.");
+        return { status: "pulled" };
       }
 
       const stagedFileCount = Number(payload?.stagedFileCount ?? 0);
-      showToast(`study 커밋/푸쉬 완료 (${stagedFileCount}개 파일)`);
+      showToast(`커밋/푸쉬/풀 완료 (${stagedFileCount}개 파일)`);
       return { status: "committed", stagedFileCount };
     } catch (error) {
-      console.error("Failed to commit and push study changes:", error);
-      showToast("study 커밋/푸쉬 실패", "error");
+      console.error("Failed to sync study changes:", error);
+      showToast("커밋/푸쉬/풀 실패", "error");
       return { status: "error", message: String(error instanceof Error ? error.message : error) };
     }
   };

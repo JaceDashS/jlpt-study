@@ -12,7 +12,7 @@ export async function handleGitStudyCommitPush(res, { repoRoot }) {
   setApiLogDetail(res, { endpoint: "git-study-commit-push" });
 
   if (activeStudyCommitPush) {
-    sendJson(res, 409, { ok: false, error: "Git commit/push is already running", where: "/api/git-study-commit-push" });
+    sendJson(res, 409, { ok: false, error: "Git study sync is already running", where: "/api/git-study-commit-push" });
     return;
   }
 
@@ -34,49 +34,52 @@ export async function handleGitStudyCommitPush(res, { repoRoot }) {
 }
 
 async function runStudyCommitPush(repoRoot) {
+  await assertNoUnmergedFiles(repoRoot);
   await runGit(repoRoot, ["add", "-A", "--", STUDY_COMMIT_PATHSPEC]);
 
   const staged = await runGit(repoRoot, ["diff", "--cached", "--name-only", "--", STUDY_COMMIT_PATHSPEC]);
   const stagedFiles = splitOutputLines(staged.stdout);
   let commit = null;
+  let push = null;
+  const syncTarget = await resolveSyncTarget(repoRoot);
   if (stagedFiles.length > 0) {
     commit = await runGit(repoRoot, ["commit", "-m", COMMIT_MESSAGE, "--", STUDY_COMMIT_PATHSPEC]);
+    push = await runGit(repoRoot, ["push", syncTarget.remote, `HEAD:${syncTarget.branch}`]);
   }
 
-  const pushTarget = await resolvePushTarget(repoRoot);
-  const push = await runGit(repoRoot, pushTarget.args);
+  const pull = await runGit(repoRoot, ["pull", "--ff-only", syncTarget.remote, syncTarget.branch]);
 
   return {
     committed: Boolean(commit),
-    pushed: true,
+    pushed: Boolean(push),
+    pulled: true,
     commitMessage: COMMIT_MESSAGE,
     stagedFileCount: stagedFiles.length,
     stagedFiles,
-    pushTarget: pushTarget.label,
+    pushTarget: push ? syncTarget.label : "",
+    pullTarget: syncTarget.label,
     commitOutput: commit ? formatGitOutput(commit) : "",
-    pushOutput: formatGitOutput(push),
+    pushOutput: push ? formatGitOutput(push) : "",
+    pullOutput: formatGitOutput(pull),
   };
 }
 
-async function resolvePushTarget(repoRoot) {
+async function resolveSyncTarget(repoRoot) {
   const currentBranch = (await runGit(repoRoot, ["branch", "--show-current"])).stdout.trim();
   if (currentBranch) {
     const upstream = await tryGit(repoRoot, ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"]);
     if (upstream?.stdout.trim()) {
-      return { args: ["push"], label: upstream.stdout.trim() };
+      return parseRemoteBranchRef(upstream.stdout.trim());
     }
-    return { args: ["push", "origin", `HEAD:${currentBranch}`], label: `origin/${currentBranch}` };
+    return { remote: "origin", branch: currentBranch, label: `origin/${currentBranch}` };
   }
 
   const remoteBranch = await findNearestMergedRemoteBranch(repoRoot);
   if (!remoteBranch) {
-    throw new Error("Cannot push from detached HEAD because no merged remote branch was found");
+    throw new Error("Cannot sync from detached HEAD because no merged remote branch was found");
   }
 
-  return {
-    args: ["push", remoteBranch.remote, `HEAD:${remoteBranch.branch}`],
-    label: `${remoteBranch.remote}/${remoteBranch.branch}`,
-  };
+  return remoteBranch;
 }
 
 async function findNearestMergedRemoteBranch(repoRoot) {
@@ -95,6 +98,7 @@ async function findNearestMergedRemoteBranch(repoRoot) {
     candidates.push({
       branch: ref.slice(slash + 1),
       count,
+      label: ref,
       ref,
       remote: ref.slice(0, slash),
     });
@@ -102,6 +106,26 @@ async function findNearestMergedRemoteBranch(repoRoot) {
 
   candidates.sort((left, right) => left.count - right.count || left.ref.localeCompare(right.ref));
   return candidates[0] ?? null;
+}
+
+async function assertNoUnmergedFiles(repoRoot) {
+  const unmerged = splitOutputLines((await runGit(repoRoot, ["diff", "--name-only", "--diff-filter=U"])).stdout);
+  if (unmerged.length <= 0) return;
+
+  throw new Error(`Git conflict 상태라서 중단했습니다. 먼저 충돌을 해결해 주세요: ${unmerged.join(", ")}`);
+}
+
+function parseRemoteBranchRef(ref) {
+  const slash = ref.indexOf("/");
+  if (slash <= 0 || slash >= ref.length - 1) {
+    throw new Error(`Cannot resolve upstream branch: ${ref}`);
+  }
+
+  return {
+    branch: ref.slice(slash + 1),
+    label: ref,
+    remote: ref.slice(0, slash),
+  };
 }
 
 async function tryGit(cwd, args) {
