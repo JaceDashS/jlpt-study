@@ -31,6 +31,15 @@ export async function apiFetch(input: RequestInfo | URL, init?: RequestInit) {
   }
   request = attachApiAccessToken(request);
 
+  if (!isApiDebugLoggingEnabled()) {
+    try {
+      return await fetch(request);
+    } catch (error) {
+      console.error("[jlpt api client] request failed", formatRequestTarget(request.url), error);
+      throw error;
+    }
+  }
+
   const id = ++apiRequestLogId;
   const startedAt = Date.now();
   const method = request.method.toUpperCase();
@@ -90,4 +99,12 @@ function isApiRequest(url: string) {
   } catch (error) {
     return false;
   }
+}
+
+function isApiDebugLoggingEnabled() {
+  const rawValue = String(import.meta.env.VITE_JLPT_API_DEBUG ?? "").trim().toLowerCase();
+  if (rawValue) {
+    return ["1", "true", "yes", "on"].includes(rawValue);
+  }
+  return import.meta.env.DEV;
 }

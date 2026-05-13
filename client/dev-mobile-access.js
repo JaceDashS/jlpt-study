@@ -44,48 +44,7 @@ export function mobileAccessPlugin() {
       return html.replace("</head>", `${createAccessTokenCleanupScript()}</head>`);
     },
     configureServer(server) {
-      server.middlewares.use((req, res, next) => {
-        const queryToken = readQueryToken(req);
-        const hasValidQueryToken = isValidAccessToken(queryToken);
-        const hasValidPathToken = isValidAccessToken(readPathToken(req));
-        const hasValidHeaderToken = isValidAccessToken(readHeaderToken(req));
-        const hasValidCookieToken = isValidAccessToken(readCookieToken(req));
-        const hasAuthorizedClient = isAuthorizedClient(req);
-        const hasTrustedInternalLanClient = isTrustedInternalLanRequest(req);
-
-        if (
-          !hasValidQueryToken &&
-          !hasValidPathToken &&
-          !hasValidHeaderToken &&
-          !hasValidCookieToken &&
-          !hasAuthorizedClient &&
-          !hasTrustedInternalLanClient
-        ) {
-          rejectUnauthorizedHttp(res);
-          return;
-        }
-
-        if (hasValidQueryToken || hasValidPathToken || hasValidHeaderToken) {
-          authorizeClient(req);
-          setAccessCookie(res);
-        }
-
-        next();
-      });
-
-      server.httpServer?.prependListener("upgrade", (req, socket) => {
-        if (
-          isValidAccessToken(readQueryToken(req)) ||
-          isValidAccessToken(readPathToken(req)) ||
-          isValidAccessToken(readHeaderToken(req)) ||
-          isValidAccessToken(readCookieToken(req)) ||
-          isAuthorizedClient(req) ||
-          isTrustedInternalLanRequest(req)
-        ) {
-          return;
-        }
-        socket.end("HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n");
-      });
+      installAccessMiddleware(server);
 
       server.httpServer?.once("listening", () => {
         printMobileAccessInfo(server).catch((error) => {
@@ -97,7 +56,68 @@ export function mobileAccessPlugin() {
         closeActiveCloudflareTunnel();
       });
     },
+    configurePreviewServer(server) {
+      if (!shouldUsePreviewAccessControl()) return;
+      installAccessMiddleware(server, {
+        attachApiAccessToken: true,
+        trustLoopbackHost: true,
+      });
+    },
   };
+}
+
+function installAccessMiddleware(server, options = {}) {
+  const { attachApiAccessToken = false, trustLoopbackHost = false } = options;
+
+  server.middlewares.use((req, res, next) => {
+    const queryToken = readQueryToken(req);
+    const hasValidQueryToken = isValidAccessToken(queryToken);
+    const hasValidPathToken = isValidAccessToken(readPathToken(req));
+    const hasValidHeaderToken = isValidAccessToken(readHeaderToken(req));
+    const hasValidCookieToken = isValidAccessToken(readCookieToken(req));
+    const hasAuthorizedClient = isAuthorizedClient(req);
+    const hasTrustedInternalLanClient = isTrustedInternalLanRequest(req);
+    const hasTrustedLoopbackHost = trustLoopbackHost && isTrustedLoopbackHostRequest(req);
+
+    if (
+      !hasValidQueryToken &&
+      !hasValidPathToken &&
+      !hasValidHeaderToken &&
+      !hasValidCookieToken &&
+      !hasAuthorizedClient &&
+      !hasTrustedInternalLanClient &&
+      !hasTrustedLoopbackHost
+    ) {
+      rejectUnauthorizedHttp(res);
+      return;
+    }
+
+    if (hasValidQueryToken || hasValidPathToken || hasValidHeaderToken) {
+      authorizeClient(req);
+      setAccessCookie(res);
+    }
+
+    if (attachApiAccessToken && isApiRequest(req)) {
+      req.headers[ACCESS_TOKEN_HEADER] = ACCESS_TOKEN;
+    }
+
+    next();
+  });
+
+  server.httpServer?.prependListener("upgrade", (req, socket) => {
+    if (
+      isValidAccessToken(readQueryToken(req)) ||
+      isValidAccessToken(readPathToken(req)) ||
+      isValidAccessToken(readHeaderToken(req)) ||
+      isValidAccessToken(readCookieToken(req)) ||
+      isAuthorizedClient(req) ||
+      isTrustedInternalLanRequest(req) ||
+      (trustLoopbackHost && isTrustedLoopbackHostRequest(req))
+    ) {
+      return;
+    }
+    socket.end("HTTP/1.1 401 Unauthorized\r\nConnection: close\r\n\r\n");
+  });
 }
 
 function authorizeClient(req) {
@@ -131,6 +151,35 @@ function cleanupAuthorizedClients() {
 
 function isTrustedInternalLanRequest(req) {
   return isPrivateIpv4(readClientAddress(req));
+}
+
+function isTrustedLoopbackHostRequest(req) {
+  const hostname = readRequestHostname(req);
+  return isLoopbackHostname(hostname);
+}
+
+function isApiRequest(req) {
+  try {
+    const url = new URL(req.url ?? "/", "http://localhost");
+    return url.pathname.startsWith("/api/");
+  } catch {
+    return false;
+  }
+}
+
+function readRequestHostname(req) {
+  const host = String(req.headers?.host ?? "").trim();
+  if (!host) return "";
+  try {
+    return new URL(`http://${host}`).hostname;
+  } catch {
+    return host.split(":")[0] ?? "";
+  }
+}
+
+function isLoopbackHostname(hostname) {
+  const normalized = String(hostname ?? "").trim().toLowerCase();
+  return normalized === "localhost" || normalized === "127.0.0.1" || normalized === "::1" || normalized === "[::1]" || normalized.endsWith(".localhost");
 }
 
 function readClientAddress(req) {
@@ -407,6 +456,11 @@ function shouldUseCloudflareTunnel() {
   return !["0", "false", "no", "off"].includes(rawValue);
 }
 
+function shouldUsePreviewAccessControl() {
+  const rawValue = String(process.env.JLPT_PREVIEW_ACCESS_CONTROL ?? "").trim().toLowerCase();
+  return ["1", "true", "yes", "on"].includes(rawValue);
+}
+
 function openActiveCloudflareTunnel(port) {
   if (activeCloudflareTunnel) return Promise.resolve(activeCloudflareTunnel);
   if (cloudflareTunnelStartPromise) return cloudflareTunnelStartPromise;
@@ -643,7 +697,7 @@ function addApiBaseParamToUrl(baseUrl, { apiBaseUrl }) {
   return url.toString();
 }
 
-function addPathAccessTokenToUrl(baseUrl, { token }) {
+export function addPathAccessTokenToUrl(baseUrl, { token }) {
   const url = new URL(baseUrl);
   url.pathname = `${ACCESS_TOKEN_PATH_PREFIX}${encodeURIComponent(token)}/`;
   url.search = "";
@@ -764,7 +818,7 @@ function isPrivate172Ipv4(address) {
   return secondOctet >= 16 && secondOctet <= 31;
 }
 
-function renderQr(text, options = {}) {
+export function renderQr(text, options = {}) {
   const matrix = createQrMatrix(text);
   if (!options.unicode) {
     return renderAsciiQr(matrix);

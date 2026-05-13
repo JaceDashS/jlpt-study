@@ -24,7 +24,16 @@ export function useRefreshCurriculumOnHomeFocus({ refreshCurriculumFromSource, s
 
 export function useHomeReviewDebugLog({ reviewDueCount, session, stateCurriculum, today }) {
   useEffect(() => {
+    if (!isHomeReviewDebugLogEnabled()) return;
     if (session) return;
     console.log("[home] today:", today, "reviewDue:", reviewDueCount);
   }, [session, stateCurriculum, today, reviewDueCount]);
+}
+
+function isHomeReviewDebugLogEnabled() {
+  const rawValue = String(import.meta.env.VITE_JLPT_HOME_DEBUG ?? "").trim().toLowerCase();
+  if (rawValue) {
+    return ["1", "true", "yes", "on"].includes(rawValue);
+  }
+  return import.meta.env.DEV;
 }
