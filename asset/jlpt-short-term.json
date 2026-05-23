@@ -768,7 +768,7 @@
                 ],
                 "answer": "そこ"
               },
-              "lastResult": "PASS",
+              "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 底 |\n|---|---|\n| 音読 | テイ |\n| 訓読 | そこ / （全体）そこ |\n| 뜻 | 바닥 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 海底（かいてい）: 해저<br>* 根底（こんてい）: 근저 |\n| 구성(IDS) | ⿸广氐 |\n| 부수/부품 | 广 + 氐 |\n| 부품 역할 | 广: 집·덮개 / 氐: 밑바탕·소리 (추정) |\n| 재귀 구조 | 底[바닥] → ⿸[구성] 广[집] + 氐[밑](추정) |\n| 최종 최소 단위 | 广[집], 氐[밑](추정) |",
               "memoPersonal": "집안에 있는 백성(개백수)보다 밑의 이미지",
               "stage": 1,
@@ -824,7 +824,7 @@
                 ],
                 "answer": "たび"
               },
-              "lastResult": "FAIL",
+              "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 旅 |\n|---|---|\n| 音読 | リョ |\n| 訓読 | たび / （全体）たび |\n| 뜻 | 여행 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 旅行（りょこう）: 여행<br>* 旅館（りょかん）: 여관 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
@@ -1076,7 +1076,7 @@
                 ],
                 "answer": "はし"
               },
-              "lastResult": "PASS",
+              "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 箸 |\n|---|---|\n| 音読 | チョ |\n| 訓読 | はし / （全体）はし |\n| 뜻 | 젓가락 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 菜箸（さいばし）: 요리용 긴 젓가락<br>* 箸置き（はしおき）: 젓가락 받침 |\n| 구성(IDS) | ⿱竹者 |\n| 부수/부품 | 竹 + 者 |\n| 부품 역할 | 竹: 대나무 / 者: 소리·의미 보조 (추정) |\n| 재귀 구조 | 箸[젓가락] → ⿱[구성] 竹[대나무] + 者[사람](추정) |\n| 최종 최소 단위 | 竹[대나무], 者[사람](추정) |",
               "memoPersonal": "대나무er = 젓가락",
               "stage": 1,
@@ -1142,9 +1142,9 @@
               "id": "d2-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-02",
-          "nextReviewDate": "2026-05-09",
+          "stage": 5,
+          "stageCompleteDate": "2026-05-23",
+          "nextReviewDate": "2026-06-22",
           "lastAttemptDate": "2026-05-23"
         }
       ]
