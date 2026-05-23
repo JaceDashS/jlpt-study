@@ -824,7 +824,7 @@
                 ],
                 "answer": "たび"
               },
-              "lastResult": "NEUTRAL",
+              "lastResult": "FAIL",
               "memoDecomposition": "| 항목 | 旅 |\n|---|---|\n| 音読 | リョ |\n| 訓読 | たび / （全体）たび |\n| 뜻 | 여행 |\n| 상용한자 여부 | 常用 |\n| 예시 | * 旅行（りょこう）: 여행<br>* 旅館（りょかん）: 여관 |\n| 구성(IDS) | Wiktionary에 명시적 설명 없음 |\n| 부수/부품 | Wiktionary에 명시적 설명 없음 |\n| 부품 역할 | Wiktionary에 명시적 설명 없음 |\n| 재귀 구조 | Wiktionary에 명시적 설명 없음 |\n| 최종 최소 단위 | Wiktionary에 명시적 설명 없음 |",
               "memoPersonal": "",
               "stage": 1,
@@ -1145,7 +1145,7 @@
           "stage": 4,
           "stageCompleteDate": "2026-05-02",
           "nextReviewDate": "2026-05-09",
-          "lastAttemptDate": "2026-05-13"
+          "lastAttemptDate": "2026-05-23"
         }
       ]
     },
