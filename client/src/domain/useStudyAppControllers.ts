@@ -78,7 +78,6 @@ export function useStudyAppControllers({
   });
 
   const clipboardActions = createClipboardActions({
-    apiFetch,
     debugLogs,
     homeDueDebug,
     showToast,

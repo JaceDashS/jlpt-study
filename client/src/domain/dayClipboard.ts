@@ -1,4 +1,3 @@
-import { apiFetch, apiUrl } from "../api.ts";
 import { getExpressionStrict } from "./expression.ts";
 import { buildDayWordCopyPayload } from "./dayClipboardHelpers.ts";
 import {
@@ -129,11 +128,6 @@ export function createDayClipboardActions({
   };
 
   const importDayDecompositionFromClipboardForPath = async (pathOverride: LearningPath | undefined = undefined) => {
-    const middlewareText = await readClipboardViaMiddleware(showToast);
-    if (middlewareText !== null) {
-      return applyDayDecompositionImporter(middlewareText, pathOverride);
-    }
-
     const browserText = await readClipboardViaBrowser(showToast);
     if (browserText === null) return false;
     return applyDayDecompositionImporter(browserText, pathOverride);
@@ -189,28 +183,6 @@ export function createDayClipboardActions({
     resetDayDecompositions: resetCurrentDayDecompositions,
     resetDayProblems: resetCurrentDayProblems,
   };
-}
-
-async function readClipboardViaMiddleware(showToast: (message: string, type?: ToastType) => void) {
-  try {
-    const response = await apiFetch(apiUrl("clipboard-read"), {
-      credentials: "same-origin",
-    });
-    if (response.ok) {
-      const payload = await response.json().catch(() => ({}));
-      const text = String(payload?.text ?? "");
-      if (!text.trim()) {
-        showToast("클립보드가 비어 있습니다.", "error");
-        return "";
-      }
-      return text;
-    }
-    const body = await response.text().catch(() => "");
-    console.error("Failed to read clipboard:", response.status, body);
-  } catch (error) {
-    console.error("Failed to read clipboard:", error);
-  }
-  return null;
 }
 
 async function readClipboardViaBrowser(showToast: (message: string, type?: ToastType) => void) {

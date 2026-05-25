@@ -27,13 +27,7 @@ function runPowershell(command, readStdout = false) {
   });
 }
 
-export async function writeClipboardText(text) {
-  const base64Text = Buffer.from(String(text ?? ""), "utf8").toString("base64");
-  const command = `$b='${base64Text}';$t=[System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($b));Set-Clipboard -Value $t`;
-  await runPowershell(command);
-}
-
-export async function readClipboardText() {
+export async function readServerClipboardText() {
   const command = "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;$text=Get-Clipboard -Raw; if ($null -eq $text) { $text='' }; [Console]::Write($text)";
   return runPowershell(command, true);
 }

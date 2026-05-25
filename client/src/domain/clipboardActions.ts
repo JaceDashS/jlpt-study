@@ -1,5 +1,3 @@
-import { apiUrl } from "../api.ts";
-
 type ToastType = "success" | "error";
 
 export type HomeDueDebugRow = {
@@ -13,18 +11,17 @@ export type HomeDueDebugRow = {
 };
 
 type ClipboardActionsOptions = {
-  apiFetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
   debugLogs: string[];
   homeDueDebug: HomeDueDebugRow[];
   showToast: (message: string, type?: ToastType) => void;
 };
 
-export function createClipboardActions({ apiFetch, debugLogs, homeDueDebug, showToast }: ClipboardActionsOptions) {
+export function createClipboardActions({ debugLogs, homeDueDebug, showToast }: ClipboardActionsOptions) {
   const copyTextViaMiddleware = async (text) => {
     const normalized = String(text ?? "");
     const copyWithNavigator = async () => {
       try {
-        if (!navigator?.clipboard?.writeText) return false;
+        if (typeof navigator === "undefined" || !navigator?.clipboard?.writeText) return false;
         await navigator.clipboard.writeText(normalized);
         return true;
       } catch (error) {
@@ -33,26 +30,33 @@ export function createClipboardActions({ apiFetch, debugLogs, homeDueDebug, show
       }
     };
 
-    try {
-      const response = await apiFetch(apiUrl("clipboard-write"), {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: normalized }),
-      });
-
-      if (!response.ok) {
-        const body = await response.text();
-        console.error("Failed to copy text:", response.status, body);
-        return copyWithNavigator();
+    const copyWithLegacyCommand = () => {
+      try {
+        if (typeof document === "undefined" || !document?.execCommand || !document.body) return false;
+        const textarea = document.createElement("textarea");
+        textarea.value = normalized;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "fixed";
+        textarea.style.left = "-9999px";
+        textarea.style.top = "0";
+        document.body.appendChild(textarea);
+        try {
+          textarea.focus();
+          textarea.select();
+          textarea.setSelectionRange(0, textarea.value.length);
+          return document.execCommand("copy");
+        } finally {
+          document.body.removeChild(textarea);
+        }
+      } catch (error) {
+        console.error("Failed to copy text with document.execCommand:", error);
+        return false;
       }
-      return true;
-    } catch (error) {
-      console.error("Failed to copy text:", error);
-      return copyWithNavigator();
-    }
+    };
+
+    if (await copyWithNavigator()) return true;
+    if (copyWithLegacyCommand()) return true;
+    return false;
   };
 
   const copyDebugLogs = async () => {
