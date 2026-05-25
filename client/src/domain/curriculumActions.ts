@@ -1,8 +1,9 @@
 import { apiUrl } from "../api.ts";
 import { clearState, saveState } from "../data/storage.ts";
+import { writeAppPreferences } from "./appPreferences.ts";
 import { mergeCurriculumFromSource } from "./curriculumSource.ts";
 import { buildAppState } from "./curriculumFiles.ts";
-import { sanitizeCurriculum } from "./studyHelpers.ts";
+import { normalizeDailyNewLearningCount, sanitizeCurriculum } from "./studyHelpers.ts";
 import type { SetSession, SetStudyState, StudyState } from "./studyTypes.ts";
 
 const SELECTED_BOOK_STORAGE_KEY = "jlpt-selected-book";
@@ -67,10 +68,12 @@ export function createCurriculumActions({
   const switchBook = (newBookId: string) => {
     if (newBookId === selectedBookId) return;
     saveState(state, selectedBookId);
-    const newState = buildAppState(newBookId, sourceFiles);
+    const dailyNewLearningCount = normalizeDailyNewLearningCount(state.dailyNewLearningCount);
+    const newState = buildAppState(newBookId, sourceFiles, { dailyNewLearningCount });
     setState(newState);
     setSelectedBookId(newBookId);
     localStorage.setItem(SELECTED_BOOK_STORAGE_KEY, newBookId);
+    void writeAppPreferences({ selectedBookId: newBookId, dailyNewLearningCount });
     setSession(null);
   };
 
