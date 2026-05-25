@@ -6,21 +6,17 @@ import {
   applyCorsHeaders,
   isAuthorizedApiRequest,
   logApiRequest,
-  readBody,
   readRequestBaseUrl,
   sendJson,
   setApiLogDetail,
 } from "./api-http.js";
-import { readClipboardText, writeClipboardText } from "./clipboard-service.js";
+import { readServerClipboardText } from "./clipboard-service.js";
 import {
   handleAssetBackupExport,
   handleAssetBackupImport,
   handleReloadCurriculum,
   handleSaveItemField,
 } from "./asset-routes.js";
-import {
-  stripBom,
-} from "./asset-services.js";
 import { handleGitStudyCommitPush } from "./git-routes.js";
 
 const API_PREFIX = "/api";
@@ -67,13 +63,8 @@ export function createApiRequestHandler() {
       return;
     }
 
-    if (pathname === "/api/clipboard-write" && req.method === "POST") {
-      await handleClipboardWrite(req, res);
-      return;
-    }
-
-    if (pathname === "/api/clipboard-read" && req.method === "GET") {
-      await handleClipboardRead(res);
+    if (pathname === "/api/server-clipboard-read" && req.method === "GET") {
+      await handleServerClipboardRead(res);
       return;
     }
 
@@ -144,29 +135,14 @@ function formatListenHost(host) {
   return host.includes(":") && !host.startsWith("[") ? `[${host}]` : host;
 }
 
-async function handleClipboardWrite(req, res) {
+async function handleServerClipboardRead(res) {
   try {
-    const bodyText = await readBody(req);
-    const body = JSON.parse(stripBom(bodyText || "{}"));
-    const text = String(body?.text ?? "");
-    setApiLogDetail(res, { endpoint: "clipboard-write", textLength: text.length });
-    await writeClipboardText(text);
-
-    sendJson(res, 200, { ok: true });
-  } catch (error) {
-    console.error("clipboard-write error:", error);
-    sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/clipboard-write" });
-  }
-}
-
-async function handleClipboardRead(res) {
-  try {
-    setApiLogDetail(res, { endpoint: "clipboard-read" });
-    const text = await readClipboardText();
+    setApiLogDetail(res, { endpoint: "server-clipboard-read" });
+    const text = await readServerClipboardText();
 
     sendJson(res, 200, { ok: true, text });
   } catch (error) {
-    console.error("clipboard-read error:", error);
-    sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/clipboard-read" });
+    console.error("server-clipboard-read error:", error);
+    sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/server-clipboard-read" });
   }
 }
