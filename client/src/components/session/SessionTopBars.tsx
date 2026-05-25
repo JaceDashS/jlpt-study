@@ -165,60 +165,66 @@ export function StudySessionTopBar({
 }) {
   return (
     <div className={cx("study-top")}>
-      <div ref={studyTopInlineRef} className={cx("study-top-inline")}>
-        <div className={cx("study-top-left")}>
-          <button type="button" className={cx("action")} onClick={() => setSession(null)}>
-            {"\u2190"}
-          </button>
-          <button
-            type="button"
-            className={cx("action")}
-            disabled={Boolean(session.postQuizStudy)}
-            onClick={() => {
-              markCurrentDayAttempt();
-              setSession((prev) => ({
-                ...prev,
-                phase: "quiz",
-                index: prev.index,
-              }));
-            }}
-          >
-            {"\u554f"}
-          </button>
-          <button type="button" className={cx("action")} onClick={goHome} aria-label={"\uD648"}>
-            <HomeIcon />
-          </button>
-          <button type="button" className={cx("action")} onClick={openDayListDrawer} aria-label={"\uD55C\uC790 \uBAA9\uB85D"}>
-            {"\uBAA9\uB85D"}
-          </button>
+      <div ref={studyTopInlineRef} className={cx("study-top-inline study-top-inline-study")}>
+        <div className={cx("study-top-actions-row")}>
+          <div className={cx("study-top-left")}>
+            <button type="button" className={cx("action")} onClick={() => setSession(null)}>
+              {"\u2190"}
+            </button>
+            <button
+              type="button"
+              className={cx("action")}
+              disabled={Boolean(session.postQuizStudy)}
+              onClick={() => {
+                markCurrentDayAttempt();
+                setSession((prev) => ({
+                  ...prev,
+                  phase: "quiz",
+                  index: prev.index,
+                }));
+              }}
+            >
+              {"\u554f"}
+            </button>
+            <button type="button" className={cx("action")} onClick={goHome} aria-label={"\uD648"}>
+              <HomeIcon />
+            </button>
+            <button type="button" className={cx("action")} onClick={openDayListDrawer} aria-label={"\uD55C\uC790 \uBAA9\uB85D"}>
+              {"\uBAA9\uB85D"}
+            </button>
+          </div>
+          <div className={cx("study-top-right")}>
+            <WordActionControls
+              canUseDayWordActions={canUseDayWordActions}
+              isWordImportOpen={isWordImportOpen}
+              primaryWordAction={primaryWordAction}
+              runWordAction={runWordAction}
+              setIsWordImportOpen={setIsWordImportOpen}
+              setWordImportText={setWordImportText}
+              submitWordImport={submitWordImport}
+              wordImportText={wordImportText}
+            />
+          </div>
         </div>
-        <div className={cx("study-top-center")}>
-          <span className={cx("study-top-text")}>{sessionDay.title}</span>
-          <span className={cx("study-top-text")}>
-            {session.index + 1}/{sessionItems.length}
-          </span>
-          {showMeaning && <span className={cx("kanji-meaning")}>{"\uB73B"}: {currentItem.meaningKo}</span>}
-        </div>
-        <div className={cx("study-top-right")}>
-          <button
-            type="button"
-            className={cx(`study-meaning-toggle ${showMeaning ? "on" : "off"}`)}
-            onClick={() => setShowMeaning((prev) => !prev)}
-            aria-label={"\uB73B \uD45C\uC2DC \uD1A0\uAE00"}
-            aria-pressed={showMeaning}
-          >
-            <span className={cx("study-meaning-thumb")} />
-          </button>
-          <WordActionControls
-            canUseDayWordActions={canUseDayWordActions}
-            isWordImportOpen={isWordImportOpen}
-            primaryWordAction={primaryWordAction}
-            runWordAction={runWordAction}
-            setIsWordImportOpen={setIsWordImportOpen}
-            setWordImportText={setWordImportText}
-            submitWordImport={submitWordImport}
-            wordImportText={wordImportText}
-          />
+        <div className={cx("study-top-meta-row")}>
+          <div className={cx("study-top-center")}>
+            <span className={cx("study-top-text")}>{sessionDay.title}</span>
+            <span className={cx("study-top-text")}>
+              {session.index + 1}/{sessionItems.length}
+            </span>
+            {showMeaning && <span className={cx("kanji-meaning")}>{"\uB73B"}: {currentItem.meaningKo}</span>}
+          </div>
+          <div className={cx("study-top-meaning-control")}>
+            <button
+              type="button"
+              className={cx(`study-meaning-toggle ${showMeaning ? "on" : "off"}`)}
+              onClick={() => setShowMeaning((prev) => !prev)}
+              aria-label={"\uB73B \uD45C\uC2DC \uD1A0\uAE00"}
+              aria-pressed={showMeaning}
+            >
+              <span className={cx("study-meaning-thumb")} />
+            </button>
+          </div>
         </div>
       </div>
     </div>
