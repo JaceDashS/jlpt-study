@@ -34,6 +34,8 @@ export default function App() {
   return (
     <StudyApp
       initialAssetFiles={boot.files}
+      initialDailyNewLearningCount={boot.dailyNewLearningCount}
+      initialPlanRange={boot.planRange}
       initialSelectedBookId={boot.selectedBookId}
       availableBooks={boot.availableBooks}
     />
@@ -42,16 +44,22 @@ export default function App() {
 
 function StudyApp({
   initialAssetFiles,
+  initialDailyNewLearningCount,
+  initialPlanRange,
   initialSelectedBookId,
   availableBooks,
 }: {
   initialAssetFiles: AssetFileMap;
+  initialDailyNewLearningCount?: number;
+  initialPlanRange?: { end?: string; start?: string };
   initialSelectedBookId: string;
   availableBooks: AvailableBook[];
 }) {
   const [sourceFiles, setSourceFiles] = useState(initialAssetFiles);
   const [selectedBookId, setSelectedBookId] = useState(initialSelectedBookId);
-  const [state, setState] = useState<StudyState>(() => buildAppState(initialSelectedBookId, initialAssetFiles));
+  const [state, setState] = useState<StudyState>(() =>
+    buildAppState(initialSelectedBookId, initialAssetFiles, { dailyNewLearningCount: initialDailyNewLearningCount }),
+  );
   const [session, setSession] = useState<SessionView | null>(null);
   const [problemEditor, setProblemEditor] = useState({
     open: false,
@@ -60,7 +68,7 @@ function StudyApp({
   });
   const { showToast, toast } = useToast();
   const today = getTodayString();
-  const [planRange, setPlanRange] = usePlanRange(today);
+  const [planRange, setPlanRange] = usePlanRange(today, initialPlanRange);
   const {
     commitLayoutWidthDraft,
     handleLayoutWidthChange,

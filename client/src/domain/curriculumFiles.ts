@@ -17,6 +17,9 @@ import { isValidLearningPath } from "./learningPath.ts";
 
 export type AssetFileMap = Record<string, unknown>;
 export type AvailableBook = { id: string; title: string };
+type BuildAppStateOptions = {
+  dailyNewLearningCount?: unknown;
+};
 
 export async function loadCurriculumFiles() {
   const response = await apiFetch(apiUrl("reload-curriculum", { t: Date.now() }), {
@@ -42,13 +45,15 @@ export function listAvailableBooks(files: AssetFileMap) {
   return getAvailableBooks(files);
 }
 
-export function buildAppState(bookId: string, assetFiles: AssetFileMap) {
+export function buildAppState(bookId: string, assetFiles: AssetFileMap, options: BuildAppStateOptions = {}) {
   const initial = createInitialState(bookId, assetFiles);
+  const hasPreferredDailyCount = Object.prototype.hasOwnProperty.call(options, "dailyNewLearningCount");
+  const preferredDailyCount = hasPreferredDailyCount ? normalizeDailyNewLearningCount(options.dailyNewLearningCount) : undefined;
   const sanitizedInitial = {
     ...initial,
     curriculum: sanitizeCurriculum(initial.curriculum),
-    dailyNewLearningCount: 1,
-    learningPlan: { date: "", count: 1, paths: [] },
+    dailyNewLearningCount: preferredDailyCount ?? 1,
+    learningPlan: { date: "", count: preferredDailyCount ?? 1, paths: [] },
     studyDrawerWidth: DEFAULT_STUDY_DRAWER_WIDTH,
     dayListDrawerWidth: DEFAULT_DAY_LIST_DRAWER_WIDTH,
   };
@@ -61,7 +66,7 @@ export function buildAppState(bookId: string, assetFiles: AssetFileMap) {
       ...saved,
       curriculum: sourceCurriculum,
     };
-    const normalizedCount = normalizeDailyNewLearningCount(merged.dailyNewLearningCount);
+    const normalizedCount = normalizeDailyNewLearningCount(preferredDailyCount ?? merged.dailyNewLearningCount);
     const savedPaths = Array.isArray(merged.learningPlan?.paths)
       ? merged.learningPlan.paths.filter(isValidLearningPath)
       : [];
@@ -72,7 +77,7 @@ export function buildAppState(bookId: string, assetFiles: AssetFileMap) {
       dayListDrawerWidth: normalizeDayListDrawerWidth(merged.dayListDrawerWidth),
       learningPlan: {
         date: typeof merged.learningPlan?.date === "string" ? merged.learningPlan.date : "",
-        count: normalizeDailyNewLearningCount(merged.learningPlan?.count ?? normalizedCount),
+        count: hasPreferredDailyCount ? normalizedCount : normalizeDailyNewLearningCount(merged.learningPlan?.count ?? normalizedCount),
         paths: savedPaths,
       },
     };

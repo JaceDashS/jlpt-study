@@ -4,9 +4,11 @@ import {
   normalizeDailyNewLearningCount,
 } from "./studyHelpers.ts";
 import { areLearningPathListsEqual, isValidLearningPath } from "./learningPath.ts";
+import { writeAppPreferences } from "./appPreferences.ts";
 
 export function updateDailyLearningCount({ event, setState, today }) {
   const nextCount = normalizeDailyNewLearningCount(event.target.value);
+  void writeAppPreferences({ dailyNewLearningCount: nextCount });
   setState((prev) => ({
     ...prev,
     dailyNewLearningCount: nextCount,

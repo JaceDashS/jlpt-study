@@ -6,10 +6,12 @@ import {
   applyCorsHeaders,
   isAuthorizedApiRequest,
   logApiRequest,
+  readBody,
   readRequestBaseUrl,
   sendJson,
   setApiLogDetail,
 } from "./api-http.js";
+import { readAppPreferences, writeAppPreferences } from "./app-preferences-service.js";
 import { readServerClipboardText } from "./clipboard-service.js";
 import {
   handleAssetBackupExport,
@@ -65,6 +67,19 @@ export function createApiRequestHandler() {
 
     if (pathname === "/api/server-clipboard-read" && req.method === "GET") {
       await handleServerClipboardRead(res);
+      return;
+    }
+
+    if (pathname === "/api/app-preferences") {
+      if (req.method === "GET") {
+        await handleReadAppPreferences(res);
+        return;
+      }
+      if (req.method === "POST") {
+        await handleWriteAppPreferences(req, res);
+        return;
+      }
+      sendJson(res, 405, { ok: false, error: "Method Not Allowed" });
       return;
     }
 
@@ -144,5 +159,33 @@ async function handleServerClipboardRead(res) {
   } catch (error) {
     console.error("server-clipboard-read error:", error);
     sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/server-clipboard-read" });
+  }
+}
+
+async function handleReadAppPreferences(res) {
+  try {
+    setApiLogDetail(res, { endpoint: "app-preferences" });
+    const preferences = await readAppPreferences(REPO_ROOT);
+    sendJson(res, 200, { ok: true, preferences });
+  } catch (error) {
+    console.error("app-preferences read error:", error);
+    sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/app-preferences" });
+  }
+}
+
+async function handleWriteAppPreferences(req, res) {
+  try {
+    const bodyText = await readBody(req);
+    const body = JSON.parse(bodyText || "{}");
+    const preferences = await writeAppPreferences(REPO_ROOT, body?.preferences ?? body);
+    setApiLogDetail(res, {
+      endpoint: "app-preferences",
+      selectedBookId: preferences.selectedBookId,
+      dailyNewLearningCount: preferences.dailyNewLearningCount,
+    });
+    sendJson(res, 200, { ok: true, preferences });
+  } catch (error) {
+    console.error("app-preferences write error:", error);
+    sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/app-preferences" });
   }
 }
