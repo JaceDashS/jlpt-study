@@ -17,7 +17,7 @@ import {
   isQuizTarget,
 } from "./studyHelpers.ts";
 import type { HomeDueDebugRow } from "./clipboardActions.ts";
-import type { LearningPath, StudyState, StudyUnit } from "./studyTypes.ts";
+import type { LearningPath, StudyDay, StudyState, StudyUnit } from "./studyTypes.ts";
 
 export type ReviewDueRow = {
   path: LearningPath;
@@ -27,6 +27,7 @@ export type ReviewDueRow = {
   dayTitle: string;
   dueCount: number;
   dueItemIds: string[];
+  failCount: number;
   progress: number;
   missingDecompositionCount: number;
 };
@@ -39,6 +40,7 @@ export type LearningPlanRow = {
   sequenceIndex: number;
   totalDayCount: number;
   itemCount: number;
+  failCount: number;
   missingDecompositionCount: number;
   stageCompleteDate: string | null;
   nextReviewDate: string | null;
@@ -52,6 +54,10 @@ export type PlanRange = {
 };
 
 type LearningPlan = StudyState["learningPlan"];
+
+function countFailedQuizItems(day: StudyDay) {
+  return day.items.filter((item) => isQuizTarget(item) && item.lastResult === "FAIL").length;
+}
 
 export function buildReviewDue(curriculum: StudyUnit[], today: string) {
   const list: ReviewDueRow[] = [];
@@ -75,6 +81,7 @@ export function buildReviewDue(curriculum: StudyUnit[], today: string) {
         dayTitle: day.title,
         dueCount: allDayItemIds.length,
         dueItemIds: allDayItemIds,
+        failCount: countFailedQuizItems(day),
         progress: getDayProgress(day),
         missingDecompositionCount: getDayMissingDecompositionCount(day),
       });
@@ -215,6 +222,7 @@ export function buildLearningPlanRows(
         sequenceIndex: daySeq.index,
         totalDayCount: daySeq.total,
         itemCount: day.items.filter(isQuizTarget).length,
+        failCount: countFailedQuizItems(day),
         missingDecompositionCount: getDayMissingDecompositionCount(day),
         stageCompleteDate: getDayStageCompleteDate(day),
         nextReviewDate: getDayNextReviewDate(day),
@@ -277,7 +285,7 @@ export function buildAllDayRows(curriculum: StudyUnit[]) {
       path,
       dayTitle: path.dayTitle,
       passRatio: day ? getDayPassRatio(day) : 0,
-      failCount: day ? day.items.filter((item) => isQuizTarget(item) && item.lastResult === "FAIL").length : 0,
+      failCount: day ? countFailedQuizItems(day) : 0,
     };
   });
 }

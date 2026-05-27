@@ -44,6 +44,7 @@ export function TodayStudySection({
     missingCount,
     modeLabel,
     modeTone,
+    hasFail,
   }: {
     path: LearningPath;
     dayTitle: string;
@@ -51,6 +52,7 @@ export function TodayStudySection({
     missingCount: number;
     modeLabel: string;
     modeTone: "review" | "learning";
+    hasFail: boolean;
   }) => {
     const targetKey = toLearningPathKey(path);
     return (
@@ -62,6 +64,7 @@ export function TodayStudySection({
         handleWordImportFromClipboard={handleWordImportFromClipboard}
         isWordImportOpen={wordImportTargetKey === targetKey}
         missingCount={missingCount}
+        hasFail={hasFail}
         modeLabel={modeLabel}
         modeTone={modeTone}
         path={path}
@@ -87,6 +90,7 @@ export function TodayStudySection({
                 missingCount: item.missingDecompositionCount,
                 modeLabel: "복습",
                 modeTone: "review",
+                hasFail: item.failCount > 0,
               })
             : (
               <button
@@ -97,7 +101,7 @@ export function TodayStudySection({
               >
                 <div className={cx("row between home-card-head")}>
                   <strong>{item.dayTitle}</strong>
-                  <span className={cx("mode-chip review")}>복습</span>
+                  <ModeChip hasFail={item.failCount > 0} modeLabel="복습" modeTone="review" />
                 </div>
                 <span>반복학습 대상: {item.dueCount}개</span>
                 <span>복습 회차: {Math.max(1, Math.round(item.progress * 4) + 1)}/5</span>
@@ -114,12 +118,13 @@ export function TodayStudySection({
                 missingCount: row.missingDecompositionCount,
                 modeLabel: "학습",
                 modeTone: "learning",
+                hasFail: row.failCount > 0,
               })
             : (
               <button type="button" key={toLearningPathKey(row.path)} className={cx("card-button")} onClick={() => openLearningDay(row.path)}>
                 <div className={cx("row between home-card-head")}>
                   <strong>{row.dayTitle}</strong>
-                  <span className={cx("mode-chip learning")}>학습</span>
+                  <ModeChip hasFail={row.failCount > 0} modeLabel="학습" modeTone="learning" />
                 </div>
                 <span>
                   Day 인덱스: {row.dayIndex} (전체 순서 {row.sequenceIndex}/{row.totalDayCount})
@@ -142,6 +147,7 @@ function DecompositionActionGroup({
   dayTitle,
   handleCopy,
   handleWordImportFromClipboard,
+  hasFail,
   isWordImportOpen,
   missingCount,
   modeLabel,
@@ -158,6 +164,7 @@ function DecompositionActionGroup({
   dayTitle: string;
   handleCopy: (path: LearningPath) => Promise<void>;
   handleWordImportFromClipboard: (path: LearningPath) => Promise<void>;
+  hasFail: boolean;
   isWordImportOpen: boolean;
   missingCount: number;
   modeLabel: string;
@@ -177,7 +184,7 @@ function DecompositionActionGroup({
       <div className={cx("home-action-group-head")}>
         <div className={cx("home-action-group-title")}>
           <strong>{dayTitle}</strong>
-          <span className={cx(`mode-chip ${modeTone}`)}>{modeLabel}</span>
+          <ModeChip hasFail={hasFail} modeLabel={modeLabel} modeTone={modeTone} />
         </div>
         <span className={cx("muted")}>디컴포지션 미입력: {missingCount}개 / 전체 {totalCount}개</span>
       </div>
@@ -232,5 +239,21 @@ function DecompositionActionGroup({
         </div>
       )}
     </div>
+  );
+}
+
+function ModeChip({
+  hasFail,
+  modeLabel,
+  modeTone,
+}: {
+  hasFail: boolean;
+  modeLabel: string;
+  modeTone: "review" | "learning";
+}) {
+  return (
+    <span className={cx(`mode-chip ${modeTone} ${hasFail ? "failed" : ""}`)}>
+      {hasFail ? `${modeLabel}・실패` : modeLabel}
+    </span>
   );
 }
