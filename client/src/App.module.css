@@ -283,6 +283,12 @@ p {
   color: #b8c1e0;
 }
 
+.mode-chip.failed {
+  background: #4a2b2b;
+  border-color: #6e3f3f;
+  color: #ffd9d6;
+}
+
 .progress-meta {
   display: flex;
   justify-content: space-between;
