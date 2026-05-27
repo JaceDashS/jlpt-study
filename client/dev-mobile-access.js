@@ -31,7 +31,7 @@ const QR_ALIGNMENT_POSITIONS = [6, 28, 50];
 
 export function getDevServerConfig() {
   return {
-    host: "0.0.0.0",
+    host: readDevServerHost(),
     port: readPortFromEnv(),
     allowedHosts: true,
   };
@@ -44,6 +44,23 @@ export function mobileAccessPlugin() {
       return html.replace("</head>", `${createAccessTokenCleanupScript()}</head>`);
     },
     configureServer(server) {
+      if (shouldUseLocalOnlyDevServer()) {
+        installAccessMiddleware(server, {
+          attachApiAccessToken: true,
+          trustLoopbackHost: true,
+        });
+
+        server.httpServer?.once("listening", () => {
+          printLocalAccessInfo(server);
+        });
+
+        server.httpServer?.once("close", () => {
+          closeActiveCloudflareTunnel();
+        });
+
+        return;
+      }
+
       installAccessMiddleware(server);
 
       server.httpServer?.once("listening", () => {
@@ -221,6 +238,12 @@ function readPortFromEnv() {
   return undefined;
 }
 
+function readDevServerHost() {
+  const configuredHost = String(process.env.JLPT_DEV_HOST ?? "").trim();
+  if (configuredHost) return configuredHost;
+  return shouldUseLocalOnlyDevServer() ? "127.0.0.1" : "0.0.0.0";
+}
+
 function readQueryToken(req) {
   const url = new URL(req.url ?? "/", "http://localhost");
   for (const key of ACCESS_TOKEN_ALIASES) {
@@ -305,6 +328,16 @@ async function printMobileAccessInfo(server) {
   if (externalAccessTarget) {
     printAccessTarget(externalAccessTarget);
   }
+}
+
+function printLocalAccessInfo(server) {
+  const port = readBoundPort(server);
+
+  console.log("");
+  console.log("[jlpt access] Local-only dev server is bound to 127.0.0.1");
+  console.log(`[jlpt access] Local URL: http://localhost:${port}/`);
+  console.log("[jlpt access] Cloudflare Tunnel and network QR are disabled.");
+  console.log("");
 }
 
 function readBoundPort(server) {
@@ -454,6 +487,11 @@ async function readCloudflareTunnelAccess(port) {
 function shouldUseCloudflareTunnel() {
   const rawValue = String(process.env.JLPT_CLOUDFLARED ?? process.env.JLPT_CLOUDFLARE_TUNNEL ?? "1").trim().toLowerCase();
   return !["0", "false", "no", "off"].includes(rawValue);
+}
+
+function shouldUseLocalOnlyDevServer() {
+  const rawValue = String(process.env.JLPT_DEV_LOCAL_ONLY ?? "").trim().toLowerCase();
+  return ["1", "true", "yes", "on"].includes(rawValue);
 }
 
 function shouldUsePreviewAccessControl() {

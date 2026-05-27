@@ -23,7 +23,9 @@ const processes = [
 
 const children = [];
 const rawOutputMode = new Map(processes.map((item) => [item.name, false]));
-const accessToken = process.env.JLPT_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
+const localOnlyDev = process.env.JLPT_DEV_LOCAL_ONLY ?? "1";
+const configuredAccessToken = String(process.env.JLPT_ACCESS_TOKEN ?? "");
+const accessToken = configuredAccessToken || (isEnabled(localOnlyDev) ? "" : crypto.randomBytes(24).toString("base64url"));
 let shuttingDown = false;
 
 for (const spec of processes) {
@@ -42,8 +44,10 @@ function startProcess(spec) {
     env: {
       ...process.env,
       FORCE_COLOR: process.env.FORCE_COLOR ?? "1",
-      JLPT_API_HOST: process.env.JLPT_API_HOST ?? "0.0.0.0",
+      JLPT_API_HOST: process.env.JLPT_API_HOST ?? (isEnabled(localOnlyDev) ? "127.0.0.1" : "0.0.0.0"),
       JLPT_ACCESS_TOKEN: accessToken,
+      JLPT_CLOUDFLARED: process.env.JLPT_CLOUDFLARED ?? "0",
+      JLPT_DEV_LOCAL_ONLY: localOnlyDev,
     },
     windowsHide: true,
     stdio: ["ignore", "pipe", "pipe"],
@@ -112,6 +116,10 @@ function writeLine(spec, line) {
 
 function writePrefixedLine(spec, line) {
   process.stdout.write(`${spec.color}[${spec.name}]${COLORS.reset} ${line}\n`);
+}
+
+function isEnabled(value) {
+  return ["1", "true", "yes", "on"].includes(String(value ?? "").trim().toLowerCase());
 }
 
 function shutdown(exitCode) {
