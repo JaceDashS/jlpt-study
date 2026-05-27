@@ -5,7 +5,7 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
     const sourceRef = item?.sourceRef;
     if (!sourceRef || !sourceRef.sourcePath) {
       console.warn("Skip source persist: missing sourceRef", item?.id, field);
-      return;
+      return false;
     }
 
     try {
@@ -27,9 +27,12 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Failed to persist source JSON:", response.status, errorText);
+        return false;
       }
+      return true;
     } catch (error) {
       console.error("Failed to persist source JSON:", error);
+      return false;
     }
   };
 
@@ -38,7 +41,7 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
     const sourceRef = sourceItem?.sourceRef;
     if (!sourceRef || !sourceRef.sourcePath) {
       console.warn("Skip source persist(day): missing sourceRef", field);
-      return;
+      return false;
     }
 
     try {
@@ -60,9 +63,12 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Failed to persist day field:", response.status, errorText);
+        return false;
       }
+      return true;
     } catch (error) {
       console.error("Failed to persist day field:", error);
+      return false;
     }
   };
 

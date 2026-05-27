@@ -11,11 +11,17 @@ import {
   HomeHeaderSection,
   ProgressOverviewSection,
   TodayStudySection,
+  type ActionDoneState,
+  type ActionHoldState,
+  type ActionPendingState,
   type AllDayRow,
   type DateRangeMeta,
+  type HomeActionType,
   type OverallMeta,
   type PlanRange,
 } from "./HomePageSections.tsx";
+
+const ACTION_DONE_VISIBLE_MS = 1000;
 
 type DashboardProps = {
   allDayRows: AllDayRow[];
@@ -76,15 +82,69 @@ export function HomePage({
 }: HomePageProps) {
   const [wordImportTargetKey, setWordImportTargetKey] = React.useState<string | null>(null);
   const [wordImportText, setWordImportText] = React.useState("");
-  const [actionDoneByKey, setActionDoneByKey] = React.useState<Record<string, Partial<Record<"copy" | "input", boolean>>>>({});
+  const [actionDoneByKey, setActionDoneByKey] = React.useState<Record<string, ActionDoneState>>({});
+  const [actionHoldByKey, setActionHoldByKey] = React.useState<Record<string, ActionHoldState>>({});
+  const [actionPendingByKey, setActionPendingByKey] = React.useState<Record<string, ActionPendingState>>({});
+  const actionHoldTimersRef = React.useRef<Record<string, number>>({});
 
-  const markActionDone = (path: LearningPath, action: "copy" | "input") => {
+  React.useEffect(
+    () => () => {
+      Object.keys(actionHoldTimersRef.current).forEach((timerKey) => {
+        window.clearTimeout(actionHoldTimersRef.current[timerKey]);
+      });
+    },
+    [],
+  );
+
+  const markActionDone = (path: LearningPath, action: HomeActionType, holdMs = 0) => {
     const key = toLearningPathKey(path);
     setActionDoneByKey((prev) => ({
       ...prev,
       [key]: {
         ...(prev[key] ?? {}),
         [action]: true,
+      },
+    }));
+    if (holdMs > 0) {
+      holdActionDone(path, action, holdMs);
+    }
+  };
+
+  const holdActionDone = (path: LearningPath, action: HomeActionType, holdMs: number) => {
+    const key = toLearningPathKey(path);
+    const timerKey = `${key}:${action}`;
+    const prevTimerId = actionHoldTimersRef.current[timerKey];
+    if (prevTimerId) {
+      window.clearTimeout(prevTimerId);
+    }
+
+    setActionHoldByKey((prev) => ({
+      ...prev,
+      [key]: {
+        ...(prev[key] ?? {}),
+        [action]: true,
+      },
+    }));
+
+    actionHoldTimersRef.current[timerKey] = window.setTimeout(() => {
+      setActionHoldByKey((prev) => ({
+        ...prev,
+        [key]: {
+          ...(prev[key] ?? {}),
+          [action]: false,
+        },
+      }));
+      delete actionHoldTimersRef.current[timerKey];
+    }, holdMs);
+  };
+
+  const setActionPending = (path: LearningPath, action: HomeActionType, isPending: boolean) => {
+    const key = toLearningPathKey(path);
+    setActionPendingByKey((prev) => ({
+      ...prev,
+      [key]: {
+        ...(prev[key] ?? {}),
+        [action]: isPending,
       },
     }));
   };
@@ -100,29 +160,44 @@ export function HomePage({
   };
 
   const handleCopy = async (path: LearningPath) => {
-    const copied = await studyActions.copyDayWordsByPath(path);
-    if (copied) {
-      markActionDone(path, "copy");
+    setActionPending(path, "copy", true);
+    try {
+      const copied = await studyActions.copyDayWordsByPath(path);
+      if (copied) {
+        markActionDone(path, "copy");
+      }
+    } finally {
+      setActionPending(path, "copy", false);
     }
   };
 
   const handleWordImportFromClipboard = async (path: LearningPath) => {
-    const applied = await studyActions.importDayDecompositionFromClipboardByPath(path);
-    if (applied) {
-      markActionDone(path, "input");
-      if (wordImportTargetKey === toLearningPathKey(path)) {
-        closeWordImport();
+    setActionPending(path, "input", true);
+    try {
+      const applied = await studyActions.importDayDecompositionFromClipboardByPath(path);
+      if (applied) {
+        markActionDone(path, "input", ACTION_DONE_VISIBLE_MS);
+        if (wordImportTargetKey === toLearningPathKey(path)) {
+          closeWordImport();
+        }
+        return;
       }
-      return;
+      openWordImport(path);
+    } finally {
+      setActionPending(path, "input", false);
     }
-    openWordImport(path);
   };
 
   const submitWordImport = async (path: LearningPath) => {
-    const applied = await studyActions.importDayDecompositionFromTextByPath(path, wordImportText);
-    if (!applied) return;
-    markActionDone(path, "input");
-    closeWordImport();
+    setActionPending(path, "input", true);
+    try {
+      const applied = await studyActions.importDayDecompositionFromTextByPath(path, wordImportText);
+      if (!applied) return;
+      markActionDone(path, "input", ACTION_DONE_VISIBLE_MS);
+      closeWordImport();
+    } finally {
+      setActionPending(path, "input", false);
+    }
   };
 
   return (
@@ -145,6 +220,8 @@ export function HomePage({
         />
         <TodayStudySection
           actionDoneByKey={actionDoneByKey}
+          actionHoldByKey={actionHoldByKey}
+          actionPendingByKey={actionPendingByKey}
           closeWordImport={closeWordImport}
           handleCopy={handleCopy}
           handleWordImportFromClipboard={handleWordImportFromClipboard}

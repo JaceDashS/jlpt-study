@@ -8,7 +8,7 @@ import {
 import type { LearningPath, SetStudyState, StudyDay, StudyItem, StudyUnit } from "./studyTypes.ts";
 
 type ToastType = "success" | "error";
-type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<void>;
+type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<boolean>;
 
 type DayClipboardActionsOptions = {
   session: { unitId: string; dayId: string } | null;
