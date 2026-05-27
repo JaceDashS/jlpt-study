@@ -3,7 +3,7 @@ import { buildImportPayloadByExpression, isMemoEmpty, isProblemEmpty } from "./d
 import type { LearningPath, SetStudyState, StudyDay, StudyItem, StudyUnit } from "./studyTypes.ts";
 
 type ToastType = "success" | "error";
-type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<void>;
+type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<boolean>;
 
 type DayMutationOptions = {
   getDisplayDayIndex: (day: StudyDay, sequenceIndexFallback: number) => number;
@@ -104,12 +104,7 @@ export async function applyDayDecompositionImport({
     }),
   };
 
-  setState((prev) => ({
-    ...prev,
-    curriculum: replaceDay(prev.curriculum, targetPath, nextDay),
-  }));
-
-  await Promise.all(
+  const persistResults = await Promise.all(
     changedItems.flatMap(({ item, payload, canWriteMemo, canWriteProblem }) => {
       const tasks = [];
       if (canWriteMemo) {
@@ -121,6 +116,16 @@ export async function applyDayDecompositionImport({
       return tasks;
     }),
   );
+
+  if (persistResults.some((ok) => !ok)) {
+    showToast(`Day${dayIndexLabel} 단어 입력 저장 실패`, "error");
+    return false;
+  }
+
+  setState((prev) => ({
+    ...prev,
+    curriculum: replaceDay(prev.curriculum, targetPath, nextDay),
+  }));
 
   showToast(`Day${dayIndexLabel} 단어 입력 ${changedItems.length}개 반영됨`);
   return true;

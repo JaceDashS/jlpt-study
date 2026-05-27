@@ -4,10 +4,12 @@ import { toLearningPathKey } from "../../domain/learningPath.ts";
 import { cx } from "../../styles.ts";
 import type { LearningPlanRow, ReviewDueRow } from "../../domain/homeDashboard.ts";
 import type { LearningPath } from "../../domain/studyTypes.ts";
-import type { ActionDoneState } from "./HomePageSectionTypes.ts";
+import type { ActionDoneState, ActionHoldState, ActionPendingState } from "./HomePageSectionTypes.ts";
 
 export function TodayStudySection({
   actionDoneByKey,
+  actionHoldByKey,
+  actionPendingByKey,
   handleCopy,
   handleWordImportFromClipboard,
   learningPlanRows,
@@ -23,6 +25,8 @@ export function TodayStudySection({
   setWordImportText,
 }: {
   actionDoneByKey: Record<string, ActionDoneState>;
+  actionHoldByKey: Record<string, ActionHoldState>;
+  actionPendingByKey: Record<string, ActionPendingState>;
   closeWordImport: () => void;
   handleCopy: (path: LearningPath) => Promise<void>;
   handleWordImportFromClipboard: (path: LearningPath) => Promise<void>;
@@ -56,23 +60,27 @@ export function TodayStudySection({
   }) => {
     const targetKey = toLearningPathKey(path);
     return (
-      <DecompositionActionGroup
-        actionDone={actionDoneByKey[targetKey] ?? {}}
-        closeWordImport={closeWordImport}
-        dayTitle={dayTitle}
-        handleCopy={handleCopy}
-        handleWordImportFromClipboard={handleWordImportFromClipboard}
-        isWordImportOpen={wordImportTargetKey === targetKey}
-        missingCount={missingCount}
-        hasFail={hasFail}
-        modeLabel={modeLabel}
-        modeTone={modeTone}
-        path={path}
-        setWordImportText={setWordImportText}
-        submitWordImport={submitWordImport}
-        totalCount={totalCount}
-        wordImportText={wordImportText}
-      />
+      <React.Fragment key={`${targetKey}:decomposition-actions`}>
+        <DecompositionActionGroup
+          actionDone={actionDoneByKey[targetKey] ?? {}}
+          actionHold={actionHoldByKey[targetKey] ?? {}}
+          actionPending={actionPendingByKey[targetKey] ?? {}}
+          closeWordImport={closeWordImport}
+          dayTitle={dayTitle}
+          handleCopy={handleCopy}
+          handleWordImportFromClipboard={handleWordImportFromClipboard}
+          isWordImportOpen={wordImportTargetKey === targetKey}
+          missingCount={missingCount}
+          hasFail={hasFail}
+          modeLabel={modeLabel}
+          modeTone={modeTone}
+          path={path}
+          setWordImportText={setWordImportText}
+          submitWordImport={submitWordImport}
+          totalCount={totalCount}
+          wordImportText={wordImportText}
+        />
+      </React.Fragment>
     );
   };
 
@@ -81,8 +89,11 @@ export function TodayStudySection({
       <h3>오늘 해야할 학습</h3>
       {reviewDue.length === 0 && <p className={cx("muted")}>반복학습 대상 없음 (기준: nextReviewDate before-or-equal today)</p>}
       <div className={cx("stack")}>
-        {reviewDue.map((item) =>
-          item.missingDecompositionCount > 0
+        {reviewDue.map((item) => {
+          const targetKey = toLearningPathKey(item.path);
+          const actionHold = actionHoldByKey[targetKey] ?? {};
+          const actionPending = actionPendingByKey[targetKey] ?? {};
+          return item.missingDecompositionCount > 0 || hasPendingAction(actionPending) || hasHeldAction(actionHold)
             ? renderDecompositionActionGroup({
                 path: item.path,
                 dayTitle: item.dayTitle,
@@ -106,11 +117,14 @@ export function TodayStudySection({
                 <span>반복학습 대상: {item.dueCount}개</span>
                 <span>복습 회차: {Math.max(1, Math.round(item.progress * 4) + 1)}/5</span>
               </button>
-            ),
-        )}
+            );
+        })}
 
-        {pendingLearningRows.map((row) =>
-          row.missingDecompositionCount > 0
+        {pendingLearningRows.map((row) => {
+          const targetKey = toLearningPathKey(row.path);
+          const actionHold = actionHoldByKey[targetKey] ?? {};
+          const actionPending = actionPendingByKey[targetKey] ?? {};
+          return row.missingDecompositionCount > 0 || hasPendingAction(actionPending) || hasHeldAction(actionHold)
             ? renderDecompositionActionGroup({
                 path: row.path,
                 dayTitle: row.dayTitle,
@@ -131,8 +145,8 @@ export function TodayStudySection({
                 </span>
                 <span>오늘 신규 학습 할당 목록</span>
               </button>
-            ),
-        )}
+            );
+        })}
         {pendingLearningRows.length === 0 && learningPlanRows.length > 0 && (
           <p className={cx("muted")}>오늘 신규 학습을 모두 완료했습니다. 내일({today} 이후 날짜) 다시 생성됩니다.</p>
         )}
@@ -144,6 +158,8 @@ export function TodayStudySection({
 
 function DecompositionActionGroup({
   actionDone,
+  actionHold,
+  actionPending,
   dayTitle,
   handleCopy,
   handleWordImportFromClipboard,
@@ -160,6 +176,8 @@ function DecompositionActionGroup({
   wordImportText,
 }: {
   actionDone: ActionDoneState;
+  actionHold: ActionHoldState;
+  actionPending: ActionPendingState;
   closeWordImport: () => void;
   dayTitle: string;
   handleCopy: (path: LearningPath) => Promise<void>;
@@ -176,11 +194,15 @@ function DecompositionActionGroup({
   wordImportText: string;
 }) {
   const targetKey = toLearningPathKey(path);
-  const copyLabel = actionDone.copy ? "복사됨" : "학습단어 복사";
-  const inputLabel = actionDone.input ? "입력됨" : "입력";
+  const isCopyPending = Boolean(actionPending.copy);
+  const isInputPending = Boolean(actionPending.input);
+  const isInputHeld = Boolean(actionHold.input);
+  const isAnyActionPending = isCopyPending || isInputPending;
+  const copyLabel = isCopyPending ? "복사 중" : actionDone.copy ? "복사됨" : "학습단어 복사";
+  const inputLabel = isInputPending ? "입력 중" : actionDone.input ? "입력됨" : "입력";
 
   return (
-    <div key={`${targetKey}:decomposition-actions`} className={cx("home-action-group")}>
+    <div className={cx("home-action-group")}>
       <div className={cx("home-action-group-head")}>
         <div className={cx("home-action-group-title")}>
           <strong>{dayTitle}</strong>
@@ -192,22 +214,30 @@ function DecompositionActionGroup({
       <div className={cx("home-action-button-grid")}>
         <button
           type="button"
-          className={cx(`card-button home-action-button ${actionDone.copy ? "home-action-button-done" : ""}`)}
+          className={cx(
+            `card-button home-action-button ${actionDone.copy ? "home-action-button-done" : ""} ${isCopyPending ? "home-action-button-pending" : ""}`,
+          )}
+          disabled={isAnyActionPending || isInputHeld}
           onClick={() => {
             void handleCopy(path);
           }}
+          aria-busy={isCopyPending}
         >
-          <strong>{copyLabel}</strong>
+          <ActionButtonLabel isPending={isCopyPending}>{copyLabel}</ActionButtonLabel>
           <span>{modeLabel} 전에 필요한 학습 단어 JSON을 복사합니다.</span>
         </button>
         <button
           type="button"
-          className={cx(`card-button home-action-button ${actionDone.input ? "home-action-button-done" : ""}`)}
+          className={cx(
+            `card-button home-action-button ${actionDone.input ? "home-action-button-done" : ""} ${isInputPending ? "home-action-button-pending" : ""}`,
+          )}
+          disabled={isAnyActionPending || isInputHeld}
           onClick={() => {
             void handleWordImportFromClipboard(path);
           }}
+          aria-busy={isInputPending}
         >
-          <strong>{inputLabel}</strong>
+          <ActionButtonLabel isPending={isInputPending}>{inputLabel}</ActionButtonLabel>
           <span>{modeLabel} 전에 한자 디컴포지션을 반영합니다.</span>
         </button>
       </div>
@@ -225,12 +255,14 @@ function DecompositionActionGroup({
           <div className={cx("word-import-actions")}>
             <button
               type="button"
-              className={cx("action")}
+              className={cx(`action ${isInputPending ? "home-import-submit-pending" : ""}`)}
+              disabled={isInputPending}
               onClick={() => {
                 void submitWordImport(path);
               }}
+              aria-busy={isInputPending}
             >
-              가져오기
+              <ActionButtonLabel isPending={isInputPending}>{isInputPending ? "가져오는 중" : "가져오기"}</ActionButtonLabel>
             </button>
             <button type="button" className={cx("action")} onClick={closeWordImport}>
               닫기
@@ -256,4 +288,21 @@ function ModeChip({
       {hasFail ? `${modeLabel}・실패` : modeLabel}
     </span>
   );
+}
+
+function ActionButtonLabel({ children, isPending }: { children: React.ReactNode; isPending: boolean }) {
+  return (
+    <strong className={cx("home-action-button-label")}>
+      {isPending && <span className={cx("home-action-spinner")} aria-hidden="true" />}
+      <span>{children}</span>
+    </strong>
+  );
+}
+
+function hasPendingAction(actionPending: ActionPendingState) {
+  return Boolean(actionPending.copy || actionPending.input);
+}
+
+function hasHeldAction(actionHold: ActionHoldState) {
+  return Boolean(actionHold.copy || actionHold.input);
 }

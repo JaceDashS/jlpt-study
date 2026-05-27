@@ -28,4 +28,7 @@ export type AllDayRow = {
   path: LearningPath;
 };
 
-export type ActionDoneState = Partial<Record<"copy" | "input", boolean>>;
+export type HomeActionType = "copy" | "input";
+export type ActionDoneState = Partial<Record<HomeActionType, boolean>>;
+export type ActionHoldState = Partial<Record<HomeActionType, boolean>>;
+export type ActionPendingState = Partial<Record<HomeActionType, boolean>>;

@@ -12,8 +12,8 @@ import type {
   StudyUnit,
 } from "./studyTypes.ts";
 
-type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<void>;
-type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<void>;
+type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<unknown>;
+type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<unknown>;
 type DayResult = { day: StudyDay; allPass?: boolean };
 type ProblemPayload = { error: string; problem: unknown };
 

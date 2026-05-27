@@ -1,7 +1,7 @@
 import type { LearningPath, QuizResult, SessionView, SetStudyState, StudyDay, StudyItem, StudyUnit } from "./studyTypes.ts";
 
-type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<void>;
-type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<void>;
+type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<unknown>;
+type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<unknown>;
 
 type ProgressActionsOptions = {
   session: SessionView | null;

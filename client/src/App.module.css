@@ -249,6 +249,32 @@ p {
   align-content: center;
 }
 
+.home-action-button:disabled {
+  cursor: wait;
+  opacity: 0.78;
+  box-shadow: none;
+}
+
+.home-action-button-pending {
+  border-color: #5f756f;
+  background: #243033;
+}
+
+.home-action-button-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.home-action-spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 999px;
+  animation: home-action-spin 0.75s linear infinite;
+}
+
 .home-action-button-done {
   border-color: #496756;
   background: #23332b;
@@ -256,6 +282,10 @@ p {
 
 .home-action-button-done strong {
   color: #cfe7da;
+}
+
+.home-import-submit-pending {
+  cursor: wait;
 }
 
 .mode-chip {
@@ -287,6 +317,12 @@ p {
   background: #4a2b2b;
   border-color: #6e3f3f;
   color: #ffd9d6;
+}
+
+@keyframes home-action-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .progress-meta {
