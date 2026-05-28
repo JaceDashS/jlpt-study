@@ -25,10 +25,13 @@ export type ReviewDueRow = {
   dayId: string;
   unitTitle: string;
   dayTitle: string;
+  dayIndex: number;
+  sequenceIndex: number;
   dueCount: number;
   dueItemIds: string[];
   failCount: number;
   progress: number;
+  reviewRound: number;
   missingDecompositionCount: number;
 };
 
@@ -59,11 +62,21 @@ function countFailedQuizItems(day: StudyDay) {
   return day.items.filter((item) => isQuizTarget(item) && item.lastResult === "FAIL").length;
 }
 
+function getReviewRound(progress: number) {
+  return Math.max(1, Math.round(progress * 4) + 1);
+}
+
+function compareReviewDueRows(a: ReviewDueRow, b: ReviewDueRow) {
+  return a.reviewRound - b.reviewRound || a.dayIndex - b.dayIndex || a.sequenceIndex - b.sequenceIndex;
+}
+
 export function buildReviewDue(curriculum: StudyUnit[], today: string) {
   const list: ReviewDueRow[] = [];
+  let sequenceIndex = 0;
 
   curriculum.forEach((unit) => {
     unit.days.forEach((day) => {
+      sequenceIndex += 1;
       const allDayQuizItems = day.items.filter(isQuizTarget);
       const allDayItemIds = allDayQuizItems.map((item) => item.id);
       const dayLevelDue =
@@ -73,22 +86,26 @@ export function buildReviewDue(curriculum: StudyUnit[], today: string) {
 
       if (!dayLevelDue) return;
 
+      const progress = getDayProgress(day);
       list.push({
         path: { unitId: unit.id, dayId: day.id },
         unitId: unit.id,
         dayId: day.id,
         unitTitle: unit.title,
         dayTitle: day.title,
+        dayIndex: getDisplayDayIndex(day, sequenceIndex),
+        sequenceIndex,
         dueCount: allDayItemIds.length,
         dueItemIds: allDayItemIds,
         failCount: countFailedQuizItems(day),
-        progress: getDayProgress(day),
+        progress,
+        reviewRound: getReviewRound(progress),
         missingDecompositionCount: getDayMissingDecompositionCount(day),
       });
     });
   });
 
-  return list;
+  return list.sort(compareReviewDueRows);
 }
 
 export function buildHomeDueDebug(curriculum: StudyUnit[], today: string) {

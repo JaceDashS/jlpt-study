@@ -115,7 +115,7 @@ export function TodayStudySection({
                   <ModeChip hasFail={item.failCount > 0} modeLabel="복습" modeTone="review" />
                 </div>
                 <span>반복학습 대상: {item.dueCount}개</span>
-                <span>복습 회차: {Math.max(1, Math.round(item.progress * 4) + 1)}/5</span>
+                <span>복습 회차: {item.reviewRound}/5</span>
               </button>
             );
         })}
