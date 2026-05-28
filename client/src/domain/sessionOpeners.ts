@@ -9,6 +9,30 @@ type SessionOpenersOptions = {
   stateCurriculum: StudyUnit[];
 };
 
+function orderReviewItemIds({
+  day,
+  dueItemIds,
+  isQuizTarget,
+  shuffleArray,
+}: {
+  day: StudyDay | null;
+  dueItemIds: string[];
+  isQuizTarget: (item: StudyItem) => boolean;
+  shuffleArray: <T>(items: T[]) => T[];
+}) {
+  if (!day) return shuffleArray(dueItemIds);
+
+  const dueIdSet = new Set(dueItemIds);
+  const failedDueIds = day.items
+    .filter(isQuizTarget)
+    .filter((item) => dueIdSet.has(item.id) && item.lastResult === "FAIL")
+    .map((item) => item.id);
+  const failedIdSet = new Set(failedDueIds);
+  const otherDueIds = dueItemIds.filter((id) => !failedIdSet.has(id));
+
+  return [...shuffleArray(failedDueIds), ...shuffleArray(otherDueIds)];
+}
+
 export function createSessionOpeners({
   getPathDay,
   isQuizTarget,
@@ -40,7 +64,13 @@ export function createSessionOpeners({
   };
 
   const openReviewDay = (path: LearningPath, dueItemIds: string[]) => {
-    const shuffledDueIds = shuffleArray(dueItemIds);
+    const day = getPathDay(stateCurriculum, path);
+    const orderedDueIds = orderReviewItemIds({
+      day,
+      dueItemIds,
+      isQuizTarget,
+      shuffleArray,
+    });
     markDayAttemptNow(path);
 
     setSession({
@@ -56,8 +86,8 @@ export function createSessionOpeners({
       showMemoPersonal: {},
       allPass: null,
       passCount: 0,
-      reviewedCount: shuffledDueIds.length,
-      itemIds: shuffledDueIds,
+      reviewedCount: orderedDueIds.length,
+      itemIds: orderedDueIds,
     });
   };
 
