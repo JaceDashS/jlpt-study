@@ -5070,8 +5070,7 @@
               "meaningKo": "경치",
               "readingParts": {
                 "kanjiToKana": {
-                  "景": "けい",
-                  "色": "しき"
+                  "景色": "けしき"
                 }
               },
               "problem": {
@@ -5083,7 +5082,7 @@
                   "げいしき",
                   "けしき"
                 ],
-                "answer": "けいしき"
+                "answer": "けしき"
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 景 | 色 |\n|---|---|---|\n| 音読 | ケイ（けい） | ショク・シキ（しき） |\n| 訓読 | （全体）けいしき (入力に従う) | いろ |\n| 뜻 | 빛, 경치 | 색, 빛깔 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 景気（けいき）: 경기<br>* 景観（けいかん）: 경관 | * 色彩（しきさい）: 색채<br>* 色紙（しきし）: 색지 |\n| 구성(IDS) | ⿱日京 | ⿱⺈巴 |\n| 부수/부품 | 日, 京 | ⺈, 巴 |\n| 부품 역할 | 日: 해, 밝음<br>京: 큰 언덕/높음(추정) | ⺈: 구부러진 머리 부분(추정)<br>巴: 꼬리감음, 색채의 뜻 요소(추정) |\n| 재귀 구조 | 景[빛/경치] → ⿱[구성] 日[해] + 京[큰 언덕](추정) | 色[색] → ⿱[구성] ⺈[머리 부분](추정) + 巴[꼬리감음](추정) |\n| 최종 최소 단위 | 日[해], 京[큰 언덕](추정) | ⺈[머리 부분](추정), 巴[꼬리감음](추정) |",
@@ -11730,9 +11729,9 @@
               "meaningKo": "사람들",
               "readingParts": {
                 "kanjiToKana": {
-                  "人": "ひと"
-                },
-                "restKana": "びと"
+                  "人": "ひと",
+                  "々": "びと"
+                }
               },
               "problem": {
                 "sentence": "広場に集まった人々は静かに話していました。",
@@ -13867,20 +13866,19 @@
               "meaningKo": "빈집",
               "readingParts": {
                 "kanjiToKana": {
-                  "空": "あ"
-                },
-                "restKana": "きや"
+                  "空き家": "あきや"
+                }
               },
               "problem": {
                 "sentence": "近所の空き家を市が管理しています。",
                 "target": "空き家",
                 "choices": [
-                  "あき家",
+                  "あきや",
                   "あけ家",
                   "あく家",
                   "おき家"
                 ],
-                "answer": "あき家"
+                "answer": "あきや"
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 空 | 家 |\n|---|---|---|\n| 音読 | クウ | カ・ケ |\n| 訓読 | そら・あく・あ・（全体）あき家 | いえ・や |\n| 뜻 | 비다, 하늘 | 집, 가정 |\n| 예시 | 空港（くうこう）: 공항<br>空く（あく）: 비다 | 家族（かぞく）: 가족<br>家屋（かおく）: 가옥 |\n| 분해 | 1단계: 空 → 穴[구멍] + 工[장인/일]<br>2단계: 穴 → 宀[집/갓머리] + 八[여덟/나뉨]<br>최종: 宀, 八, 工 | 1단계: 家 → 宀[집/갓머리] + 豕[돼지](常用外)<br>최종: 宀, 豕（常用外） |",
@@ -13986,20 +13984,19 @@
               "meaningKo": "생물",
               "readingParts": {
                 "kanjiToKana": {
-                  "生": "い"
-                },
-                "restKana": "きもの"
+                  "生き物": "いきもの"
+                }
               },
               "problem": {
                 "sentence": "森には多くの生き物がいます。",
                 "target": "生き物",
                 "choices": [
-                  "いき物",
+                  "いきもの",
                   "いけ物",
                   "うき物",
                   "いぎ物"
                 ],
-                "answer": "いき物"
+                "answer": "いきもの"
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 生 | 物 |\n|---|---|---|\n| 音読 | セイ・ショウ | ブツ・モツ |\n| 訓読 | いきる・い・（全体）いき物 | もの |\n| 뜻 | 살다, 태어나다 | 물건, 생물 |\n| 예시 | 生活（せいかつ）: 생활<br>生む（うむ）: 낳다 | 動物（どうぶつ）: 동물<br>荷物（にもつ）: 짐 |\n| 분해 | 1단계: 生 → 土[흙] + 丿[싹/삐침](常用外・推定)<br>최종: 土, 丿（常用外） | 1단계: 物 → 牛[소] + 勿[말다/없다](常用外)<br>2단계: 勿 → 勹[싸다](常用外) + 丿[삐침](常用外)<br>최종: 牛, 勹（常用外）, 丿（常用外） |",
@@ -14193,20 +14190,19 @@
               "meaningKo": "분실물",
               "readingParts": {
                 "kanjiToKana": {
-                  "落": "お"
-                },
-                "restKana": "としもの"
+                  "落とし物": "おとしもの"
+                }
               },
               "problem": {
                 "sentence": "駅で落とし物を届けました。",
                 "target": "落とし物",
                 "choices": [
-                  "おとし物",
+                  "おとしもの",
                   "おどし物",
                   "おたし物",
                   "おとす物"
                 ],
-                "answer": "おとし物"
+                "answer": "おとしもの"
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 落 | 物 |\n|---|---|---|\n| 音読 | ラク | ブツ・モツ |\n| 訓読 | おとす・お・（全体）おとし物 | もの |\n| 뜻 | 떨어지다, 잃어버리다 | 물건, 것 |\n| 예시 | 落下（らっか）: 낙하<br>落語（らくご）: 라쿠고 | 動物（どうぶつ）: 동물<br>品物（しなもの）: 물건 |\n| 분해 | 1단계: 落 → 艹[풀] + 洛[강 이름/물이 흐르다](常用外)<br>2단계: 洛 → 氵[물] + 各[각각]<br>3단계: 各 → 夂[뒤져 오다](常用外) + 口[입]<br>최종: 艹, 氵, 夂（常用外）, 口 | 1단계: 物 → 牛[소] + 勿[말다/없다](常用外)<br>2단계: 勿 → 勹[싸다](常用外) + 丿[삐침](常用外)<br>최종: 牛, 勹（常用外）, 丿（常用外） |",
@@ -14708,7 +14704,7 @@
               "meaningKo": "결혼식",
               "readingParts": {
                 "kanjiToKana": {
-                  "結": "けつ",
+                  "結": "けっ",
                   "婚": "こん",
                   "式": "しき"
                 }
@@ -14722,7 +14718,7 @@
                   "けつごんしき",
                   "けつこんしぎ"
                 ],
-                "answer": "けつこんしき"
+                "answer": "けっこんしき"
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 結 | 婚 | 式 |\n|---|---|---|---|\n| 音読 | ケツ | コン | シキ |\n| 訓読 | むす-ぶ・ゆ-う・ゆ-わえる | Wiktionary에 명시적 설명 없음 | （全体）けつこんしき |\n| 뜻 | 묶다, 맺다, 끝맺다 | 결혼 | 형식, 의식, 식 |\n| 예시 | 結果（けっか）: 결과<br>結論（けつろん）: 결론 | 婚約（こんやく）: 약혼<br>新婚（しんこん）: 신혼 | 公式（こうしき）: 공식<br>形式（けいしき）: 형식 |\n| 분해 | 1단계: 結 → 糸[실] + 吉[길하다]<br>2단계: 吉 → 士[선비] + 口[입]<br>최종: 糸, 士, 口 | 1단계: 婚 → 女[여자] + 昏[어둡다/저녁]（常用外）<br>2단계: 昏 → 氏[씨/성씨] + 日[해/날]<br>최종: 女, 氏, 日 | 1단계: 式 → 弋[주살/말뚝]（常用外） + 工[장인/일]<br>최종: 弋（常用外）, 工 |",
@@ -18152,9 +18148,8 @@
               "meaningKo": "어울리다",
               "readingParts": {
                 "kanjiToKana": {
-                  "似": "に"
-                },
-                "restKana": "あう"
+                  "似合う": "にあう"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -19370,9 +19365,8 @@
               "meaningKo": "마감하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "締": "し"
-                },
-                "restKana": "めきる"
+                  "締め切る": "しめきる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -21442,10 +21436,8 @@
               "meaningKo": "실제로",
               "readingParts": {
                 "kanjiToKana": {
-                  "実": "じつ",
-                  "際": "さい"
-                },
-                "restKana": "に"
+                  "実際に": "じっさいに"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -21554,7 +21546,8 @@
               "meaningKo": "연달아; 차례로",
               "readingParts": {
                 "kanjiToKana": {
-                  "次": "つぎ"
+                  "次": "つぎ",
+                  "々": "つぎ"
                 }
               },
               "problem": null,
@@ -21677,9 +21670,8 @@
               "meaningKo": "따로",
               "readingParts": {
                 "kanjiToKana": {
-                  "別": "べつ"
-                },
-                "restKana": "べつに"
+                  "別々に": "べつべつに"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -21712,9 +21704,8 @@
               "meaningKo": "완전히, 전혀",
               "readingParts": {
                 "kanjiToKana": {
-                  "全": "まっ"
-                },
-                "restKana": "たく"
+                  "全く": "まったく"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -23844,7 +23835,7 @@
               "meaningKo": "지폐, 표, 팻말",
               "readingParts": {
                 "kanjiToKana": {
-                  "札": "さつ/ふだ"
+                  "札": "さつ"
                 }
               },
               "problem": null,
@@ -24324,7 +24315,7 @@
               "meaningKo": "편지, 소식, 편",
               "readingParts": {
                 "kanjiToKana": {
-                  "便": "びん/べん"
+                  "便": "びん"
                 }
               },
               "problem": null,
@@ -26243,9 +26234,9 @@
               "meaningKo": "다수; 여러 가지",
               "readingParts": {
                 "kanjiToKana": {
-                  "数": "かず"
-                },
-                "restKana": "かず"
+                  "数": "かず",
+                  "々": "かず"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -26300,9 +26291,9 @@
               "meaningKo": "여러분; ~분들",
               "readingParts": {
                 "kanjiToKana": {
-                  "方": "かた"
-                },
-                "restKana": "がた"
+                  "方": "かた",
+                  "々": "がた"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -26338,7 +26329,7 @@
               "meaningKo": "활기",
               "readingParts": {
                 "kanjiToKana": {
-                  "活": "かつ",
+                  "活": "かっ",
                   "気": "き"
                 }
               },
@@ -28534,7 +28525,7 @@
               "meaningKo": "결함",
               "readingParts": {
                 "kanjiToKana": {
-                  "欠": "けつ",
+                  "欠": "けっ",
                   "陥": "かん"
                 }
               },
@@ -28553,7 +28544,7 @@
               "meaningKo": "결승",
               "readingParts": {
                 "kanjiToKana": {
-                  "決": "けつ",
+                  "決": "けっ",
                   "勝": "しょう"
                 }
               },
@@ -28572,10 +28563,9 @@
               "meaningKo": "결착, 결말이 남; 매듭을 지음",
               "readingParts": {
                 "kanjiToKana": {
-                  "決": "けつ",
+                  "決": "けっ",
                   "着": "ちゃく"
-                },
-                "restKana": "する"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -28592,7 +28582,7 @@
               "meaningKo": "결정",
               "readingParts": {
                 "kanjiToKana": {
-                  "決": "けつ",
+                  "決": "けっ",
                   "定": "てい"
                 }
               },
@@ -29794,7 +29784,8 @@
               "meaningKo": "개개, 하나하나",
               "readingParts": {
                 "kanjiToKana": {
-                  "個": "こ"
+                  "個": "こ",
+                  "々": "こ"
                 }
               },
               "problem": null,
@@ -29850,7 +29841,7 @@
               "meaningKo": "골절",
               "readingParts": {
                 "kanjiToKana": {
-                  "骨": "こつ",
+                  "骨": "こっ",
                   "折": "せつ"
                 }
               },
@@ -29889,7 +29880,7 @@
               "readingParts": {
                 "kanjiToKana": {
                   "粉": "こな",
-                  "薬": "くすり"
+                  "薬": "ぐすり"
                 }
               },
               "problem": null,
@@ -30590,7 +30581,7 @@
               "meaningKo": "잡초",
               "readingParts": {
                 "kanjiToKana": {
-                  "雑": "ざつ",
+                  "雑": "ざっ",
                   "草": "そう"
                 }
               },
@@ -35085,7 +35076,7 @@
               "meaningKo": "입장",
               "readingParts": {
                 "kanjiToKana": {
-                  "立": "た",
+                  "立": "たち",
                   "場": "ば"
                 }
               },
@@ -35325,7 +35316,7 @@
               "meaningKo": "탈출",
               "readingParts": {
                 "kanjiToKana": {
-                  "脱": "だつ",
+                  "脱": "だっ",
                   "出": "しゅつ"
                 }
               },
@@ -35736,7 +35727,7 @@
               "meaningKo": "직경",
               "readingParts": {
                 "kanjiToKana": {
-                  "直": "ちょく",
+                  "直": "ちょっ",
                   "径": "けい"
                 }
               },
@@ -37118,7 +37109,7 @@
               "meaningKo": "일과",
               "readingParts": {
                 "kanjiToKana": {
-                  "日": "にち",
+                  "日": "にっ",
                   "課": "か"
                 }
               },
@@ -37156,7 +37147,7 @@
               "meaningKo": "주간, 낮",
               "readingParts": {
                 "kanjiToKana": {
-                  "日": "にち",
+                  "日": "にっ",
                   "中": "ちゅう"
                 }
               },
@@ -38215,7 +38206,7 @@
               "meaningKo": "필자",
               "readingParts": {
                 "kanjiToKana": {
-                  "筆": "ひつ",
+                  "筆": "ひっ",
                   "者": "しゃ"
                 }
               },
@@ -38776,7 +38767,7 @@
               "meaningKo": "물자",
               "readingParts": {
                 "kanjiToKana": {
-                  "物": "ぶつ",
+                  "物": "ぶっ",
                   "資": "し"
                 }
               },
@@ -38795,7 +38786,7 @@
               "meaningKo": "물질",
               "readingParts": {
                 "kanjiToKana": {
-                  "物": "ぶつ",
+                  "物": "ぶっ",
                   "質": "しつ"
                 }
               },
@@ -39225,7 +39216,7 @@
               "meaningKo": "별건, 다른 건",
               "readingParts": {
                 "kanjiToKana": {
-                  "別": "べつ",
+                  "別": "べっ",
                   "件": "けん"
                 }
               },
@@ -40109,10 +40100,9 @@
               "meaningKo": "불고기, 고기구이",
               "readingParts": {
                 "kanjiToKana": {
-                  "焼": "や",
+                  "焼": "やき",
                   "肉": "にく"
-                },
-                "restKana": "き"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -40620,7 +40610,7 @@
               "readingParts": {
                 "kanjiToKana": {
                   "翌": "よく",
-                  "年": "とし/ねん"
+                  "年": "ねん"
                 }
               },
               "problem": null,
@@ -41233,7 +41223,8 @@
               "meaningKo": "우리들",
               "readingParts": {
                 "kanjiToKana": {
-                  "我": "われ"
+                  "我": "われ",
+                  "々": "われ"
                 }
               },
               "problem": null,
@@ -41601,9 +41592,8 @@
               "meaningKo": "미팅, 협의",
               "readingParts": {
                 "kanjiToKana": {
-                  "打": "う"
-                },
-                "restKana": "ちあわせ"
+                  "打ち合わせ": "うちあわせ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -41620,9 +41610,8 @@
               "meaningKo": "매상, 매출",
               "readingParts": {
                 "kanjiToKana": {
-                  "売": "う"
-                },
-                "restKana": "りあげ"
+                  "売り上げ": "うりあげ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -41968,9 +41957,8 @@
               "meaningKo": "낙엽",
               "readingParts": {
                 "kanjiToKana": {
-                  "落": "お"
-                },
-                "restKana": "ちば"
+                  "落ち葉": "おちば"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -42070,7 +42058,7 @@
                 "kanjiToKana": {
                   "海": "かい",
                   "外": "がい",
-                  "出": "しゅつ",
+                  "出": "しゅっ",
                   "張": "ちょう"
                 }
               },
@@ -42306,8 +42294,7 @@
               "meaningKo": "감기약",
               "readingParts": {
                 "kanjiToKana": {
-                  "風": "かぜ",
-                  "邪": "ぐすり",
+                  "風邪": "かぜ",
                   "薬": "ぐすり"
                 }
               },
@@ -42460,8 +42447,7 @@
               "meaningKo": "배려, 마음을 씀",
               "readingParts": {
                 "kanjiToKana": {
-                  "気": "き",
-                  "配": "くばり"
+                  "気配り": "きくばり"
                 }
               },
               "problem": null,
@@ -42500,11 +42486,8 @@
               "meaningKo": "기초 다지기",
               "readingParts": {
                 "kanjiToKana": {
-                  "基": "き",
-                  "礎": "そ",
-                  "固": "かた"
-                },
-                "restKana": "め"
+                  "基礎固め": "きそがため"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -43471,9 +43454,8 @@
               "meaningKo": "간식 (수고하는 사람에 대한 격려의 음식)",
               "readingParts": {
                 "kanjiToKana": {
-                  "差": "さ"
-                },
-                "restKana": "しいれ"
+                  "差し入れ": "さしいれ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -43490,7 +43472,7 @@
               "meaningKo": "발신인",
               "readingParts": {
                 "kanjiToKana": {
-                  "差": "さ",
+                  "差": "さし",
                   "出": "だ",
                   "人": "しにん"
                 }
@@ -44349,9 +44331,8 @@
               "meaningKo": "미끄럼 방지",
               "readingParts": {
                 "kanjiToKana": {
-                  "滑": "すべ"
-                },
-                "restKana": "りどめ"
+                  "滑り止め": "すべりどめ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -44548,7 +44529,7 @@
                 "kanjiToKana": {
                   "世": "せ",
                   "界": "かい",
-                  "各": "かく",
+                  "各": "かっ",
                   "国": "こく"
                 }
               },
@@ -45428,9 +45409,8 @@
               "meaningKo": "손잡이",
               "readingParts": {
                 "kanjiToKana": {
-                  "取": "と"
-                },
-                "restKana": "って"
+                  "取っ手": "とって"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -45872,10 +45852,8 @@
               "meaningKo": "당일치기",
               "readingParts": {
                 "kanjiToKana": {
-                  "日": "ひ",
-                  "帰": "かえ"
-                },
-                "restKana": "り"
+                  "日帰り": "ひがえり"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -45913,9 +45891,8 @@
               "meaningKo": "계속",
               "readingParts": {
                 "kanjiToKana": {
-                  "引": "ひ"
-                },
-                "restKana": "きつづき"
+                  "引き続き": "ひきつづき"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -46909,7 +46886,7 @@
                 "kanjiToKana": {
                   "練": "れん",
                   "習": "しゅう",
-                  "不": "ふ",
+                  "不": "ぶ",
                   "足": "そく"
                 }
               },
@@ -47933,9 +47910,8 @@
               "meaningKo": "배우다",
               "readingParts": {
                 "kanjiToKana": {
-                  "教": "おそわ"
-                },
-                "restKana": "る"
+                  "教わる": "おそわる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -48501,9 +48477,8 @@
               "meaningKo": "후회하다, 애도하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "悔": "くや"
-                },
-                "restKana": "む"
+                  "悔やむ": "くやむ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51357,9 +51332,8 @@
               "meaningKo": "흘러나오다, 넘쳐흐르다",
               "readingParts": {
                 "kanjiToKana": {
-                  "溢": "あふ"
-                },
-                "restKana": "れだす"
+                  "溢れ出す": "あふれだす"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51376,9 +51350,8 @@
               "meaningKo": "다가가다, 서로 양보하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "歩": "あゆ"
-                },
-                "restKana": "みよる"
+                  "歩み寄る": "あゆみよる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51395,9 +51368,8 @@
               "meaningKo": "밝혀내다, 캐내다",
               "readingParts": {
                 "kanjiToKana": {
-                  "洗": "あら"
-                },
-                "restKana": "いだす"
+                  "洗い出す": "あらいだす"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51414,9 +51386,8 @@
               "meaningKo": "단언하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "言": "い"
-                },
-                "restKana": "いきる"
+                  "言い切る": "いいきる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51433,9 +51404,8 @@
               "meaningKo": "말하는 것을 잊다",
               "readingParts": {
                 "kanjiToKana": {
-                  "言": "い"
-                },
-                "restKana": "いわすれる"
+                  "言い忘れる": "いいわすれる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51452,9 +51422,8 @@
               "meaningKo": "다다르다, 도착하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "行": "い"
-                },
-                "restKana": "きつく"
+                  "行き着く": "いきつく"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51471,9 +51440,8 @@
               "meaningKo": "살아남다",
               "readingParts": {
                 "kanjiToKana": {
-                  "生": "い"
-                },
-                "restKana": "きのこる"
+                  "生き残る": "いきのこる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51490,9 +51458,8 @@
               "meaningKo": "교대하다, 교체하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "入": "い"
-                },
-                "restKana": "れかわる"
+                  "入れ替わる": "いれかわる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51509,9 +51476,8 @@
               "meaningKo": "받아들이다",
               "readingParts": {
                 "kanjiToKana": {
-                  "受": "う"
-                },
-                "restKana": "けいれる"
+                  "受け入れる": "うけいれる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -51547,9 +51513,8 @@
               "meaningKo": "접수하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "受": "う"
-                },
-                "restKana": "けつける"
+                  "受け付ける": "うけつける"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -52481,9 +52446,8 @@
               "meaningKo": "멈춰 서다",
               "readingParts": {
                 "kanjiToKana": {
-                  "立": "た"
-                },
-                "restKana": "ちどまる"
+                  "立ち止まる": "たちどまる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -52619,9 +52583,8 @@
               "meaningKo": "가득 채우다, 밀어 넣다",
               "readingParts": {
                 "kanjiToKana": {
-                  "詰": "つ"
-                },
-                "restKana": "めこむ"
+                  "詰め込む": "つめこむ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -52759,9 +52722,8 @@
               "meaningKo": "(사방으로) 튀다",
               "readingParts": {
                 "kanjiToKana": {
-                  "飛": "と"
-                },
-                "restKana": "びちる"
+                  "飛び散る": "とびちる"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -53090,9 +53052,8 @@
               "meaningKo": "성립하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "成": "な"
-                },
-                "restKana": "りたつ"
+                  "成り立つ": "なりたつ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -53634,9 +53595,8 @@
               "meaningKo": "마주 보다",
               "readingParts": {
                 "kanjiToKana": {
-                  "向": "む"
-                },
-                "restKana": "きあう"
+                  "向き合う": "むきあう"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -54093,9 +54053,8 @@
               "meaningKo": "셀 수 없다; 헤아릴 수 없다",
               "readingParts": {
                 "kanjiToKana": {
-                  "数": "かぞ"
-                },
-                "restKana": "えきれない"
+                  "数え切れない": "かぞえきれない"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -54294,9 +54253,8 @@
               "meaningKo": "떠들썩하다, 왁자지껄하다",
               "readingParts": {
                 "kanjiToKana": {
-                  "騒": "そう"
-                },
-                "restKana": "ぞうしい"
+                  "騒々しい": "そうぞうしい"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -54542,9 +54500,8 @@
               "meaningKo": "찌는 듯이 덥다, 무덥다",
               "readingParts": {
                 "kanjiToKana": {
-                  "蒸": "む"
-                },
-                "restKana": "しあつい"
+                  "蒸し暑い": "むしあつい"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -54600,9 +54557,8 @@
               "meaningKo": "연약하다, 가냘프다",
               "readingParts": {
                 "kanjiToKana": {
-                  "弱": "よわ"
-                },
-                "restKana": "よわしい"
+                  "弱々しい": "よわよわしい"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -54619,9 +54575,8 @@
               "meaningKo": "젊다",
               "readingParts": {
                 "kanjiToKana": {
-                  "若": "わか"
-                },
-                "restKana": "わかしい"
+                  "若々しい": "わかわかしい"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -55133,7 +55088,7 @@
               "meaningKo": "활발한",
               "readingParts": {
                 "kanjiToKana": {
-                  "活": "かつ",
+                  "活": "かっ",
                   "発": "ぱつ"
                 },
                 "restKana": "な"
@@ -55285,7 +55240,7 @@
               "meaningKo": "객관적인",
               "readingParts": {
                 "kanjiToKana": {
-                  "客": "きゃく",
+                  "客": "きゃっ",
                   "観": "かん",
                   "的": "てき"
                 },
@@ -55739,7 +55694,7 @@
               "meaningKo": "객관적인",
               "readingParts": {
                 "kanjiToKana": {
-                  "客": "きゃく",
+                  "客": "きゃっ",
                   "観": "かん",
                   "的": "てき"
                 },
@@ -56109,9 +56064,8 @@
               "meaningKo": "산뜻한, 명쾌한",
               "readingParts": {
                 "kanjiToKana": {
-                  "爽": "さわや"
-                },
-                "restKana": "かな"
+                  "爽やかな": "さわやかな"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -56513,7 +56467,7 @@
               "meaningKo": "솔직한",
               "readingParts": {
                 "kanjiToKana": {
-                  "率": "そつ",
+                  "率": "そっ",
                   "直": "ちょく"
                 },
                 "restKana": "な"
@@ -56533,9 +56487,8 @@
               "meaningKo": "평평한, 평탄한",
               "readingParts": {
                 "kanjiToKana": {
-                  "平": "たいら"
-                },
-                "restKana": "な"
+                  "平らな": "たいらな"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -57119,7 +57072,7 @@
               "meaningKo": "필사적인",
               "readingParts": {
                 "kanjiToKana": {
-                  "必": "ひつ",
+                  "必": "ひっ",
                   "死": "し"
                 },
                 "restKana": "な"
@@ -57413,9 +57366,8 @@
               "meaningKo": "새빨간",
               "readingParts": {
                 "kanjiToKana": {
-                  "真": "ま"
-                },
-                "restKana": "っかな"
+                  "真っ赤な": "まっかな"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -57432,9 +57384,8 @@
               "meaningKo": "새하얀",
               "readingParts": {
                 "kanjiToKana": {
-                  "真": "ま"
-                },
-                "restKana": "っしろな"
+                  "真っ白な": "まっしろな"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -58805,7 +58756,8 @@
               "meaningKo": "머지않아",
               "readingParts": {
                 "kanjiToKana": {
-                  "近": "ちか"
+                  "近": "ちか",
+                  "々": "ぢか"
                 }
               },
               "problem": null,
@@ -59041,9 +58993,9 @@
               "meaningKo": "널찍한 모양",
               "readingParts": {
                 "kanjiToKana": {
-                  "広": "ひろ"
-                },
-                "restKana": "びろ"
+                  "広": "ひろ",
+                  "々": "びろ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -63687,7 +63639,7 @@
               "readingParts": {
                 "kanjiToKana": {
                   "再": "さい",
-                  "設": "せつ",
+                  "設": "せっ",
                   "定": "てい"
                 }
               },
@@ -64058,7 +64010,7 @@
               "readingParts": {
                 "kanjiToKana": {
                   "新": "しん",
-                  "学": "がく",
+                  "学": "がっ",
                   "期": "き"
                 }
               },
@@ -64839,9 +64791,8 @@
               "meaningKo": "아주 새로운",
               "readingParts": {
                 "kanjiToKana": {
-                  "真": "ま"
-                },
-                "restKana": "あたらしい"
+                  "真新しい": "まあたらしい"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -65079,7 +65030,7 @@
               "readingParts": {
                 "kanjiToKana": {
                   "来": "らい",
-                  "学": "がく",
+                  "学": "がっ",
                   "期": "き"
                 }
               },
@@ -65472,7 +65423,7 @@
               "meaningKo": "작곡가",
               "readingParts": {
                 "kanjiToKana": {
-                  "作": "さく",
+                  "作": "さっ",
                   "曲": "きょく",
                   "家": "か"
                 }
@@ -66690,9 +66641,8 @@
               "meaningKo": "매진",
               "readingParts": {
                 "kanjiToKana": {
-                  "売": "う"
-                },
-                "restKana": "りきれ"
+                  "売り切れ": "うりきれ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -66709,11 +66659,8 @@
               "meaningKo": "기한 만료",
               "readingParts": {
                 "kanjiToKana": {
-                  "期": "き",
-                  "限": "げん",
-                  "切": "き"
-                },
-                "restKana": "れ"
+                  "期限切れ": "きげんぎれ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -66730,11 +66677,8 @@
               "meaningKo": "시간 만료",
               "readingParts": {
                 "kanjiToKana": {
-                  "時": "じ",
-                  "間": "かん",
-                  "切": "き"
-                },
-                "restKana": "れ"
+                  "時間切れ": "じかんぎれ"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -67934,10 +67878,9 @@
               "readingParts": {
                 "kanjiToKana": {
                   "見": "み",
-                  "積": "つ",
+                  "積": "つもり",
                   "書": "しょ"
-                },
-                "restKana": "もり"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -67954,11 +67897,10 @@
               "meaningKo": "신청서",
               "readingParts": {
                 "kanjiToKana": {
-                  "申": "もう",
-                  "込": "こ",
+                  "申": "もうし",
+                  "込": "こみ",
                   "書": "しょ"
-                },
-                "restKana": "み"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
@@ -69115,11 +69057,7 @@
               "meaningKo": "공터",
               "readingParts": {
                 "kanjiToKana": {
-                  "空": "あ"
-                },
-                "restKana": "き",
-                "kanjiToKana2": {
-                  "地": "ち"
+                  "空き地": "あきち"
                 }
               },
               "problem": null,
@@ -69765,7 +69703,7 @@
               "meaningKo": "출발점",
               "readingParts": {
                 "kanjiToKana": {
-                  "出": "しゅつ",
+                  "出": "しゅっ",
                   "発": "ぱつ",
                   "点": "てん"
                 }
@@ -70735,7 +70673,7 @@
               "meaningKo": "발신처",
               "readingParts": {
                 "kanjiToKana": {
-                  "発": "はつ",
+                  "発": "はっ",
                   "信": "しん",
                   "元": "もと"
                 }
@@ -71185,7 +71123,7 @@
               "meaningKo": "설득력",
               "readingParts": {
                 "kanjiToKana": {
-                  "説": "せつ",
+                  "説": "せっ",
                   "得": "とく",
                   "力": "りょく"
                 }
@@ -71205,7 +71143,7 @@
               "meaningKo": "독해력",
               "readingParts": {
                 "kanjiToKana": {
-                  "読": "どく",
+                  "読": "どっ",
                   "解": "かい",
                   "力": "りょく"
                 }
@@ -71285,7 +71223,7 @@
               "meaningKo": "식기류",
               "readingParts": {
                 "kanjiToKana": {
-                  "食": "しょく",
+                  "食": "しょっ",
                   "器": "き",
                   "類": "るい"
                 }
@@ -71900,10 +71838,8 @@
               "meaningKo": "상관없다, 지장이 없다",
               "readingParts": {
                 "kanjiToKana": {
-                  "差": "さ",
-                  "支": "し"
-                },
-                "restKana": "つかえない"
+                  "差し支えない": "さしつかえない"
+                }
               },
               "problem": null,
               "lastResult": "NEUTRAL",
