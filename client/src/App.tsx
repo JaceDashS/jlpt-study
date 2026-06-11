@@ -3,7 +3,7 @@ import { getTodayString } from "./domain/date.ts";
 import { createProblemDraft } from "./domain/problem.ts";
 import { HomePage } from "./components/HomePage.tsx";
 import { SessionPanel } from "./components/SessionPanel.tsx";
-import { LayoutWidthControl } from "./components/LayoutWidthControl.tsx";
+import { SettingsPopover } from "./components/SettingsPopover.tsx";
 import { type AssetFileMap, type AvailableBook, buildAppState } from "./domain/curriculumFiles.ts";
 import { useHomeDashboardData } from "./domain/homeDashboard.ts";
 import { useLayoutMaxWidth } from "./domain/layoutPreferences.ts";
@@ -164,27 +164,21 @@ function StudyApp({
       {!session && (
         <HomePage
           today={today}
-          assetActions={{ backupAssets, commitStudyChanges, resetLocalCache, restoreAssets }}
           bookSelection={{ availableBooks, onSwitchBook: switchBook, selectedBookId }}
           dashboard={{
             allDayRows,
             dateRangeMeta,
-            debugLogs,
-            homeDueDebug,
             learningPlanRows,
             overallMeta,
             pendingLearningRows,
             reviewDue,
           }}
           planControls={{
-            dailyNewLearningCount,
-            handleDailyNewLearningCountChange,
             planRange,
             setPlanRange,
           }}
           studyActions={{
             copyDayWordsByPath,
-            copyDebugLogs,
             importDayDecompositionFromClipboardByPath,
             importDayDecompositionFromTextByPath,
             openLearningDay,
@@ -244,11 +238,20 @@ function StudyApp({
         />
       )}
 
-      <LayoutWidthControl
+      <SettingsPopover
+        backupAssets={backupAssets}
         commitLayoutWidthDraft={commitLayoutWidthDraft}
+        commitStudyChanges={commitStudyChanges}
+        copyDebugLogs={copyDebugLogs}
+        dailyNewLearningCount={dailyNewLearningCount}
+        debugLogs={debugLogs}
+        handleDailyNewLearningCountChange={handleDailyNewLearningCountChange}
         handleLayoutWidthChange={handleLayoutWidthChange}
         handleLayoutWidthMouseDown={handleLayoutWidthMouseDown}
+        homeDueDebug={homeDueDebug}
         layoutMaxWidthDraft={layoutMaxWidthDraft}
+        resetLocalCache={resetLocalCache}
+        restoreAssets={restoreAssets}
         stopLayoutWidthSpinner={stopLayoutWidthSpinner}
       />
     </main>

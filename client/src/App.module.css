@@ -60,7 +60,7 @@ body {
 .toast {
   position: fixed;
   right: 16px;
-  bottom: 16px;
+  bottom: 88px;
   z-index: 120;
   padding: 10px 14px;
   border-radius: 10px;
@@ -351,55 +351,17 @@ p {
 
 .home-top-bar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
 }
 
-.home-top-left {
-  display: flex;
-  justify-content: flex-start;
-  min-width: 0;
-}
-
 .home-top-date {
   margin: 0;
   text-align: center;
+  justify-self: center;
   font-weight: 600;
-}
-
-.home-top-right {
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(2, minmax(0, auto));
-  grid-auto-columns: minmax(128px, 1fr);
-  justify-content: flex-end;
-  gap: 6px 8px;
-}
-
-.home-count-inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
-.home-count-inline select {
-  min-width: 120px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  background: #20282c;
-  color: var(--text);
-  padding: 8px 10px;
-  font: inherit;
-}
-
-.home-count-inline select:focus {
-  outline: none;
-  border-color: #6f8e87;
-  box-shadow: 0 0 0 2px rgba(113, 154, 145, 0.2);
 }
 
 .home-book-selector {
@@ -1108,37 +1070,219 @@ p {
 }
 
 .layout-width-control {
-  justify-self: center;
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
   align-items: center;
-  gap: 8px;
-  margin-top: 6px;
-  padding: 6px 10px;
+  gap: 10px;
+  min-height: 44px;
+  padding: 9px 10px;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(24, 31, 35, 0.86);
+  border-radius: 8px;
+  background: #20282c;
 }
 
 .layout-width-label {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.86rem;
 }
 
 .layout-width-input {
-  width: 78px;
+  width: 100%;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: #20282c;
+  background: #182023;
   color: var(--text);
-  padding: 2px 6px;
+  padding: 7px 8px;
   font: inherit;
-  font-size: 0.8rem;
+  font-size: 0.86rem;
 }
 
 .layout-width-input:focus {
   outline: none;
   border-color: #6f8e87;
   box-shadow: 0 0 0 2px rgba(113, 154, 145, 0.2);
+}
+
+.settings-popover-root {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 130;
+  width: 54px;
+  height: 54px;
+  pointer-events: none;
+}
+
+.settings-fab {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #4b615b;
+  border-radius: 999px;
+  background: #202b2e;
+  color: #dce8ec;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42);
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.settings-fab:hover {
+  transform: translateY(-1px);
+  background: #263438;
+  border-color: #6f8e87;
+}
+
+.settings-fab-icon {
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.settings-popover-panel {
+  position: absolute;
+  right: 0;
+  bottom: 68px;
+  width: min(360px, calc(100vw - 36px));
+  max-height: calc(100vh - 112px);
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid #334247;
+  border-radius: 8px;
+  background: rgba(26, 34, 38, 0.98);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+  animation: settings-popover-in 0.16s ease-out;
+}
+
+.settings-popover-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.settings-popover-head strong {
+  color: var(--ink);
+  font-size: 0.94rem;
+}
+
+.settings-popover-close {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #20282c;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.settings-popover-close:hover {
+  border-color: #506469;
+  color: var(--text);
+}
+
+.settings-option-list {
+  display: grid;
+  gap: 8px;
+}
+
+.settings-option-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #20282c;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.settings-select {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #182023;
+  color: var(--text);
+  padding: 7px 8px;
+  font: inherit;
+  font-size: 0.86rem;
+}
+
+.settings-select:focus {
+  border-color: #6f8e87;
+  box-shadow: 0 0 0 2px rgba(113, 154, 145, 0.2);
+}
+
+.settings-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.settings-action {
+  min-height: 42px;
+  padding: 9px 10px;
+  text-align: center;
+  white-space: normal;
+}
+
+.settings-debug-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #1d2529;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.settings-debug-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 42px;
+  padding: 9px 10px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.settings-debug-copy {
+  min-height: 30px;
+  padding: 5px 9px;
+  font-size: 0.78rem;
+}
+
+.settings-debug-body {
+  display: grid;
+  gap: 6px;
+  max-height: 260px;
+  overflow: auto;
+  padding: 0 10px 10px;
+  overflow-wrap: anywhere;
+}
+
+@keyframes settings-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .drawer-backdrop {
@@ -1363,14 +1507,6 @@ p {
     grid-template-columns: 1fr;
     gap: 8px;
   }
-
-  .home-top-date {
-    text-align: left;
-  }
-
-  .home-top-right {
-    justify-content: flex-start;
-  }
 }
 
 @media (max-width: 560px) {
@@ -1463,5 +1599,29 @@ p {
 
   .study-nav-arrow.right {
     right: 8px;
+  }
+
+  .toast {
+    right: 12px;
+    bottom: 82px;
+    max-width: calc(100vw - 24px);
+  }
+
+  .settings-popover-root {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .settings-popover-panel {
+    bottom: 64px;
+    width: calc(100vw - 24px);
+  }
+}
+
+@media (max-width: 380px) {
+  .layout-width-control,
+  .settings-option-row,
+  .settings-action-grid {
+    grid-template-columns: 1fr;
   }
 }
