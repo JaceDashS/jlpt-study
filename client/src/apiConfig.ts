@@ -1,5 +1,4 @@
 const ACCESS_TOKEN_ALIASES = ["access_token", "token"];
-const ACCESS_TOKEN_PATH_PREFIX = "/__jlpt_access/";
 const ACCESS_TOKEN_SESSION_KEY = "jlpt_access_token";
 const API_BASE_ALIASES = ["api_base", "api_url"];
 const API_BASE_SESSION_KEY = "jlpt_api_base_url";
@@ -55,12 +54,6 @@ function deriveLanApiBaseUrl() {
 }
 
 function readAccessToken() {
-  const fromPath = readPathToken();
-  if (fromPath) {
-    writeSessionValue(ACCESS_TOKEN_SESSION_KEY, fromPath);
-    return fromPath;
-  }
-
   const fromUrl = readUrlParam(ACCESS_TOKEN_ALIASES);
   if (fromUrl) {
     writeSessionValue(ACCESS_TOKEN_SESSION_KEY, fromUrl);
@@ -81,21 +74,6 @@ function readUrlParam(keys: string[]) {
     return "";
   }
   return "";
-}
-
-function readPathToken() {
-  if (typeof window === "undefined") return "";
-  try {
-    const { pathname } = window.location;
-    if (!pathname.startsWith(ACCESS_TOKEN_PATH_PREFIX)) return "";
-
-    const rest = pathname.slice(ACCESS_TOKEN_PATH_PREFIX.length);
-    const slash = rest.indexOf("/");
-    const rawToken = slash >= 0 ? rest.slice(0, slash) : rest;
-    return rawToken ? decodeURIComponent(rawToken) : "";
-  } catch (error) {
-    return "";
-  }
 }
 
 function readSessionValue(key: string) {

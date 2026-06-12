@@ -1,4 +1,3 @@
-import { spawn, spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import https from "node:https";
 import os from "node:os";
@@ -7,19 +6,14 @@ const ACCESS_TOKEN_PARAM = "access_token";
 const ACCESS_TOKEN_ALIASES = [ACCESS_TOKEN_PARAM, "token"];
 const ACCESS_TOKEN_COOKIE = "jlpt_access_token";
 const ACCESS_TOKEN_HEADER = "x-jlpt-access-token";
-const ACCESS_TOKEN_PATH_PREFIX = "/__jlpt_access/";
 const ACCESS_TOKEN_SESSION_KEY = "jlpt_access_token";
 const API_BASE_PARAM = "api_base";
 const API_BASE_ALIASES = [API_BASE_PARAM, "api_url"];
 const API_BASE_SESSION_KEY = "jlpt_api_base_url";
+const GATEWAY_HEALTH_PATH = "/__gateway/health";
 const ACCESS_TOKEN = process.env.JLPT_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
 const AUTHORIZED_CLIENT_TTL_MS = 12 * 60 * 60 * 1000;
-const CLOUDFLARED_OPEN_TIMEOUT_MS = 45_000;
-const CLOUDFLARED_URL_PATTERN = /https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.trycloudflare\.com/i;
 const authorizedClients = new Map();
-const cloudflaredLogSignatures = new Set();
-let activeCloudflareTunnel = null;
-let cloudflareTunnelStartPromise = null;
 
 const QR_VERSION = 10;
 const QR_SIZE = QR_VERSION * 4 + 17;
@@ -54,10 +48,6 @@ export function mobileAccessPlugin() {
           printLocalAccessInfo(server);
         });
 
-        server.httpServer?.once("close", () => {
-          closeActiveCloudflareTunnel();
-        });
-
         return;
       }
 
@@ -67,10 +57,6 @@ export function mobileAccessPlugin() {
         printMobileAccessInfo(server).catch((error) => {
           console.warn(`[jlpt access] Failed to print mobile access info: ${String(error?.message ?? error)}`);
         });
-      });
-
-      server.httpServer?.once("close", () => {
-        closeActiveCloudflareTunnel();
       });
     },
     configurePreviewServer(server) {
@@ -87,9 +73,13 @@ function installAccessMiddleware(server, options = {}) {
   const { attachApiAccessToken = false, trustLoopbackHost = false } = options;
 
   server.middlewares.use((req, res, next) => {
+    if (isGatewayHealthRequest(req)) {
+      writeGatewayHealth(res, readBoundPort(server));
+      return;
+    }
+
     const queryToken = readQueryToken(req);
     const hasValidQueryToken = isValidAccessToken(queryToken);
-    const hasValidPathToken = isValidAccessToken(readPathToken(req));
     const hasValidHeaderToken = isValidAccessToken(readHeaderToken(req));
     const hasValidCookieToken = isValidAccessToken(readCookieToken(req));
     const hasAuthorizedClient = isAuthorizedClient(req);
@@ -98,7 +88,6 @@ function installAccessMiddleware(server, options = {}) {
 
     if (
       !hasValidQueryToken &&
-      !hasValidPathToken &&
       !hasValidHeaderToken &&
       !hasValidCookieToken &&
       !hasAuthorizedClient &&
@@ -109,7 +98,7 @@ function installAccessMiddleware(server, options = {}) {
       return;
     }
 
-    if (hasValidQueryToken || hasValidPathToken || hasValidHeaderToken) {
+    if (hasValidQueryToken || hasValidHeaderToken) {
       authorizeClient(req);
       setAccessCookie(res);
     }
@@ -124,7 +113,6 @@ function installAccessMiddleware(server, options = {}) {
   server.httpServer?.prependListener("upgrade", (req, socket) => {
     if (
       isValidAccessToken(readQueryToken(req)) ||
-      isValidAccessToken(readPathToken(req)) ||
       isValidAccessToken(readHeaderToken(req)) ||
       isValidAccessToken(readCookieToken(req)) ||
       isAuthorizedClient(req) ||
@@ -184,6 +172,30 @@ function isApiRequest(req) {
   }
 }
 
+function isGatewayHealthRequest(req) {
+  try {
+    const url = new URL(req.url ?? "/", "http://localhost");
+    return url.pathname === GATEWAY_HEALTH_PATH;
+  } catch {
+    return false;
+  }
+}
+
+function writeGatewayHealth(res, port) {
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
+  res.end(
+    JSON.stringify({
+      ok: true,
+      name: "JLPT Study",
+      description: "Japanese study app",
+      kind: "vite",
+      port,
+    }),
+  );
+}
+
 function readRequestHostname(req) {
   const host = String(req.headers?.host ?? "").trim();
   if (!host) return "";
@@ -212,9 +224,7 @@ function normalizeClientAddress(address) {
 }
 
 function createAccessTokenCleanupScript() {
-  return `<script>(function(){try{var u=new URL(window.location.href);var changed=false;var token="";var pathPrefix=${JSON.stringify(
-    ACCESS_TOKEN_PATH_PREFIX,
-  )};if(u.pathname.indexOf(pathPrefix)===0){var rest=u.pathname.slice(pathPrefix.length);var slash=rest.indexOf("/");var raw=slash>=0?rest.slice(0,slash):rest;if(raw){try{token=decodeURIComponent(raw);}catch(e){token=raw;}u.pathname="/";changed=true;}}var tokenKeys=${JSON.stringify(
+  return `<script>(function(){try{var u=new URL(window.location.href);var changed=false;var token="";var tokenKeys=${JSON.stringify(
     ACCESS_TOKEN_ALIASES,
   )};for(var i=0;i<tokenKeys.length;i++){var k=tokenKeys[i];if(u.searchParams.has(k)){token=token||u.searchParams.get(k)||"";u.searchParams.delete(k);changed=true;}}var apiBase="";var apiKeys=${JSON.stringify(
     API_BASE_ALIASES,
@@ -251,22 +261,6 @@ function readQueryToken(req) {
     if (token) return token;
   }
   return "";
-}
-
-function readPathToken(req) {
-  const url = new URL(req.url ?? "/", "http://localhost");
-  if (!url.pathname.startsWith(ACCESS_TOKEN_PATH_PREFIX)) return "";
-
-  const rest = url.pathname.slice(ACCESS_TOKEN_PATH_PREFIX.length);
-  const slash = rest.indexOf("/");
-  const rawToken = slash >= 0 ? rest.slice(0, slash) : rest;
-  if (!rawToken) return "";
-
-  try {
-    return decodeURIComponent(rawToken);
-  } catch {
-    return rawToken;
-  }
 }
 
 function readCookieToken(req) {
@@ -336,7 +330,7 @@ function printLocalAccessInfo(server) {
   console.log("");
   console.log("[jlpt access] Local-only dev server is bound to 127.0.0.1");
   console.log(`[jlpt access] Local URL: http://localhost:${port}/`);
-  console.log("[jlpt access] Cloudflare Tunnel and network QR are disabled.");
+  console.log("[jlpt access] Network QR is disabled.");
   console.log("");
 }
 
@@ -427,18 +421,6 @@ async function readExternalAccessTarget(port) {
     };
   }
 
-  if (shouldUseCloudflareTunnel()) {
-    const cloudflareTunnelAccess = await readCloudflareTunnelAccess(port);
-    if (!cloudflareTunnelAccess) return null;
-
-    return {
-      label: "EXTERNAL_CLOUDFLARE",
-      description: "Use this from another network through Cloudflare Tunnel.",
-      url: addPathAccessTokenToUrl(cloudflareTunnelAccess.baseUrl, { token: ACCESS_TOKEN }),
-      note: formatCloudflareTunnelNote(cloudflareTunnelAccess),
-    };
-  }
-
   const publicBaseUrl = await readPublicIpBaseUrl(port);
   if (!publicBaseUrl) return null;
   return {
@@ -469,26 +451,6 @@ async function readPublicIpBaseUrl(port) {
   return `http://${formatUrlHost(host)}:${port}/`;
 }
 
-async function readCloudflareTunnelAccess(port) {
-  try {
-    const tunnel = await openActiveCloudflareTunnel(port);
-    return {
-      baseUrl: normalizeUrl(tunnel.url),
-      command: tunnel.command,
-      targetUrl: tunnel.targetUrl,
-    };
-  } catch (error) {
-    console.warn(`[jlpt access] Cloudflare Tunnel failed: ${String(error?.message ?? error)}`);
-    console.warn("[jlpt access] No external QR will be printed. Install cloudflared or set JLPT_CLOUDFLARED_BIN to cloudflared.exe.");
-    return null;
-  }
-}
-
-function shouldUseCloudflareTunnel() {
-  const rawValue = String(process.env.JLPT_CLOUDFLARED ?? process.env.JLPT_CLOUDFLARE_TUNNEL ?? "1").trim().toLowerCase();
-  return !["0", "false", "no", "off"].includes(rawValue);
-}
-
 function shouldUseLocalOnlyDevServer() {
   const rawValue = String(process.env.JLPT_DEV_LOCAL_ONLY ?? "").trim().toLowerCase();
   return ["1", "true", "yes", "on"].includes(rawValue);
@@ -497,217 +459,6 @@ function shouldUseLocalOnlyDevServer() {
 function shouldUsePreviewAccessControl() {
   const rawValue = String(process.env.JLPT_PREVIEW_ACCESS_CONTROL ?? "").trim().toLowerCase();
   return ["1", "true", "yes", "on"].includes(rawValue);
-}
-
-function openActiveCloudflareTunnel(port) {
-  if (activeCloudflareTunnel) return Promise.resolve(activeCloudflareTunnel);
-  if (cloudflareTunnelStartPromise) return cloudflareTunnelStartPromise;
-
-  const targetUrl = createCloudflareTunnelTargetUrl(port);
-  const timeoutMs = readCloudflareOpenTimeoutMs();
-  console.log(`[jlpt access] Starting Cloudflare Tunnel for ${targetUrl}`);
-  cloudflareTunnelStartPromise = openCloudflareTunnelWithTimeout(targetUrl, timeoutMs)
-    .then((tunnel) => {
-      activeCloudflareTunnel = tunnel;
-      console.log(`[jlpt access] Cloudflare Tunnel URL: ${tunnel.url}`);
-      return tunnel;
-    })
-    .catch((error) => {
-      cloudflareTunnelStartPromise = null;
-      throw error;
-    });
-
-  return cloudflareTunnelStartPromise;
-}
-
-function createCloudflareTunnelTargetUrl(port) {
-  const host = String(process.env.JLPT_CLOUDFLARED_LOCAL_HOST ?? process.env.JLPT_CLOUDFLARE_TUNNEL_LOCAL_HOST ?? "127.0.0.1").trim();
-  return `http://${formatUrlHost(host)}:${port}/`;
-}
-
-function readCloudflareOpenTimeoutMs() {
-  const rawValue = process.env.JLPT_CLOUDFLARED_TIMEOUT_MS ?? process.env.JLPT_CLOUDFLARE_TUNNEL_TIMEOUT_MS;
-  const timeoutMs = Number(rawValue);
-  return Number.isInteger(timeoutMs) && timeoutMs > 0 ? timeoutMs : CLOUDFLARED_OPEN_TIMEOUT_MS;
-}
-
-async function openCloudflareTunnelWithTimeout(targetUrl, timeoutMs) {
-  const commands = readCloudflaredCommandCandidates();
-  const errors = [];
-
-  for (const command of commands) {
-    try {
-      return await spawnCloudflaredTunnel(command, targetUrl, timeoutMs);
-    } catch (error) {
-      errors.push(`${command}: ${String(error?.message ?? error)}`);
-    }
-  }
-
-  throw new Error(errors.join("; "));
-}
-
-function spawnCloudflaredTunnel(command, targetUrl, timeoutMs) {
-  return new Promise((resolve, reject) => {
-    const args = ["tunnel", "--url", targetUrl];
-    const child = spawn(command, args, {
-      windowsHide: true,
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let settled = false;
-    let output = "";
-    let lineBuffer = "";
-    const timeout = setTimeout(() => {
-      fail(new Error(`cloudflared did not print a trycloudflare.com URL within ${timeoutMs}ms`));
-    }, timeoutMs);
-
-    function fail(error) {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timeout);
-      if (!child.killed && child.exitCode === null) {
-        try {
-          child.kill();
-        } catch {
-          // The process may already be gone after a spawn error on Windows.
-        }
-      }
-      const preview = output.trim().split(/\r?\n/).slice(-6).join(" | ");
-      reject(preview ? new Error(`${error.message}. Last output: ${preview}`) : error);
-    }
-
-    function finish(url) {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timeout);
-      resolve({
-        command,
-        process: child,
-        targetUrl,
-        url,
-      });
-    }
-
-    function handleOutput(chunk) {
-      const text = String(chunk);
-      if (!settled) {
-        output += text;
-      }
-      lineBuffer += text;
-      const lines = lineBuffer.split(/\r?\n/);
-      lineBuffer = lines.pop() ?? "";
-      for (const line of lines) {
-        printCloudflaredLine(line);
-      }
-
-      if (settled) return;
-      const match = output.match(CLOUDFLARED_URL_PATTERN);
-      if (match) {
-        finish(normalizeUrl(match[0]));
-      }
-    }
-
-    child.stdout?.setEncoding("utf8");
-    child.stderr?.setEncoding("utf8");
-    child.stdout?.on("data", handleOutput);
-    child.stderr?.on("data", handleOutput);
-
-    child.once("error", (error) => {
-      fail(error);
-    });
-
-    child.once("exit", (code, signal) => {
-      if (activeCloudflareTunnel?.process === child) {
-        activeCloudflareTunnel = null;
-        cloudflareTunnelStartPromise = null;
-        console.log(`[jlpt access] Cloudflare Tunnel closed${signal ? ` by signal ${signal}` : code === null ? "" : ` with code ${code}`}`);
-      }
-      if (!settled) {
-        fail(new Error(`cloudflared exited before opening a tunnel${signal ? ` by signal ${signal}` : code === null ? "" : ` with code ${code}`}`));
-      }
-    });
-  });
-}
-
-function printCloudflaredLine(line) {
-  const text = String(line ?? "").trim();
-  if (!text) return;
-  if (CLOUDFLARED_URL_PATTERN.test(text) || /requesting|created|registered|error|failed|err/i.test(text)) {
-    const signature = createCloudflaredLogSignature(text);
-    if (cloudflaredLogSignatures.has(signature)) return;
-    rememberCloudflaredLogSignature(signature);
-    console.log(`[jlpt access] cloudflared: ${text}`);
-  }
-}
-
-function createCloudflaredLogSignature(text) {
-  return String(text)
-    .replace(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z\s+/, "")
-    .replace(/\bconnIndex=\d+\b/g, "connIndex=*")
-    .replace(/\bevent=\d+\b/g, "event=*")
-    .replace(/\bip=\S+/g, "ip=*");
-}
-
-function rememberCloudflaredLogSignature(signature) {
-  if (cloudflaredLogSignatures.size >= 200) {
-    const first = cloudflaredLogSignatures.values().next().value;
-    cloudflaredLogSignatures.delete(first);
-  }
-  cloudflaredLogSignatures.add(signature);
-}
-
-function readCloudflaredCommandCandidates() {
-  const configured = String(process.env.JLPT_CLOUDFLARED_BIN ?? process.env.JLPT_CLOUDFLARE_TUNNEL_BIN ?? "").trim();
-  if (configured) return [configured];
-
-  if (process.platform === "win32") {
-    return uniqueStrings([
-      ...readWindowsCloudflaredServiceCommandCandidates(),
-      "cloudflared.exe",
-      "cloudflared",
-      "C:\\Program Files\\cloudflared\\cloudflared.exe",
-      "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
-      "C:\\Windows\\System32\\cloudflared.exe",
-      "C:\\Windows\\Sysnative\\cloudflared.exe",
-    ]);
-  }
-
-  return ["cloudflared"];
-}
-
-function readWindowsCloudflaredServiceCommandCandidates() {
-  try {
-    const result = spawnSync("sc.exe", ["qc", "Cloudflared"], {
-      encoding: "utf8",
-      windowsHide: true,
-    });
-    const output = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
-    const match = /BINARY_PATH_NAME\s*:\s*(?:"([^"]*cloudflared\.exe)"|([^\r\n]*cloudflared\.exe))/i.exec(output);
-    const command = (match?.[1] ?? match?.[2] ?? "").trim();
-    return command ? [command] : [];
-  } catch {
-    return [];
-  }
-}
-
-function uniqueStrings(values) {
-  return [...new Set(values.filter(Boolean))];
-}
-
-function closeActiveCloudflareTunnel() {
-  if (!activeCloudflareTunnel) return;
-  const tunnel = activeCloudflareTunnel;
-  activeCloudflareTunnel = null;
-  cloudflareTunnelStartPromise = null;
-  if (!tunnel.process.killed && tunnel.process.exitCode === null) {
-    tunnel.process.kill();
-  }
-}
-
-function formatCloudflareTunnelNote(tunnel) {
-  const notes = ["Cloudflare Tunnel is enabled by default; set JLPT_CLOUDFLARED=0 to disable it."];
-  if (tunnel.command) notes.push(`cloudflared command: ${tunnel.command}.`);
-  if (tunnel.targetUrl) notes.push(`Forwarding to ${tunnel.targetUrl}`);
-  return notes.join(" ");
 }
 
 function normalizeUrl(rawUrl) {
@@ -732,14 +483,6 @@ function addApiBaseParamToUrl(baseUrl, { apiBaseUrl }) {
   if (apiBaseUrl) {
     url.searchParams.set(API_BASE_PARAM, normalizeApiBaseUrl(apiBaseUrl));
   }
-  return url.toString();
-}
-
-export function addPathAccessTokenToUrl(baseUrl, { token }) {
-  const url = new URL(baseUrl);
-  url.pathname = `${ACCESS_TOKEN_PATH_PREFIX}${encodeURIComponent(token)}/`;
-  url.search = "";
-  url.hash = "";
   return url.toString();
 }
 

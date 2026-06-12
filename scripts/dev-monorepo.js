@@ -46,7 +46,6 @@ function startProcess(spec) {
       FORCE_COLOR: process.env.FORCE_COLOR ?? "1",
       JLPT_API_HOST: process.env.JLPT_API_HOST ?? (isEnabled(localOnlyDev) ? "127.0.0.1" : "0.0.0.0"),
       JLPT_ACCESS_TOKEN: accessToken,
-      JLPT_CLOUDFLARED: process.env.JLPT_CLOUDFLARED ?? "0",
       JLPT_DEV_LOCAL_ONLY: localOnlyDev,
     },
     windowsHide: true,

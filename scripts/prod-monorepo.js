@@ -2,9 +2,7 @@ import { spawn, spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import net from "node:net";
 import process from "node:process";
-import { addPathAccessTokenToUrl, renderQr } from "../client/dev-mobile-access.js";
 
-const CLOUDFLARED_URL_PATTERN = /https:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.trycloudflare\.com/i;
 const ERROR_PATTERN = /\b(error|failed|failure|fatal|exception|unhandled|eaddrinuse|enoent|eperm|ebusy|err)\b/i;
 const WARN_PATTERN = /\b(warn|warning|deprecated|deprecation)\b/i;
 
@@ -57,16 +55,7 @@ async function main() {
   await waitForTcp("127.0.0.1", apiPort, { label: "API server" });
   await waitForTcp(previewConnectHost, previewPort, { label: "preview server" });
 
-  if (!shouldUseCloudflareTunnel()) {
-    writeWarn("Cloudflare tunnel is disabled by JLPT_CLOUDFLARED=0.");
-    await waitForever();
-    return;
-  }
-
-  const targetUrl = `http://${formatUrlHost(previewConnectHost)}:${previewPort}/`;
-  const tunnel = await openCloudflareTunnel(targetUrl);
-  const accessUrl = addPathAccessTokenToUrl(tunnel.url, { token: accessToken });
-  printCloudflareAccess(accessUrl);
+  printLocalAccessInfo({ apiPort, previewConnectHost, previewPort });
 
   await waitForever();
 }
@@ -155,106 +144,10 @@ function spawnCommand(commandLine, { env }) {
   });
 }
 
-function openCloudflareTunnel(targetUrl) {
-  const commands = readCloudflaredCommandCandidates();
-  const errors = [];
-
-  return commands.reduce(
-    (promise, command) =>
-      promise.catch(async () => {
-        try {
-          return await spawnCloudflaredTunnel(command, targetUrl);
-        } catch (error) {
-          errors.push(`${command}: ${String(error?.message ?? error)}`);
-          throw error;
-        }
-      }),
-    Promise.reject(new Error("No cloudflared command tried")),
-  ).catch(() => {
-    throw new Error(`Cloudflare Tunnel failed. ${errors.join("; ")}`);
-  });
-}
-
-function spawnCloudflaredTunnel(command, targetUrl) {
-  return new Promise((resolve, reject) => {
-    const child = spawn(command, ["tunnel", "--url", targetUrl], {
-      stdio: ["ignore", "pipe", "pipe"],
-      windowsHide: true,
-    });
-    const output = [];
-    let settled = false;
-    let ignoreExit = false;
-    const timeout = setTimeout(() => {
-      fail(new Error("cloudflared did not print a trycloudflare.com URL within 45 seconds"));
-    }, 45_000);
-
-    children.push({ child, name: "CLOUDFLARE" });
-
-    function handleLine(line) {
-      output.push(line);
-      writeFilteredLine("CLOUDFLARE", line);
-      if (settled) return;
-
-      const match = line.match(CLOUDFLARED_URL_PATTERN);
-      if (match) {
-        settled = true;
-        clearTimeout(timeout);
-        resolve({ child, command, targetUrl, url: normalizeUrl(match[0]) });
-      }
-    }
-
-    function fail(error) {
-      if (settled) return;
-      settled = true;
-      ignoreExit = true;
-      clearTimeout(timeout);
-      if (!child.killed && child.exitCode === null) {
-        try {
-          child.kill();
-        } catch {
-          // Best effort cleanup.
-        }
-      }
-      const tail = output.slice(-10).join(" | ");
-      reject(tail ? new Error(`${error.message}. Last output: ${tail}`) : error);
-    }
-
-    child.stdout?.setEncoding("utf8");
-    child.stderr?.setEncoding("utf8");
-    pipeLines(child.stdout, handleLine);
-    pipeLines(child.stderr, handleLine);
-
-    child.once("error", fail);
-    child.once("exit", (code, signal) => {
-      if (shuttingDown) return;
-      if (ignoreExit) return;
-      if (!settled) {
-        fail(new Error(`cloudflared exited before opening a tunnel${signal ? ` by signal ${signal}` : ` with code ${code}`}`));
-        return;
-      }
-      const message = `[CLOUDFLARE] tunnel closed${signal ? ` by signal ${signal}` : ` with code ${code}`}`;
-      if (code === 0 || code === null) writeWarn(message);
-      else writeError(message);
-      shutdown(code === 0 || code === null ? 0 : 1);
-    });
-  });
-}
-
-function printCloudflareAccess(accessUrl) {
-  writeAccess(`Cloudflare URL: ${accessUrl}`);
-  writeAccess("QR IMAGE BEGIN");
-  process.stdout.write(`${renderQr(accessUrl, { unicode: shouldRenderUnicodeQr() })}\n`);
-  writeAccess("QR IMAGE END");
-}
-
-function shouldRenderUnicodeQr() {
-  const ascii = String(process.env.JLPT_QR_ASCII ?? "").trim().toLowerCase();
-  if (ascii === "1" || ascii === "true") return false;
-
-  const unicode = String(process.env.JLPT_QR_UNICODE ?? "").trim().toLowerCase();
-  if (unicode === "0" || unicode === "false") return false;
-
-  return true;
+function printLocalAccessInfo({ apiPort, previewConnectHost, previewPort }) {
+  writeAccess(`Preview URL: http://${formatUrlHost(previewConnectHost)}:${previewPort}/`);
+  writeAccess(`API URL: http://127.0.0.1:${apiPort}/api`);
+  writeAccess(`External gateway target port: ${previewPort}`);
 }
 
 function pipeLines(stream, writeLine) {
@@ -364,57 +257,6 @@ function npmCommand(args) {
 function readPort(value, fallback) {
   const port = Number(value);
   return Number.isInteger(port) && port > 0 && port <= 65535 ? port : fallback;
-}
-
-function shouldUseCloudflareTunnel() {
-  const rawValue = String(process.env.JLPT_CLOUDFLARED ?? process.env.JLPT_CLOUDFLARE_TUNNEL ?? "1").trim().toLowerCase();
-  return !["0", "false", "no", "off"].includes(rawValue);
-}
-
-function readCloudflaredCommandCandidates() {
-  const configured = String(process.env.JLPT_CLOUDFLARED_BIN ?? process.env.JLPT_CLOUDFLARE_TUNNEL_BIN ?? "").trim();
-  if (configured) return [configured];
-
-  if (process.platform === "win32") {
-    return uniqueStrings([
-      ...readWindowsCloudflaredServiceCommandCandidates(),
-      "cloudflared.exe",
-      "cloudflared",
-      "C:\\Program Files\\cloudflared\\cloudflared.exe",
-      "C:\\Program Files (x86)\\cloudflared\\cloudflared.exe",
-      "C:\\Windows\\System32\\cloudflared.exe",
-      "C:\\Windows\\Sysnative\\cloudflared.exe",
-    ]);
-  }
-
-  return ["cloudflared"];
-}
-
-function readWindowsCloudflaredServiceCommandCandidates() {
-  try {
-    const result = spawnSync("sc.exe", ["qc", "Cloudflared"], {
-      encoding: "utf8",
-      windowsHide: true,
-    });
-    const output = `${result.stdout ?? ""}\n${result.stderr ?? ""}`;
-    const match = /BINARY_PATH_NAME\s*:\s*(?:"([^"]*cloudflared\.exe)"|([^\r\n]*cloudflared\.exe))/i.exec(output);
-    const command = (match?.[1] ?? match?.[2] ?? "").trim();
-    return command ? [command] : [];
-  } catch {
-    return [];
-  }
-}
-
-function uniqueStrings(values) {
-  return [...new Set(values.filter(Boolean))];
-}
-
-function normalizeUrl(rawUrl) {
-  const text = String(rawUrl).trim();
-  const withProtocol = /^[a-z][a-z\d+.-]*:\/\//i.test(text) ? text : `http://${text}`;
-  const url = new URL(withProtocol);
-  if (!url.pathname) url.pathname = "/";
-  return url.toString();
 }
 
 function formatUrlHost(host) {
