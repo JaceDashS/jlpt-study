@@ -1,8 +1,8 @@
 import { spawnSync } from "node:child_process";
 import process from "node:process";
 
-const FALLBACK_API_PORT = 3001;
-const FALLBACK_CLIENT_PORT = 5173;
+const FALLBACK_API_PORT = 47833;
+const FALLBACK_CLIENT_PORT = 47832;
 const DEFAULT_PORTS = readDefaultProjectPorts();
 const ports = readPorts(process.argv.slice(2));
 
@@ -17,7 +17,7 @@ function readPorts(args) {
 
   if (invalid.length > 0) {
     writeError(`Invalid port: ${invalid.join(", ")}`);
-    writeError("Usage: npm run kill:port -- 3001 5173");
+    writeError("Usage: npm run kill:port -- 47833 47832");
     process.exit(1);
   }
 

@@ -6,15 +6,17 @@ import process from "node:process";
 
 const ERROR_PATTERN = /\b(error|failed|failure|fatal|exception|unhandled|eaddrinuse|enoent|eperm|ebusy|err)\b/i;
 const WARN_PATTERN = /\b(warn|warning|deprecated|deprecation)\b/i;
+const DEFAULT_API_PORT = 47833;
+const DEFAULT_PREVIEW_PORT = 47832;
 
 const cli = parseCliArgs(process.argv.slice(2));
 const accessToken = process.env.JLPT_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
-const apiPort = readPort(process.env.JLPT_API_PORT ?? "3001", 3001);
-const defaultHost = cli.public ? "0.0.0.0" : "127.0.0.1";
-const apiHost = process.env.JLPT_API_HOST ?? defaultHost;
-const previewHost = process.env.JLPT_PREVIEW_HOST || defaultHost;
+const apiPort = readPort(process.env.JLPT_API_PORT, DEFAULT_API_PORT);
+const defaultPreviewHost = cli.public ? "0.0.0.0" : "127.0.0.1";
+const apiHost = process.env.JLPT_API_HOST ?? "127.0.0.1";
+const previewHost = process.env.JLPT_PREVIEW_HOST || defaultPreviewHost;
 const previewConnectHost = previewHost === "0.0.0.0" ? "127.0.0.1" : previewHost;
-const previewPort = readPort(process.env.JLPT_PREVIEW_PORT ?? process.env.PORT ?? "5173", 5173);
+const previewPort = readPort(process.env.JLPT_PREVIEW_PORT ?? process.env.PORT, DEFAULT_PREVIEW_PORT);
 const children = [];
 let shuttingDown = false;
 
@@ -51,6 +53,7 @@ async function main() {
     env: {
       ...prodEnv(),
       JLPT_ACCESS_TOKEN: accessToken,
+      JLPT_API_PORT: String(apiPort),
       JLPT_PREVIEW_ACCESS_CONTROL: "1",
     },
   });
@@ -150,19 +153,20 @@ function spawnCommand(commandLine, { env }) {
 function printAccessInfo({ apiPort, previewConnectHost, previewPort }) {
   writeAccess(`${cli.public ? "Public" : "Local"} mode`);
   writeAccess(`Local preview URL: http://${formatUrlHost(previewConnectHost)}:${previewPort}/`);
-  writeAccess(`API URL: http://127.0.0.1:${apiPort}/api`);
+  writeAccess(`Local API target URL: http://127.0.0.1:${apiPort}/api`);
+  writeAccess(`Preview API proxy URL: http://${formatUrlHost(previewConnectHost)}:${previewPort}/api`);
   if (cli.public) {
     const candidates = readLanIpv4Candidates();
     if (candidates.length === 0) {
-      writeWarn("No LAN IPv4 address was found. Use this machine's reachable host/IP with the preview and API ports.");
+      writeWarn("No LAN IPv4 address was found. Use this machine's reachable host/IP with the preview port.");
     }
     for (const candidate of candidates.slice(0, 3)) {
       const host = formatUrlHost(candidate.address);
       writeAccess(`Network preview URL: ${addAccessParamsToUrl(`http://${host}:${previewPort}/`, {
-        apiBaseUrl: `http://${host}:${apiPort}/api`,
+        apiPort: previewPort,
         token: accessToken,
       })}`);
-      writeAccess(`Network API URL: http://${host}:${apiPort}/api`);
+      writeAccess(`Network API proxy URL: http://${host}:${previewPort}/api`);
     }
   }
   writeAccess(`External gateway target port: ${previewPort}`);
@@ -282,10 +286,10 @@ function formatUrlHost(host) {
   return host.includes(":") && !host.startsWith("[") ? `[${host}]` : host;
 }
 
-function addAccessParamsToUrl(baseUrl, { apiBaseUrl, token }) {
+function addAccessParamsToUrl(baseUrl, { apiPort, token }) {
   const url = new URL(baseUrl);
   url.searchParams.set("access_token", token);
-  url.searchParams.set("api_base", apiBaseUrl);
+  url.searchParams.set("api_port", String(apiPort));
   return url.toString();
 }
 
