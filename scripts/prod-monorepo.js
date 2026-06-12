@@ -1,6 +1,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import net from "node:net";
+import os from "node:os";
 import process from "node:process";
 
 const ERROR_PATTERN = /\b(error|failed|failure|fatal|exception|unhandled|eaddrinuse|enoent|eperm|ebusy|err)\b/i;
@@ -9,7 +10,9 @@ const WARN_PATTERN = /\b(warn|warning|deprecated|deprecation)\b/i;
 const cli = parseCliArgs(process.argv.slice(2));
 const accessToken = process.env.JLPT_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
 const apiPort = readPort(process.env.JLPT_API_PORT ?? "3001", 3001);
-const previewHost = process.env.JLPT_PREVIEW_HOST || "127.0.0.1";
+const defaultHost = cli.public ? "0.0.0.0" : "127.0.0.1";
+const apiHost = process.env.JLPT_API_HOST ?? defaultHost;
+const previewHost = process.env.JLPT_PREVIEW_HOST || defaultHost;
 const previewConnectHost = previewHost === "0.0.0.0" ? "127.0.0.1" : previewHost;
 const previewPort = readPort(process.env.JLPT_PREVIEW_PORT ?? process.env.PORT ?? "5173", 5173);
 const children = [];
@@ -35,7 +38,7 @@ async function main() {
     env: {
       ...prodEnv(),
       JLPT_ACCESS_TOKEN: accessToken,
-      JLPT_API_HOST: process.env.JLPT_API_HOST ?? "127.0.0.1",
+      JLPT_API_HOST: apiHost,
       JLPT_API_PORT: String(apiPort),
     },
   });
@@ -55,7 +58,7 @@ async function main() {
   await waitForTcp("127.0.0.1", apiPort, { label: "API server" });
   await waitForTcp(previewConnectHost, previewPort, { label: "preview server" });
 
-  printLocalAccessInfo({ apiPort, previewConnectHost, previewPort });
+  printAccessInfo({ apiPort, previewConnectHost, previewPort });
 
   await waitForever();
 }
@@ -144,9 +147,24 @@ function spawnCommand(commandLine, { env }) {
   });
 }
 
-function printLocalAccessInfo({ apiPort, previewConnectHost, previewPort }) {
-  writeAccess(`Preview URL: http://${formatUrlHost(previewConnectHost)}:${previewPort}/`);
+function printAccessInfo({ apiPort, previewConnectHost, previewPort }) {
+  writeAccess(`${cli.public ? "Public" : "Local"} mode`);
+  writeAccess(`Local preview URL: http://${formatUrlHost(previewConnectHost)}:${previewPort}/`);
   writeAccess(`API URL: http://127.0.0.1:${apiPort}/api`);
+  if (cli.public) {
+    const candidates = readLanIpv4Candidates();
+    if (candidates.length === 0) {
+      writeWarn("No LAN IPv4 address was found. Use this machine's reachable host/IP with the preview and API ports.");
+    }
+    for (const candidate of candidates.slice(0, 3)) {
+      const host = formatUrlHost(candidate.address);
+      writeAccess(`Network preview URL: ${addAccessParamsToUrl(`http://${host}:${previewPort}/`, {
+        apiBaseUrl: `http://${host}:${apiPort}/api`,
+        token: accessToken,
+      })}`);
+      writeAccess(`Network API URL: http://${host}:${apiPort}/api`);
+    }
+  }
   writeAccess(`External gateway target port: ${previewPort}`);
 }
 
@@ -246,6 +264,7 @@ function stopChildren() {
 
 function parseCliArgs(args) {
   return {
+    public: args.includes("--public"),
     skipBuild: args.includes("--skip-build"),
   };
 }
@@ -261,6 +280,61 @@ function readPort(value, fallback) {
 
 function formatUrlHost(host) {
   return host.includes(":") && !host.startsWith("[") ? `[${host}]` : host;
+}
+
+function addAccessParamsToUrl(baseUrl, { apiBaseUrl, token }) {
+  const url = new URL(baseUrl);
+  url.searchParams.set("access_token", token);
+  url.searchParams.set("api_base", apiBaseUrl);
+  return url.toString();
+}
+
+function readLanIpv4Candidates() {
+  const candidates = [];
+  for (const [name, entries] of Object.entries(os.networkInterfaces())) {
+    for (const entry of entries ?? []) {
+      if (entry.family !== "IPv4" || entry.internal) continue;
+      if (entry.address.startsWith("169.254.")) continue;
+      candidates.push({
+        name,
+        address: entry.address,
+        score: scoreLanCandidate(name, entry.address),
+      });
+    }
+  }
+
+  return candidates.sort((left, right) => {
+    if (right.score !== left.score) return right.score - left.score;
+    return `${left.name} ${left.address}`.localeCompare(`${right.name} ${right.address}`);
+  });
+}
+
+function scoreLanCandidate(name, address) {
+  const normalizedName = String(name).toLowerCase();
+  let score = 0;
+
+  if (isPrivateIpv4(address)) score += 100;
+  if (address.startsWith("192.168.")) score += 30;
+  if (address.startsWith("10.")) score += 20;
+  if (isPrivate172Ipv4(address)) score += 10;
+  if (/wi-?fi|wlan|wireless/.test(normalizedName)) score += 40;
+  if (/ethernet|lan/.test(normalizedName)) score += 30;
+  if (/virtual|vethernet|vmware|virtualbox|docker|wsl|hyper-v|vpn|tailscale|zerotier|tap|tun/.test(normalizedName)) {
+    score -= 100;
+  }
+
+  return score;
+}
+
+function isPrivateIpv4(address) {
+  return address.startsWith("10.") || address.startsWith("192.168.") || isPrivate172Ipv4(address);
+}
+
+function isPrivate172Ipv4(address) {
+  const match = /^172\.(\d{1,3})\./.exec(address);
+  if (!match) return false;
+  const secondOctet = Number(match[1]);
+  return secondOctet >= 16 && secondOctet <= 31;
 }
 
 function stripAnsi(text) {
