@@ -2321,10 +2321,10 @@
               "id": "d4-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-25",
-          "nextReviewDate": "2026-06-01",
-          "lastAttemptDate": "2026-05-25"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-17",
+          "nextReviewDate": "2026-08-16",
+          "lastAttemptDate": "2026-07-17"
         }
       ]
     },
@@ -3517,10 +3517,10 @@
               "id": "d6-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-25",
-          "nextReviewDate": "2026-06-01",
-          "lastAttemptDate": "2026-05-25"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-15",
+          "nextReviewDate": "2026-08-14",
+          "lastAttemptDate": "2026-07-15"
         }
       ]
     },
@@ -4691,7 +4691,7 @@
                 ],
                 "answer": "くふう"
               },
-              "lastResult": "PASS",
+              "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 工 | 夫 |\n|---|---|---|\n| 音読 | コウ / ク | フ / フウ |\n| 訓読 | （全体）くふう | おっと |\n| 뜻 | 장인, 일 | 남편, 사람 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 工場（こうじょう）: 공장<br>* 大工（だいく）: 목수 | * 夫婦（ふうふ）: 부부<br>* 夫人（ふじん）: 부인 |\n| 구성(IDS) | 工 | ⿱一大 (추정) |\n| 부수/부품 | 工 | 一, 大 |\n| 부품 역할 | 工[일/장인] | 一[하나] + 大[크다/사람] |\n| 재귀 구조 | 工[일/장인] | 夫[남편] → 一[하나](추정) + 大[큰 사람](추정) |\n| 최종 최소 단위 | 工[일/장인] | 一[하나], 大[크다] |",
               "memoPersonal": "기술을 잘쓰는 사람이 궁리하는거임",
               "stage": 1,
@@ -4701,10 +4701,10 @@
               "id": "d8-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-25",
-          "nextReviewDate": "2026-06-01",
-          "lastAttemptDate": "2026-05-25"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-16",
+          "nextReviewDate": "2026-08-15",
+          "lastAttemptDate": "2026-07-16"
         }
       ]
     },
@@ -5144,7 +5144,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 結 | 構 |\n|---|---|---|\n| 音読 | ケツ（けっ）・ケチ | コウ（こう） |\n| 訓読 | （全体）けっこう<br>むす-ぶ・ゆ-う | かま-える |\n| 뜻 | 묶다, 맺다 | 짜다, 구조 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 結論（けつろん）: 결론<br>* 連結（れんけつ）: 연결 | * 構成（こうせい）: 구성<br>* 機構（きこう）: 기구 |\n| 구성(IDS) | ⿰糸吉 | ⿰木冓 |\n| 부수/부품 | 糸, 吉 | 木, 冓 |\n| 부품 역할 | 糸: 실, 묶음<br>吉: 길함, 마무리 | 木: 나무<br>冓: 얽어 짜 맞춤 |\n| 재귀 구조 | 結[묶다/맺다] → ⿰[구성] 糸[실] + 吉[길하다] | 構[짜다/구조] → ⿰[구성] 木[나무] + 冓[얽다] |\n| 최종 최소 단위 | 糸[실], 吉[길하다] | 木[나무], 冓[얽다] |",
-              "memoPersonal": "結\n構構나무가 물먹으려고 자꾸 우물에 상관하는거(구조configuration의 구를 생각해야함)",
+              "memoPersonal": "結\n構構나무가 물먹으려고 자꾸 우물에 구조를 상관하는거(구조configuration의 구를 생각해야함)",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -5300,10 +5300,10 @@
               "id": "d9-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-31",
-          "nextReviewDate": "2026-06-07",
-          "lastAttemptDate": "2026-06-10"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-21",
+          "nextReviewDate": "2026-08-20",
+          "lastAttemptDate": "2026-07-21"
         }
       ]
     },
@@ -5509,7 +5509,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 講 | 演 |\n|---|---|---|\n| 音読 | コウ（こう） | エン（えん） |\n| 訓読 | こう-じる (추정)、（全体）こうえん | の-べる (추정) |\n| 뜻 | 강의하다, 설명하다 | 연기하다, 펼치다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 講座（こうざ）: 강좌<br>* 受講（じゅこう）: 수강 | * 演劇（えんげき）: 연극<br>* 出演（しゅつえん）: 출연 |\n| 구성(IDS) | ⿰言冓 | ⿰氵寅 |\n| 부수/부품 | 言 + 冓 | 氵 + 寅 |\n| 부품 역할 | 言[말]이 의미부, 冓[얽다/짜다](추정)가 음과 구성된 말의 뜻을 보탬 | 氵[물]은 펼쳐 흐름, 寅[동방/범](추정)은 음을 보탬 |\n| 재귀 구조 | 講[강의하다] → ⿰[구성] 言[말] + 冓[얽다/짜다](추정) | 演[펼치다/연기하다] → ⿰[구성] 氵[물] + 寅[동방/범](추정) |\n| 최종 최소 단위 | 言[말], 冓[얽다/짜다](추정) | 氵[물], 寅[동방/범](추정) |",
-              "memoPersonal": "講구조있게 말하는거 강의\n演우주의 물같이 연극하는거, 연주같은거",
+              "memoPersonal": "講상관하는 말하는거 강의\n演우주의 물같이 연극하는거, 연주같은거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -5656,7 +5656,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 講 | 義 |\n|---|---|---|\n| 音読 | コウ（こう） | ギ（ぎ） |\n| 訓読 | こう-じる (추정)、（全体）こうぎ | よ-い (추정) |\n| 뜻 | 강의하다, 설명하다 | 의리, 뜻, 정의 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 講座（こうざ）: 강좌<br>* 受講（じゅこう）: 수강 | * 正義（せいぎ）: 정의<br>* 意義（いぎ）: 의의 |\n| 구성(IDS) | ⿰言冓 | ⿱羊我 |\n| 부수/부품 | 言 + 冓 | 羊 + 我 |\n| 부품 역할 | 言[말]이 의미부, 冓[얽다/짜다](추정)가 음과 구성된 말의 뜻을 보탬 | 羊[양/좋음]이 의미, 我[나/무기]가 음을 보탬 (추정) |\n| 재귀 구조 | 講[강의하다] → ⿰[구성] 言[말] + 冓[얽다/짜다](추정) | 義[의리/뜻] → ⿱[구성] 羊[양/좋음] + 我[나/무기] |\n| 최종 최소 단위 | 言[말], 冓[얽다/짜다](추정) | 羊[양/좋음], 我[나/무기] |",
-              "memoPersonal": "",
+              "memoPersonal": "관계있게말함. 강의",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -5899,10 +5899,10 @@
               "id": "d10-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-25",
-          "nextReviewDate": "2026-06-01",
-          "lastAttemptDate": "2026-05-25"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-19",
+          "nextReviewDate": "2026-08-18",
+          "lastAttemptDate": "2026-07-19"
         }
       ]
     },
@@ -6460,7 +6460,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 賛 | 成 |\n|---|---|---|\n| 音読 | さん | せい・じょう |\n| 訓読 | （全体）さんせい<br>Wiktionary에 명시적 설명 없음 | な-る・な-す |\n| 뜻 | 찬성하다, 돕다 | 이루다, 되다 |\n| 상용한자 여부 | 常用 | 常用 |\n| 예시 | * 賛同（さんどう）: 찬동<br>* 称賛（しょうさん）: 칭찬 | * 成功（せいこう）: 성공<br>* 成人（せいじん）: 성인 |\n| 구성(IDS) | ⿱㚘貝 | ⿵戊丁 (추정) |\n| 부수/부품 | 㚘 + 貝 | 戊 + 丁 |\n| 부품 역할 | 㚘: 두 사람이 나아가는 형태(추정)<br>貝: 재물/가치 의미부 | 戊: 무기/도끼 형태 성분(추정)<br>丁: 못/소리 성분(추정) |\n| 재귀 구조 | 賛[찬성/도움] → ⿱[상하구성] + 㚘[두 사람](추정) + 貝[조개/돈] → 㚘[두 사람](추정) + 夫[남편/사람] + 夫[남편/사람] | 成[이루다] → ⿵[둘러싸임구성](추정) + 戊[창/도끼](추정) + 丁[못/장정] |\n| 최종 최소 단위 | 夫[남편/사람], 夫[남편/사람], 貝[조개/돈] | 戊[창/도끼](추정), 丁[못/장정] |",
-              "memoPersonal": "賛:지아비들은 일단 돈을 보면 찬성하는 이미지",
+              "memoPersonal": "賛: 돈 교환 찬성(구매)",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -6497,10 +6497,10 @@
               "id": "d11-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-27",
-          "nextReviewDate": "2026-06-03",
-          "lastAttemptDate": "2026-05-27"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-19",
+          "nextReviewDate": "2026-08-18",
+          "lastAttemptDate": "2026-07-19"
         }
       ]
     },
@@ -7089,10 +7089,10 @@
               "id": "d12-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-29",
-          "nextReviewDate": "2026-06-05",
-          "lastAttemptDate": "2026-05-29"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-19",
+          "nextReviewDate": "2026-08-18",
+          "lastAttemptDate": "2026-07-19"
         }
       ]
     },
@@ -7689,10 +7689,10 @@
               "id": "d13-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-31",
-          "nextReviewDate": "2026-06-07",
-          "lastAttemptDate": "2026-05-31"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-21",
+          "nextReviewDate": "2026-08-20",
+          "lastAttemptDate": "2026-07-21"
         }
       ]
     },
@@ -8289,10 +8289,10 @@
               "id": "d14-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-05-29",
-          "nextReviewDate": "2026-06-05",
-          "lastAttemptDate": "2026-06-10"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-21",
+          "nextReviewDate": "2026-08-20",
+          "lastAttemptDate": "2026-07-21"
         }
       ]
     },
@@ -8884,10 +8884,10 @@
               "id": "d15-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-06-04",
-          "nextReviewDate": "2026-06-11",
-          "lastAttemptDate": "2026-06-04"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-23",
+          "nextReviewDate": "2026-08-22",
+          "lastAttemptDate": "2026-07-23"
         }
       ]
     },
@@ -9476,10 +9476,10 @@
               "id": "d16-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-06-05",
-          "nextReviewDate": "2026-06-12",
-          "lastAttemptDate": "2026-06-05"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-23",
+          "nextReviewDate": "2026-08-22",
+          "lastAttemptDate": "2026-07-23"
         }
       ]
     },
@@ -10077,10 +10077,10 @@
               "id": "d17-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-06-07",
-          "nextReviewDate": "2026-06-14",
-          "lastAttemptDate": "2026-06-07"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-23",
+          "nextReviewDate": "2026-08-22",
+          "lastAttemptDate": "2026-07-23"
         }
       ]
     },
@@ -10678,10 +10678,10 @@
               "id": "d18-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-06-10",
-          "nextReviewDate": "2026-06-17",
-          "lastAttemptDate": "2026-06-10"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-26",
+          "nextReviewDate": "2026-08-25",
+          "lastAttemptDate": "2026-07-26"
         }
       ]
     },
@@ -11271,10 +11271,10 @@
               "id": "d19-i20"
             }
           ],
-          "stage": 4,
-          "stageCompleteDate": "2026-06-10",
-          "nextReviewDate": "2026-06-17",
-          "lastAttemptDate": "2026-06-10"
+          "stage": 5,
+          "stageCompleteDate": "2026-07-27",
+          "nextReviewDate": "2026-08-26",
+          "lastAttemptDate": "2026-07-27"
         }
       ]
     },
@@ -13055,10 +13055,10 @@
               "id": "d22-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-05-30",
-          "nextReviewDate": "2026-06-02",
-          "lastAttemptDate": "2026-05-30"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-16",
+          "nextReviewDate": "2026-06-23",
+          "lastAttemptDate": "2026-06-16"
         }
       ]
     },
@@ -13647,10 +13647,10 @@
               "id": "d23-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-05-30",
-          "nextReviewDate": "2026-06-02",
-          "lastAttemptDate": "2026-05-30"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-16",
+          "nextReviewDate": "2026-06-23",
+          "lastAttemptDate": "2026-06-16"
         }
       ]
     },
@@ -14244,10 +14244,10 @@
               "id": "d24-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-06-05",
-          "nextReviewDate": "2026-06-08",
-          "lastAttemptDate": "2026-06-05"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-16",
+          "nextReviewDate": "2026-06-23",
+          "lastAttemptDate": "2026-06-16"
         }
       ]
     },
@@ -14751,7 +14751,7 @@
                 ],
                 "answer": "こうそくどうろ"
               },
-              "lastResult": "PASS",
+              "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 高 | 速 | 道 | 路 |\n|---|---|---|---|---|\n| 音読 | コウ | ソク | ドウ・トウ | ロ |\n| 訓読 | たか-い・たか・たか-まる | はや-い・はや-める・すみ-やか | みち | じ・（全体）こうそくどうろ |\n| 뜻 | 높다, 비싸다 | 빠르다, 속도 | 길, 도리 | 길, 노선 |\n| 예시 | 高校（こうこう）: 고등학교<br>最高（さいこう）: 최고 | 速度（そくど）: 속도<br>急速（きゅうそく）: 급속 | 道路（どうろ）: 도로<br>水道（すいどう）: 수도 | 通路（つうろ）: 통로<br>線路（せんろ）: 선로 |\n| 분해 | 1단계: 高 → 亠[머리/위]（常用外） + 口[입] + 冂[멀리 둘러쌈]（常用外） + 口[입]<br>최종: 亠（常用外）, 口, 冂（常用外）, 口 | 1단계: 速 → 辶[가다/길]（常用外） + 束[묶다]<br>2단계: 束 → 木[나무] + 口[입](추정)<br>최종: 辶（常用外）, 木, 口 | 1단계: 道 → 辶[가다/길]（常用外） + 首[머리/목]<br>2단계: 首 → 自[스스로/코] + 丷[나누어진 모양](추정)（常用外・推定）<br>최종: 辶（常用外）, 自, 丷（常用外） | 1단계: 路 → 足[발] + 各[각각]<br>2단계: 各 → 夂[뒤져 오다]（常用外） + 口[입]<br>최종: 足, 夂（常用外）, 口 |",
               "memoPersonal": "速동쪽으로 가는 속도",
               "stage": 1,
@@ -14854,10 +14854,10 @@
               "id": "d25-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-06-07",
-          "nextReviewDate": "2026-06-10",
-          "lastAttemptDate": "2026-06-07"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-16",
+          "nextReviewDate": "2026-06-23",
+          "lastAttemptDate": "2026-06-16"
         }
       ]
     },
@@ -15476,10 +15476,10 @@
               "id": "d26-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-06-08",
-          "nextReviewDate": "2026-06-11",
-          "lastAttemptDate": "2026-06-08"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-16",
+          "nextReviewDate": "2026-06-23",
+          "lastAttemptDate": "2026-06-16"
         }
       ]
     },
@@ -16079,10 +16079,10 @@
               "id": "d27-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-06-10",
-          "nextReviewDate": "2026-06-13",
-          "lastAttemptDate": "2026-06-10"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-16",
+          "nextReviewDate": "2026-06-23",
+          "lastAttemptDate": "2026-06-16"
         }
       ]
     },
@@ -16671,10 +16671,10 @@
               "id": "d28-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-06-11",
-          "nextReviewDate": "2026-06-14",
-          "lastAttemptDate": "2026-06-11"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-16",
+          "nextReviewDate": "2026-06-23",
+          "lastAttemptDate": "2026-06-16"
         }
       ]
     },
@@ -17263,10 +17263,10 @@
               "id": "d29-i20"
             }
           ],
-          "stage": 3,
-          "stageCompleteDate": "2026-06-11",
-          "nextReviewDate": "2026-06-14",
-          "lastAttemptDate": "2026-06-11"
+          "stage": 4,
+          "stageCompleteDate": "2026-06-30",
+          "nextReviewDate": "2026-07-07",
+          "lastAttemptDate": "2026-06-30"
         }
       ]
     },
@@ -17645,7 +17645,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 捜 |\n|---|---|\n| 音読 | ソウ |\n| 訓読 | さが-す |\n| 뜻 | 찾다, 수색하다 |\n| 예시 | 捜査（そうさ）: 수사<br>捜索（そうさく）: 수색 |\n| 분해 | 1단계: 捜 → 扌[손] + 叟[노인/찾는 형태](常用外)<br>2단계: 叟 → 臼[절구](常用外) + 丨[세로획](常用外) + 又[또/손]<br>최종: 扌（常用外）, 臼（常用外）, 丨（常用外）, 又 |",
-              "memoPersonal": "손으로 매장된 기름을 계속해서 찾는 이미지",
+              "memoPersonal": "손으로 제출된 신청서를 계속 찾는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -17820,7 +17820,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 締 |\n|---|---|\n| 音読 | テイ |\n| 訓読 | し-まる・し-める |\n| 뜻 | 묶다, 조이다, 마감하다 |\n| 예시 | 締結（ていけつ）: 체결<br>取締役（とりしまりやく）: 이사, 단속 책임자 |\n| 분해 | 1단계: 締 → 糸[실] + 帝[제왕](常用外)<br>2단계: 帝 → 亠[덮개](常用外) + 冖[덮개](常用外) + 巾[수건]<br>최종: 糸, 亠（常用外）, 冖（常用外）, 巾 |",
-              "memoPersonal": "帝이거는 휴대할때 대랑 비슷하니까 그걸로 외우자\n실로 휴대하려고 묶어두는거",
+              "memoPersonal": "帝제국할때 쓰는거\n제국에서 실로 강제로 묶는 이미지",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -17857,10 +17857,10 @@
               "id": "d30-i20"
             }
           ],
-          "stage": 2,
-          "stageCompleteDate": "2026-06-11",
-          "nextReviewDate": "2026-06-12",
-          "lastAttemptDate": "2026-06-11"
+          "stage": 4,
+          "stageCompleteDate": "2026-07-14",
+          "nextReviewDate": "2026-07-21",
+          "lastAttemptDate": "2026-07-14"
         }
       ]
     },
@@ -59943,7 +59943,7 @@
           "stage": 1,
           "stageCompleteDate": null,
           "nextReviewDate": null,
-          "lastAttemptDate": ""
+          "lastAttemptDate": "2026-07-16"
         }
       ]
     },
