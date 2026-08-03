@@ -17890,7 +17890,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 喋 |\n|---|---|\n| 音読 | チョウ |\n| 訓読 | しゃべ-る |\n| 뜻 | 말하다, 지껄이다 |\n| 예시 | お喋り（おしゃべり）: 수다<br>喋喋喃喃（ちょうちょうなんなん）: 다정하게 속삭임 |\n| 분해 | 1단계: 喋 → 口[입] + 枼[얇은 나뭇잎/나무 조각]（常用外）<br>2단계: 枼 → 世[세상/세대] + 木[나무]<br>최종: 口, 世, 木 |",
-              "memoPersonal": "",
+              "memoPersonal": "言葉에서 아가리를 붙인거, 수다",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -17977,7 +17977,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 勧 |\n|---|---|\n| 音読 | カン・ケン |\n| 訓読 | すす-める |\n| 뜻 | 권하다, 장려하다 |\n| 예시 | 勧誘（かんゆう）: 권유<br>勧告（かんこく）: 권고 |\n| 분해 | 1단계: 勧 → 𠂉[사람/손 모양]（常用外・推定） + 隹[새] + 力[힘]<br>최종: 𠂉（常用外）, 隹, 力 |",
-              "memoPersonal": "",
+              "memoPersonal": "사람이 새고기를 강력히 추천함",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18035,7 +18035,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 滑 |\n|---|---|\n| 音読 | カツ・コツ |\n| 訓読 | すべ-る・なめ-らか |\n| 뜻 | 미끄러지다, 매끄럽다 |\n| 예시 | 滑走（かっそう）: 활주<br>円滑（えんかつ）: 원활 |\n| 분해 | 1단계: 滑 → 氵[물]（常用外） + 骨[뼈]<br>2단계: 骨 → 冎[뼈/갈라진 형태]（常用外） + 月[몸/고기]<br>최종: 氵（常用外）, 冎（常用外）, 月 |",
-              "memoPersonal": "",
+              "memoPersonal": "뼈는 물에 미끄러지니까",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18064,7 +18064,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 済 |\n|---|---|\n| 音読 | サイ・セイ |\n| 訓読 | す-む・す-ます |\n| 뜻 | 끝나다, 해결되다, 건너다 |\n| 예시 | 経済（けいざい）: 경제<br>返済（へんさい）: 변제, 상환 |\n| 분해 | 1단계: 済 → 氵[물]（常用外） + 斉[가지런함]<br>최종: 氵（常用外）, 斉 |",
-              "memoPersonal": "",
+              "memoPersonal": "경제는 이미 끝난걸로 판단함(사실 아님)",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18122,7 +18122,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 育 |\n|---|---|\n| 音読 | イク |\n| 訓読 | そだ-つ・そだ-てる・はぐく-む |\n| 뜻 | 자라다, 기르다 |\n| 예시 | 教育（きょういく）: 교육<br>育成（いくせい）: 육성 |\n| 분해 | 1단계: 育 → 亠[머리/덮개]（常用外） + 厶[사사/개인]（常用外） + 月[몸/고기]<br>최종: 亠（常用外）, 厶（常用外）, 月 |",
-              "memoPersonal": "",
+              "memoPersonal": "保育園을 생각해",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18151,7 +18151,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 対 |\n|---|---|\n| 音読 | タイ・ツイ |\n| 訓読 | たい-する |\n| 뜻 | 마주하다, 대하다, 상대하다 |\n| 예시 | 対応（たいおう）: 대응<br>反対（はんたい）: 반대 |\n| 분해 | 1단계: 対 → 文[글/무늬] + 寸[마디/손]<br>최종: 文, 寸 |",
-              "memoPersonal": "",
+              "memoPersonal": "글로 척을 치는거,대응하는거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18180,7 +18180,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 倒 |\n|---|---|\n| 音読 | トウ |\n| 訓読 | たお-れる・たお-す |\n| 뜻 | 넘어지다, 쓰러지다 |\n| 예시 | 転倒（てんとう）: 전도, 넘어짐<br>圧倒（あっとう）: 압도 |\n| 분해 | 1단계: 倒 → 亻[사람]（常用外） + 到[이르다]<br>2단계: 到 → 至[이르다] + 刂[칼]（常用外）<br>3단계: 至 → 一[하나] + 厶[사사/개인]（常用外） + 土[흙]<br>최종: 亻（常用外）, 一, 厶（常用外）, 土, 刂（常用外） |",
-              "memoPersonal": "",
+              "memoPersonal": "사람이 하나의 넓은 땅에 칼을 들고 쓰러짐",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18209,7 +18209,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 抱 |\n|---|---|\n| 音読 | ホウ |\n| 訓読 | だ-く・いだ-く・かか-える |\n| 뜻 | 안다, 품다 |\n| 예시 | 抱負（ほうふ）: 포부<br>介抱（かいほう）: 간호, 돌봄 |\n| 분해 | 1단계: 抱 → 扌[손]（常用外） + 包[감싸다]<br>2단계: 包 → 勹[감싸다]（常用外） + 巳[뱀/태아]（常用外）<br>최종: 扌（常用外）, 勹（常用外）, 巳（常用外） |",
-              "memoPersonal": "",
+              "memoPersonal": "손으로 감싸는거, 안는거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18238,7 +18238,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 助 |\n|---|---|\n| 音読 | ジョ |\n| 訓読 | たす-ける・すけ |\n| 뜻 | 돕다, 구조하다 |\n| 예시 | 助言（じょげん）: 조언<br>救助（きゅうじょ）: 구조 |\n| 분해 | 1단계: 助 → 且[또/쌓은 모양]（常用外） + 力[힘]<br>최종: 且（常用外）, 力 |",
-              "memoPersonal": "",
+              "memoPersonal": "또 힘을 건내주는거, 도와주는거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18267,7 +18267,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 尋 |\n|---|---|\n| 音読 | ジン |\n| 訓読 | たず-ねる・ひろ |\n| 뜻 | 묻다, 찾다, 길이 단위 |\n| 예시 | 尋問（じんもん）: 심문<br>尋常（じんじょう）: 보통, 평범 |\n| 분해 | 1단계: 尋 → 彐[손/쥠]（常用外） + 工[장인/일] + 口[입] + 寸[마디/손]<br>최종: 彐（常用外）, 工, 口, 寸 |",
-              "memoPersonal": "",
+              "memoPersonal": "요기 공구랑 입에 넣을거(밥) 한단위 없나요?",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18325,7 +18325,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 畳 |\n|---|---|\n| 音読 | ジョウ |\n| 訓読 | たた-む・たたみ |\n| 뜻 | 접다, 다다미 |\n| 예시 | 畳語（じょうご）: 첩어<br>石畳（いしだたみ）: 돌포장길 |\n| 분해 | 1단계: 畳 → 田[밭] + 冖[덮개]（常用外） + 且[또/쌓은 모양]（常用外）<br>최종: 田, 冖（常用外）, 且（常用外） |",
-              "memoPersonal": "",
+              "memoPersonal": "밭에서 (조직처럼)짜여있는거 뚜껑 덮기전에 개는거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18383,7 +18383,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 頼 |\n|---|---|\n| 音読 | ライ |\n| 訓読 | たの-む・たよ-る |\n| 뜻 | 부탁하다, 의지하다 |\n| 예시 | 信頼（しんらい）: 신뢰<br>依頼（いらい）: 의뢰 |\n| 분해 | 1단계: 頼 → 束[묶다] + 頁[머리/페이지]（常用外）<br>2단계: 束 → 木[나무] + 口[입/묶음](추정)<br>3단계: 頁 → 一[하나] + 自[스스로/코] + 八[여덟]<br>최종: 木, 口, 一, 自, 八 |",
-              "memoPersonal": "",
+              "memoPersonal": "동쪽의 도게자(머리를 내리는 행위) 부탁하다",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18412,7 +18412,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 溜 |\n|---|---|\n| 音読 | リュウ・ル |\n| 訓読 | た-まる・た-める |\n| 뜻 | 고이다, 쌓이다, 모이다 |\n| 예시 | 溜池（ためいけ）: 저수지<br>溜飲（りゅういん）: 위산 역류, 울분 |\n| 분해 | 1단계: 溜 → 氵[물]（常用外） + 留[머무르다]<br>2단계: 留 → 卯[묘/토끼]（常用外） + 田[밭]<br>최종: 氵（常用外）, 卯（常用外）, 田 |",
-              "memoPersonal": "",
+              "memoPersonal": "머무르는 물, 고이다",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18441,7 +18441,7 @@
               },
               "lastResult": "NEUTRAL",
               "memoDecomposition": "| 항목 | 頼 |\n|---|---|\n| 音読 | ライ |\n| 訓読 | たよ-る・たの-む |\n| 뜻 | 의지하다, 부탁하다 |\n| 예시 | 信頼（しんらい）: 신뢰<br>依頼（いらい）: 의뢰 |\n| 분해 | 1단계: 頼 → 束[묶다] + 頁[머리/페이지]（常用外）<br>2단계: 束 → 木[나무] + 口[입/묶음](추정)<br>3단계: 頁 → 一[하나] + 自[스스로/코] + 八[여덟]<br>최종: 木, 口, 一, 自, 八 |",
-              "memoPersonal": "",
+              "memoPersonal": "부탁하는거, 의지하는거",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -18449,10 +18449,10 @@
               "id": "d31-i20"
             }
           ],
-          "stage": 1,
-          "stageCompleteDate": null,
-          "nextReviewDate": null,
-          "lastAttemptDate": ""
+          "stage": 2,
+          "stageCompleteDate": "2026-08-03",
+          "nextReviewDate": "2026-08-04",
+          "lastAttemptDate": "2026-08-03"
         }
       ]
     },
@@ -20238,9 +20238,19 @@
                 },
                 "restKana": "れる"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "地震で窓ガラスが揺れる。",
+                "target": "揺れる",
+                "choices": [
+                  "よれる",
+                  "ゆれる",
+                  "やれる",
+                  "うれる"
+                ],
+                "answer": "ゆれる"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 揺 |\n|---|---|\n| 音読 | ヨウ |\n| 訓読 | ゆ-れる・ゆ-らぐ・ゆ-する |\n| 뜻 | 흔들리다, 흔들다 |\n| 예시 | 動揺（どうよう）: 동요<br>揺らぐ（ゆらぐ）: 흔들리다 |\n| 분해 | 1단계: 揺 → 扌[손]（常用外） + 䍃[흔들리는 모양]（常用外・推定）<br>2단계: 䍃 → 爫[손톱/손의 모양]（常用外） + 缶[질그릇]<br>최종: 扌（常用外）, 爫（常用外）, 缶 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20257,9 +20267,19 @@
                 },
                 "restKana": "す"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "泥で新しい靴を汚す。",
+                "target": "汚す",
+                "choices": [
+                  "よこす",
+                  "よぼす",
+                  "よごす",
+                  "ごよす"
+                ],
+                "answer": "よごす"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 汚 |\n|---|---|\n| 音読 | オ |\n| 訓読 | けが-す・けが-れる・よご-す・よご-れる・きたな-い |\n| 뜻 | 더럽히다, 더럽다 |\n| 예시 | 汚染（おせん）: 오염<br>汚れ（よごれ）: 더러움 |\n| 분해 | 1단계: 汚 → 氵[물]（常用外） + 亏[모자라다/굽은 모양]（常用外・推定）<br>최종: 氵（常用外）, 亏（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20276,9 +20296,19 @@
                 },
                 "restKana": "ぶ"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "困ったときは係員を呼ぶ。",
+                "target": "呼ぶ",
+                "choices": [
+                  "ゆぶ",
+                  "よぶ",
+                  "おぶ",
+                  "やぶ"
+                ],
+                "answer": "よぶ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 呼 |\n|---|---|\n| 音読 | コ |\n| 訓読 | よ-ぶ |\n| 뜻 | 부르다, 호흡하다 |\n| 예시 | 呼吸（こきゅう）: 호흡<br>呼び声（よびごえ）: 부르는 소리 |\n| 분해 | 1단계: 呼 → 口[입] + 乎[소리/어조를 나타내는 요소]（常用外・推定）<br>최종: 口, 乎（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20295,9 +20325,19 @@
                 },
                 "restKana": "る"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "帰りに駅前の店へ寄る。",
+                "target": "寄る",
+                "choices": [
+                  "やる",
+                  "える",
+                  "よる",
+                  "ゆる"
+                ],
+                "answer": "よる"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 寄 |\n|---|---|\n| 音読 | キ |\n| 訓読 | よ-る・よ-せる |\n| 뜻 | 다가가다, 들르다, 모으다 |\n| 예시 | 寄付（きふ）: 기부<br>寄せ書き（よせがき）: 여러 사람이 함께 쓴 글 |\n| 분해 | 1단계: 寄 → 宀[지붕]（常用外） + 奇[기이하다]<br>2단계: 奇 → 大[크다] + 可[가능하다]<br>3단계: 可 → 丁[못/장정] + 口[입]<br>최종: 宀（常用外）, 大, 丁, 口 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20314,9 +20354,19 @@
                 },
                 "restKana": "ぶ"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "合格の知らせを聞いて家族が喜ぶ。",
+                "target": "喜ぶ",
+                "choices": [
+                  "よるこぶ",
+                  "よろこぶ",
+                  "よろごぶ",
+                  "よころぶ"
+                ],
+                "answer": "よろこぶ"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 喜 |\n|---|---|\n| 音読 | キ |\n| 訓読 | よろこ-ぶ |\n| 뜻 | 기뻐하다, 기쁨 |\n| 예시 | 喜劇（きげき）: 희극<br>喜悦（きえつ）: 희열 |\n| 분해 | 1단계: 喜 → 壴[북을 치는 모습]（常用外） + 口[입]<br>2단계: 壴 → 十[열] + 豆[콩/제기]<br>최종: 十, 豆, 口 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20333,9 +20383,19 @@
                 },
                 "restKana": "く"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "鍋の湯がもうすぐ沸く。",
+                "target": "沸く",
+                "choices": [
+                  "かく",
+                  "わく",
+                  "なく",
+                  "まく"
+                ],
+                "answer": "わく"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 沸 |\n|---|---|\n| 音読 | フツ |\n| 訓読 | わ-く・わ-かす |\n| 뜻 | 끓다, 들끓다 |\n| 예시 | 沸騰（ふっとう）: 비등, 끓어오름<br>湯沸かし（ゆわかし）: 물 끓이는 기구 |\n| 분해 | 1단계: 沸 → 氵[물]（常用外） + 弗[퍼지거나 거스르는 모양]（常用外・推定）<br>최종: 氵（常用外）, 弗（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20352,9 +20412,19 @@
                 },
                 "restKana": "ける"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "ケーキを人数分に分ける。",
+                "target": "分ける",
+                "choices": [
+                  "はける",
+                  "わける",
+                  "まける",
+                  "だける"
+                ],
+                "answer": "わける"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 分 |\n|---|---|\n| 音読 | ブン・フン・ブ |\n| 訓読 | わ-ける・わ-かれる・わ-かる・わ-かつ |\n| 뜻 | 나누다, 구분하다, 몫 |\n| 예시 | 分析（ぶんせき）: 분석<br>十分（じゅうぶん）: 충분함 |\n| 분해 | 1단계: 分 → 八[여덟/갈라짐] + 刀[칼]<br>최종: 八, 刀 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20372,9 +20442,19 @@
                 },
                 "restKana": "ける"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "受付で荷物を受け取る。",
+                "target": "受け取る",
+                "choices": [
+                  "うげとる",
+                  "うけとる",
+                  "けうとる",
+                  "うけどる"
+                ],
+                "answer": "うけとる"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 受 | 取 |\n|---|---|---|\n| 音読 | ジュ | シュ |\n| 訓読 | う-ける・（全体）うけと-る | と-る |\n| 뜻 | 받다, 받아들이다 | 취하다, 잡다, 얻다 |\n| 예시 | 受信（じゅしん）: 수신<br>受付（うけつけ）: 접수 | 取得（しゅとく）: 취득<br>取引（とりひき）: 거래 |\n| 분해 | 1단계: 受 → 爫[손톱/위쪽 손]（常用外） + 冖[덮개]（常用外） + 又[또/손]<br>최종: 爫（常用外）, 冖（常用外）, 又 | 1단계: 取 → 耳[귀] + 又[또/손]<br>최종: 耳, 又 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20392,9 +20472,19 @@
                 },
                 "restKana": "いす"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "前を走る自転車を安全に追い越す。",
+                "target": "追い越す",
+                "choices": [
+                  "おいごす",
+                  "おいそす",
+                  "おいこす",
+                  "おこいす"
+                ],
+                "answer": "おいこす"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 追 | 越 |\n|---|---|---|\n| 音読 | ツイ | エツ |\n| 訓読 | お-う・（全体）おいこ-す | こ-す・こ-える |\n| 뜻 | 쫓다, 뒤따르다 | 넘다, 건너다, 뛰어넘다 |\n| 예시 | 追跡（ついせき）: 추적<br>追求（ついきゅう）: 추구 | 超越（ちょうえつ）: 초월<br>越境（えっきょう）: 월경, 경계를 넘음 |\n| 분해 | 1단계: 追 → 辶[쉬엄쉬엄 갈 착]（常用外） + 𠂤[쌓임/언덕 모양]（常用外・推定）<br>최종: 辶（常用外）, 𠂤（常用外） | 1단계: 越 → 走[달리다] + 戉[도끼 모양]（常用外）<br>최종: 走, 戉（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20411,9 +20501,19 @@
                 },
                 "restKana": "いつく"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "急げば先に出た友人に追いつく。",
+                "target": "追いつく",
+                "choices": [
+                  "あいつく",
+                  "おいつく",
+                  "ういつく",
+                  "えいつく"
+                ],
+                "answer": "おいつく"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 追 |\n|---|---|\n| 音読 | ツイ |\n| 訓読 | お-う・（全体）お-いつく |\n| 뜻 | 쫓다, 뒤따르다 |\n| 예시 | 追跡（ついせき）: 추적<br>追求（ついきゅう）: 추구 |\n| 분해 | 1단계: 追 → 辶[쉬엄쉬엄 갈 착]（常用外） + 𠂤[쌓임/언덕 모양]（常用外・推定）<br>최종: 辶（常用外）, 𠂤（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20431,9 +20531,19 @@
                 },
                 "restKana": "ちく"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "深呼吸すると気持ちが落ち着く。",
+                "target": "落ち着く",
+                "choices": [
+                  "おじつく",
+                  "おちつく",
+                  "ちおつく",
+                  "おちずく"
+                ],
+                "answer": "おちつく"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 落 | 着 |\n|---|---|---|\n| 音読 | ラク | チャク・ジャク |\n| 訓読 | お-ちる・お-とす・（全体）おちつ-く | き-る・き-せる・つ-く・つ-ける |\n| 뜻 | 떨어지다, 떨어뜨리다 | 입다, 도착하다, 붙다 |\n| 예시 | 落下（らっか）: 낙하<br>落選（らくせん）: 낙선 | 到着（とうちゃく）: 도착<br>着物（きもの）: 기모노, 일본 전통 의복 |\n| 분해 | 1단계: 落 → 艹[풀]（常用外） + 洛[물이 흐르는 모양/지명]（常用外）<br>2단계: 洛 → 氵[물]（常用外） + 各[각각]<br>3단계: 各 → 夂[뒤져 올 치]（常用外） + 口[입]<br>최종: 艹（常用外）, 氵（常用外）, 夂（常用外）, 口 | 1단계: 着 → 羊[양] + 目[눈]<br>최종: 羊, 目 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20450,9 +20560,19 @@
                 },
                 "restKana": "いつく"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "会議中に新しい案を思いつく。",
+                "target": "思いつく",
+                "choices": [
+                  "おぼいつく",
+                  "もおいつく",
+                  "おもいつく",
+                  "おみいつく"
+                ],
+                "answer": "おもいつく"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 思 |\n|---|---|\n| 音読 | シ |\n| 訓読 | おも-う・（全体）おも-いつく |\n| 뜻 | 생각하다, 여기다 |\n| 예시 | 思考（しこう）: 사고<br>意思（いし）: 의사, 뜻 |\n| 분해 | 1단계: 思 → 田[밭] + 心[마음]<br>최종: 田, 心 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20470,9 +20590,19 @@
                 },
                 "restKana": "いえる"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "古くなったパソコンを買い替える。",
+                "target": "買い替える",
+                "choices": [
+                  "かえかえる",
+                  "かいがえる",
+                  "かいかえる",
+                  "いかかえる"
+                ],
+                "answer": "かいかえる"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 買 | 替 |\n|---|---|---|\n| 音読 | バイ | タイ |\n| 訓読 | か-う・（全体）かいか-える | か-える・か-わる |\n| 뜻 | 사다, 구입하다 | 바꾸다, 대신하다 |\n| 예시 | 購買（こうばい）: 구매<br>買物（かいもの）: 쇼핑, 물건 사기 | 交替（こうたい）: 교대<br>両替（りょうがえ）: 환전 |\n| 분해 | 1단계: 買 → 罒[그물]（常用外） + 貝[조개/재물]<br>최종: 罒（常用外）, 貝 | 1단계: 替 → 夫[남편/성인 남자] + 夫[남편/성인 남자] + 曰[말하다]（常用外）<br>최종: 夫, 夫, 曰（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20490,9 +20620,19 @@
                 },
                 "restKana": "しす"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "図書館は利用者に傘を貸し出す。",
+                "target": "貸し出す",
+                "choices": [
+                  "かじだす",
+                  "しかだす",
+                  "かしだす",
+                  "かしです"
+                ],
+                "answer": "かしだす"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 貸 | 出 |\n|---|---|---|\n| 音読 | タイ | シュツ・スイ |\n| 訓読 | か-す・（全体）かしだ-す | で-る・だ-す |\n| 뜻 | 빌려주다, 대여하다 | 나오다, 내다, 출발하다 |\n| 예시 | 貸与（たいよ）: 대여<br>貸家（かしや）: 셋집 | 出発（しゅっぱつ）: 출발<br>出口（でぐち）: 출구 |\n| 분해 | 1단계: 貸 → 代[대신하다] + 貝[조개/재물]<br>2단계: 代 → 亻[사람]（常用外） + 弋[주살/표지]（常用外）<br>최종: 亻（常用外）, 弋（常用外）, 貝 | 1단계: 出 → 屮[싹이 돋는 모양]（常用外） + 凵[움푹한 테두리]（常用外・推定）<br>최종: 屮（常用外）, 凵（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20510,9 +20650,19 @@
                 },
                 "restKana": "きる"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "騒音の中で相手の声を聞き取る。",
+                "target": "聞き取る",
+                "choices": [
+                  "ききどる",
+                  "ききとる",
+                  "きときる",
+                  "きぎとる"
+                ],
+                "answer": "ききとる"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 聞 | 取 |\n|---|---|---|\n| 音読 | ブン・モン | シュ |\n| 訓読 | き-く・き-こえる・（全体）ききと-る | と-る |\n| 뜻 | 듣다, 묻다 | 취하다, 잡다, 얻다 |\n| 예시 | 新聞（しんぶん）: 신문<br>見聞（けんぶん）: 견문 | 取得（しゅとく）: 취득<br>取引（とりひき）: 거래 |\n| 분해 | 1단계: 聞 → 門[문] + 耳[귀]<br>최종: 門, 耳 | 1단계: 取 → 耳[귀] + 又[또/손]<br>최종: 耳, 又 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20530,9 +20680,19 @@
                 },
                 "restKana": "りえる"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "作業後は気持ちを切り替える。",
+                "target": "切り替える",
+                "choices": [
+                  "きれかえる",
+                  "きりかえる",
+                  "りきかえる",
+                  "きりがえる"
+                ],
+                "answer": "きりかえる"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 切 | 替 |\n|---|---|---|\n| 音読 | セツ・サイ | タイ |\n| 訓読 | き-る・き-れる・（全体）きりか-える | か-える・か-わる |\n| 뜻 | 자르다, 끊다, 절실하다 | 바꾸다, 대신하다 |\n| 예시 | 切断（せつだん）: 절단<br>大切（たいせつ）: 소중함 | 交替（こうたい）: 교대<br>両替（りょうがえ）: 환전 |\n| 분해 | 1단계: 切 → 七[일곱] + 刀[칼]<br>최종: 七, 刀 | 1단계: 替 → 夫[남편/성인 남자] + 夫[남편/성인 남자] + 曰[말하다]（常用外）<br>최종: 夫, 夫, 曰（常用外） |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20550,9 +20710,19 @@
                 },
                 "restKana": "りす"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "発音を覚えるまで何度も繰り返す。",
+                "target": "繰り返す",
+                "choices": [
+                  "ぐりかえす",
+                  "くりがえす",
+                  "くりかえす",
+                  "くれかえす"
+                ],
+                "answer": "くりかえす"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 繰 | 返 |\n|---|---|---|\n| 音読 | ソウ | ヘン |\n| 訓読 | く-る・（全体）くりかえ-す | かえ-す・かえ-る |\n| 뜻 | 되풀이하다, 감다 | 돌려주다, 돌아가다 |\n| 예시 | 繰越（くりこし）: 이월<br>繰上げ（くりあげ）: 앞당김 | 返答（へんとう）: 대답<br>返却（へんきゃく）: 반환 |\n| 분해 | 1단계: 繰 → 糸[실] + 喿[여러 입과 나무의 결합]（常用外・推定）<br>2단계: 喿 → 品[물건/여러 입] + 木[나무]<br>3단계: 品 → 口[입] + 口[입] + 口[입]<br>최종: 糸, 口, 口, 口, 木 | 1단계: 返 → 辶[쉬엄쉬엄 갈 착]（常用外） + 反[반대하다]<br>2단계: 反 → 厂[기슭/바위]（常用外） + 又[또/손]<br>최종: 辶（常用外）, 厂（常用外）, 又 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20568,9 +20738,19 @@
                   "締め切る": "しめきる"
                 }
               },
-              "problem": null,
+              "problem": {
+                "sentence": "応募は金曜日の午後に締め切る。",
+                "target": "締め切る",
+                "choices": [
+                  "じめきる",
+                  "しめきる",
+                  "めしきる",
+                  "しみきる"
+                ],
+                "answer": "しめきる"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 締 | 切 |\n|---|---|---|\n| 音読 | テイ | セツ・サイ |\n| 訓読 | し-める・し-まる・（全体）しめき-る | き-る・き-れる |\n| 뜻 | 조이다, 맺다, 마감하다 | 자르다, 끊다, 절실하다 |\n| 예시 | 締結（ていけつ）: 체결<br>締切日（しめきりび）: 마감일 | 切断（せつだん）: 절단<br>大切（たいせつ）: 소중함 |\n| 분해 | 1단계: 締 → 糸[실] + 帝[임금/중심]<br>2단계: 帝 → 亠[머리]（常用外） + 丷[갈라진 모양]（常用外・推定） + 冖[덮개]（常用外） + 巾[수건]<br>최종: 糸, 亠（常用外）, 丷（常用外）, 冖（常用外）, 巾 | 1단계: 切 → 七[일곱] + 刀[칼]<br>최종: 七, 刀 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20588,9 +20768,19 @@
                 },
                 "restKana": "りう"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "研修で他部署の社員と知り合う。",
+                "target": "知り合う",
+                "choices": [
+                  "じりあう",
+                  "しれあう",
+                  "しりあう",
+                  "りしあう"
+                ],
+                "answer": "しりあう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 知 | 合 |\n|---|---|---|\n| 音読 | チ | ゴウ・ガッ・カッ |\n| 訓読 | し-る・（全体）しりあ-う | あ-う・あ-わす・あ-わせる |\n| 뜻 | 알다, 지식 | 맞다, 합치다, 만나다 |\n| 예시 | 知識（ちしき）: 지식<br>通知（つうち）: 통지 | 合格（ごうかく）: 합격<br>会合（かいごう）: 회합 |\n| 분해 | 1단계: 知 → 矢[화살] + 口[입]<br>최종: 矢, 口 | 1단계: 合 → 亼[모이다]（常用外） + 口[입]<br>2단계: 亼 → 人[사람] + 一[하나]<br>최종: 人, 一, 口 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
@@ -20608,9 +20798,19 @@
                 },
                 "restKana": "きう"
               },
-              "problem": null,
+              "problem": {
+                "sentence": "仕事の後で同僚の買い物に付き合う。",
+                "target": "付き合う",
+                "choices": [
+                  "づきあう",
+                  "つきあう",
+                  "きつあう",
+                  "つぎあう"
+                ],
+                "answer": "つきあう"
+              },
               "lastResult": "NEUTRAL",
-              "memoDecomposition": "",
+              "memoDecomposition": "| 항목 | 付 | 合 |\n|---|---|---|\n| 音読 | フ | ゴウ・ガッ・カッ |\n| 訓読 | つ-く・つ-ける・（全体）つきあ-う | あ-う・あ-わす・あ-わせる |\n| 뜻 | 붙다, 붙이다, 딸리다 | 맞다, 합치다, 만나다 |\n| 예시 | 付近（ふきん）: 부근<br>受付（うけつけ）: 접수 | 合格（ごうかく）: 합격<br>会合（かいごう）: 회합 |\n| 분해 | 1단계: 付 → 亻[사람]（常用外） + 寸[마디/손]<br>최종: 亻（常用外）, 寸 | 1단계: 合 → 亼[모이다]（常用外） + 口[입]<br>2단계: 亼 → 人[사람] + 一[하나]<br>최종: 人, 一, 口 |",
               "memoPersonal": "",
               "stage": 1,
               "nextReviewDate": null,
