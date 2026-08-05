@@ -16257,7 +16257,7 @@
               },
               "lastResult": "FAIL",
               "memoDecomposition": "| 항목 | 扱 |\n|---|---|\n| 音読 | ソウ・キュウ |\n| 訓読 | あつか-う |\n| 뜻 | 다루다, 취급하다 |\n| 예시 | 扱者（あつかいしゃ）: 취급자<br>取扱（とりあつかい）: 취급 |\n| 분해 | 1단계: 扱 → 扌[손] + 及[미치다]<br>최종: 扌, 及 |",
-              "memoPersonal": "우수한 인간이 어떠한 급에 미치는 것 + 손 = 취급주의 조심히 다루는거",
+              "memoPersonal": "손으로 결국result를 만드는 과정 취급",
               "stage": 1,
               "nextReviewDate": null,
               "lastAttemptDate": "",
@@ -16342,7 +16342,7 @@
                 ],
                 "answer": "あまる"
               },
-              "lastResult": "PASS",
+              "lastResult": "FAIL",
               "memoDecomposition": "| 항목 | 余 |\n|---|---|\n| 音読 | ヨ |\n| 訓読 | あま-る・あまり |\n| 뜻 | 남다, 여분 |\n| 예시 | 余分（よぶん）: 여분<br>余裕（よゆう）: 여유 |\n| 분해 | 1단계: 余 → 人[사람] + 于[어조사/가다](추정)（常用外） + 八[여덟/나뉨](추정)<br>최종: 人, 于（常用外）, 八 |",
               "memoPersonal": "사람이 볼수있도록 무언가 남아있음",
               "stage": 1,
@@ -16673,8 +16673,8 @@
           ],
           "stage": 4,
           "stageCompleteDate": "2026-06-16",
-          "nextReviewDate": "2026-07-31",
-          "lastAttemptDate": "2026-07-31"
+          "nextReviewDate": "2026-08-04",
+          "lastAttemptDate": "2026-08-05"
         }
       ]
     },
@@ -18449,10 +18449,10 @@
               "id": "d31-i20"
             }
           ],
-          "stage": 2,
-          "stageCompleteDate": "2026-08-03",
-          "nextReviewDate": "2026-08-04",
-          "lastAttemptDate": "2026-08-03"
+          "stage": 3,
+          "stageCompleteDate": "2026-08-04",
+          "nextReviewDate": "2026-08-07",
+          "lastAttemptDate": "2026-08-04"
         }
       ]
     },
