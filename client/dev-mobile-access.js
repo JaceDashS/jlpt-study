@@ -4,14 +4,14 @@ import os from "node:os";
 
 const ACCESS_TOKEN_PARAM = "access_token";
 const ACCESS_TOKEN_ALIASES = [ACCESS_TOKEN_PARAM, "token"];
-const ACCESS_TOKEN_COOKIE = "jlpt_access_token";
-const ACCESS_TOKEN_HEADER = "x-jlpt-access-token";
-const ACCESS_TOKEN_SESSION_KEY = "jlpt_access_token";
+const ACCESS_TOKEN_COOKIE = "jpc_access_token";
+const ACCESS_TOKEN_HEADER = "x-jpc-access-token";
+const ACCESS_TOKEN_SESSION_KEY = "jpc_access_token";
 const API_BASE_PARAM = "api_base";
 const API_BASE_ALIASES = [API_BASE_PARAM, "api_url"];
 const API_BASE_SESSION_KEY = "jlpt_api_base_url";
 const GATEWAY_HEALTH_PATH = "/__gateway/health";
-const ACCESS_TOKEN = process.env.JLPT_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
+const ACCESS_TOKEN = process.env.JPC_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
 const AUTHORIZED_CLIENT_TTL_MS = 12 * 60 * 60 * 1000;
 const authorizedClients = new Map();
 
@@ -33,7 +33,7 @@ export function getDevServerConfig() {
 
 export function mobileAccessPlugin() {
   return {
-    name: "jlpt-mobile-access",
+    name: "jpc-mobile-access",
     transformIndexHtml(html) {
       return html.replace("</head>", `${createAccessTokenCleanupScript()}</head>`);
     },
@@ -55,7 +55,7 @@ export function mobileAccessPlugin() {
 
       server.httpServer?.once("listening", () => {
         printMobileAccessInfo(server).catch((error) => {
-          console.warn(`[jlpt access] Failed to print mobile access info: ${String(error?.message ?? error)}`);
+          console.warn(`[jpc access] Failed to print mobile access info: ${String(error?.message ?? error)}`);
         });
       });
     },
@@ -188,7 +188,7 @@ function writeGatewayHealth(res, port) {
   res.end(
     JSON.stringify({
       ok: true,
-      name: "JLPT Study",
+      name: "Japanese Companion",
       description: "Japanese study app",
       kind: "vite",
       port,
@@ -236,7 +236,7 @@ function createAccessTokenCleanupScript() {
 }
 
 function readPortFromEnv() {
-  const rawPort = process.env.JLPT_DEV_PORT ?? process.env.PORT;
+  const rawPort = process.env.JPC_DEV_PORT ?? process.env.PORT;
   if (!rawPort) return undefined;
 
   const port = Number(rawPort);
@@ -244,12 +244,12 @@ function readPortFromEnv() {
     return port;
   }
 
-  console.warn(`[jlpt access] Ignoring invalid port: ${rawPort}`);
+  console.warn(`[jpc access] Ignoring invalid port: ${rawPort}`);
   return undefined;
 }
 
 function readDevServerHost() {
-  const configuredHost = String(process.env.JLPT_DEV_HOST ?? "").trim();
+  const configuredHost = String(process.env.JPC_DEV_HOST ?? "").trim();
   if (configuredHost) return configuredHost;
   return shouldUseLocalOnlyDevServer() ? "127.0.0.1" : "0.0.0.0";
 }
@@ -311,9 +311,9 @@ async function printMobileAccessInfo(server) {
   const apiPort = readApiPortFromEnv();
 
   console.log("");
-  console.log("[jlpt access] Mobile/network dev server is bound to 0.0.0.0");
-  console.log(`[jlpt access] Token: ${ACCESS_TOKEN}`);
-  console.log("[jlpt access] Scan the INTERNAL_LAN QR when your phone is on the same Wi-Fi/LAN. No token is required on LAN.");
+  console.log("[jpc access] Mobile/network dev server is bound to 0.0.0.0");
+  console.log(`[jpc access] Token: ${ACCESS_TOKEN}`);
+  console.log("[jpc access] Scan the INTERNAL_LAN QR when your phone is on the same Wi-Fi/LAN. No token is required on LAN.");
   console.log("");
 
   printAccessTarget(readLanAccessTarget(port, apiPort));
@@ -328,9 +328,9 @@ function printLocalAccessInfo(server) {
   const port = readBoundPort(server);
 
   console.log("");
-  console.log("[jlpt access] Local-only dev server is bound to 127.0.0.1");
-  console.log(`[jlpt access] Local URL: http://localhost:${port}/`);
-  console.log("[jlpt access] Network QR is disabled.");
+  console.log("[jpc access] Local-only dev server is bound to 127.0.0.1");
+  console.log(`[jpc access] Local URL: http://localhost:${port}/`);
+  console.log("[jpc access] Network QR is disabled.");
   console.log("");
 }
 
@@ -341,44 +341,44 @@ function readBoundPort(server) {
 }
 
 function printAccessTarget(target) {
-  console.log(`[jlpt access] ===== ${target.label} QR =====`);
-  console.log(`[jlpt access] ${target.description}`);
+  console.log(`[jpc access] ===== ${target.label} QR =====`);
+  console.log(`[jpc access] ${target.description}`);
   if (target.note) {
-    console.log(`[jlpt access] ${target.note}`);
+    console.log(`[jpc access] ${target.note}`);
   }
-  console.log(`[jlpt access] ${target.label} URL: ${target.url}`);
+  console.log(`[jpc access] ${target.label} URL: ${target.url}`);
   console.log("");
 
   try {
-    console.log("[jlpt access] QR IMAGE BEGIN");
+    console.log("[jpc access] QR IMAGE BEGIN");
     console.log(renderQr(target.url, { unicode: shouldRenderUnicodeQr() }));
-    console.log("[jlpt access] QR IMAGE END");
+    console.log("[jpc access] QR IMAGE END");
   } catch (error) {
-    console.warn(`[jlpt access] ${target.label} QR render skipped: ${String(error?.message ?? error)}`);
+    console.warn(`[jpc access] ${target.label} QR render skipped: ${String(error?.message ?? error)}`);
   }
 
-  console.log(`[jlpt access] ===== ${target.label} QR END =====`);
+  console.log(`[jpc access] ===== ${target.label} QR END =====`);
   console.log("");
 }
 
 function shouldRenderUnicodeQr() {
-  const ascii = String(process.env.JLPT_QR_ASCII ?? "").trim().toLowerCase();
+  const ascii = String(process.env.JPC_QR_ASCII ?? "").trim().toLowerCase();
   if (ascii === "1" || ascii === "true") return false;
 
-  const unicode = String(process.env.JLPT_QR_UNICODE ?? "").trim().toLowerCase();
+  const unicode = String(process.env.JPC_QR_UNICODE ?? "").trim().toLowerCase();
   if (unicode === "0" || unicode === "false") return false;
 
   return true;
 }
 
 function readApiPortFromEnv() {
-  const rawPort = process.env.JLPT_API_PORT ?? "3001";
+  const rawPort = process.env.JPC_API_PORT ?? "3001";
   const port = Number(rawPort);
   return Number.isInteger(port) && port > 0 && port <= 65535 ? port : 3001;
 }
 
 function readLanAccessTarget(port, apiPort) {
-  const manualHost = String(process.env.JLPT_LAN_HOST ?? "").trim();
+  const manualHost = String(process.env.JPC_LAN_HOST ?? "").trim();
   if (manualHost) {
     const host = formatUrlHost(manualHost);
     return {
@@ -387,7 +387,7 @@ function readLanAccessTarget(port, apiPort) {
       url: addApiBaseParamToUrl(`http://${host}:${port}/`, {
         apiBaseUrl: `http://${host}:${apiPort}/api`,
       }),
-      note: "LAN host override: JLPT_LAN_HOST",
+      note: "LAN host override: JPC_LAN_HOST",
     };
   }
 
@@ -407,7 +407,7 @@ function readLanAccessTarget(port, apiPort) {
 }
 
 async function readExternalAccessTarget(port) {
-  const publicUrl = process.env.JLPT_PUBLIC_URL;
+  const publicUrl = process.env.JPC_PUBLIC_URL;
   if (publicUrl) {
     const publicBaseUrl = normalizeUrl(publicUrl);
     return {
@@ -417,7 +417,7 @@ async function readExternalAccessTarget(port) {
         apiBaseUrl: readPublicApiBaseUrl(publicBaseUrl),
         token: ACCESS_TOKEN,
       }),
-      note: "Public URL override: JLPT_PUBLIC_URL",
+      note: "Public URL override: JPC_PUBLIC_URL",
     };
   }
 
@@ -434,7 +434,7 @@ async function readExternalAccessTarget(port) {
 }
 
 function readPublicApiBaseUrl(publicBaseUrl) {
-  const rawApiUrl = process.env.JLPT_PUBLIC_API_URL ?? process.env.JLPT_API_PUBLIC_URL;
+  const rawApiUrl = process.env.JPC_PUBLIC_API_URL ?? process.env.JPC_API_PUBLIC_URL;
   if (rawApiUrl) return normalizeApiBaseUrl(rawApiUrl);
 
   const url = new URL(publicBaseUrl);
@@ -445,19 +445,19 @@ function readPublicApiBaseUrl(publicBaseUrl) {
 }
 
 async function readPublicIpBaseUrl(port) {
-  const host = process.env.JLPT_ACCESS_HOST ?? (await readPublicIpv4Address());
+  const host = process.env.JPC_ACCESS_HOST ?? (await readPublicIpv4Address());
   if (!host) return null;
 
   return `http://${formatUrlHost(host)}:${port}/`;
 }
 
 function shouldUseLocalOnlyDevServer() {
-  const rawValue = String(process.env.JLPT_DEV_LOCAL_ONLY ?? "").trim().toLowerCase();
+  const rawValue = String(process.env.JPC_DEV_LOCAL_ONLY ?? "").trim().toLowerCase();
   return ["1", "true", "yes", "on"].includes(rawValue);
 }
 
 function shouldUsePreviewAccessControl() {
-  const rawValue = String(process.env.JLPT_PREVIEW_ACCESS_CONTROL ?? "").trim().toLowerCase();
+  const rawValue = String(process.env.JPC_PREVIEW_ACCESS_CONTROL ?? "").trim().toLowerCase();
   return ["1", "true", "yes", "on"].includes(rawValue);
 }
 
@@ -516,7 +516,7 @@ async function readPublicIpv4Address() {
     }
   }
 
-  console.warn("[jlpt access] Public IP lookup failed; Internet QR will not be printed unless JLPT_PUBLIC_URL or JLPT_ACCESS_HOST is set.");
+  console.warn("[jpc access] Public IP lookup failed; Internet QR will not be printed unless JPC_PUBLIC_URL or JPC_ACCESS_HOST is set.");
   return null;
 }
 

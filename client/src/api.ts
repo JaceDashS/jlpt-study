@@ -35,7 +35,7 @@ export async function apiFetch(input: RequestInfo | URL, init?: RequestInit) {
     try {
       return await fetch(request);
     } catch (error) {
-      console.error("[jlpt api client] request failed", formatRequestTarget(request.url), error);
+      console.error("[jpc api client] request failed", formatRequestTarget(request.url), error);
       throw error;
     }
   }
@@ -65,7 +65,7 @@ export async function apiFetch(input: RequestInfo | URL, init?: RequestInit) {
     };
 
     void readBodyForLog(response).then((body) => {
-      writeLogGroup(`[jlpt api client] #${id} <- ${method} ${target} ${response.status} ${durationMs}ms`, () => {
+      writeLogGroup(`[jpc api client] #${id} <- ${method} ${target} ${response.status} ${durationMs}ms`, () => {
         console.log("request", requestLog);
         console.log("response", {
           ...responseLogBase,
@@ -77,7 +77,7 @@ export async function apiFetch(input: RequestInfo | URL, init?: RequestInit) {
     return response;
   } catch (error) {
     const durationMs = Date.now() - startedAt;
-    writeLogGroup(`[jlpt api client] #${id} !! ${method} ${target} ${durationMs}ms`, () => {
+    writeLogGroup(`[jpc api client] #${id} !! ${method} ${target} ${durationMs}ms`, () => {
       console.log("request", requestLog);
       console.error("error", error);
     });
@@ -102,7 +102,7 @@ function isApiRequest(url: string) {
 }
 
 function isApiDebugLoggingEnabled() {
-  const rawValue = String(import.meta.env.VITE_JLPT_API_DEBUG ?? "").trim().toLowerCase();
+  const rawValue = String(import.meta.env.VITE_JPC_API_DEBUG ?? "").trim().toLowerCase();
   if (rawValue) {
     return ["1", "true", "yes", "on"].includes(rawValue);
   }

@@ -125,8 +125,8 @@ export function createApiServer() {
 }
 
 export async function startApiServer(options = {}) {
-  const host = String(options.host ?? process.env.JLPT_API_HOST ?? "127.0.0.1");
-  const port = readPort(options.port ?? process.env.JLPT_API_PORT ?? process.env.PORT, 3001);
+  const host = String(options.host ?? process.env.JPC_API_HOST ?? "127.0.0.1");
+  const port = readPort(options.port ?? process.env.JPC_API_PORT ?? process.env.PORT, 3001);
   const server = createApiServer();
 
   await new Promise((resolve, reject) => {
@@ -137,7 +137,7 @@ export async function startApiServer(options = {}) {
     });
   });
 
-  console.log(`[jlpt server] API server listening on http://${formatListenHost(host)}:${port}`);
+  console.log(`[jpc server] API server listening on http://${formatListenHost(host)}:${port}`);
   return server;
 }
 

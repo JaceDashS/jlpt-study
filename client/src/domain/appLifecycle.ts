@@ -31,7 +31,7 @@ export function useHomeReviewDebugLog({ reviewDueCount, session, stateCurriculum
 }
 
 function isHomeReviewDebugLogEnabled() {
-  const rawValue = String(import.meta.env.VITE_JLPT_HOME_DEBUG ?? "").trim().toLowerCase();
+  const rawValue = String(import.meta.env.VITE_JPC_HOME_DEBUG ?? "").trim().toLowerCase();
   if (rawValue) {
     return ["1", "true", "yes", "on"].includes(rawValue);
   }

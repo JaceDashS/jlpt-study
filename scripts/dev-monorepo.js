@@ -23,8 +23,8 @@ const processes = [
 
 const children = [];
 const rawOutputMode = new Map(processes.map((item) => [item.name, false]));
-const localOnlyDev = process.env.JLPT_DEV_LOCAL_ONLY ?? "1";
-const configuredAccessToken = String(process.env.JLPT_ACCESS_TOKEN ?? "");
+const localOnlyDev = process.env.JPC_DEV_LOCAL_ONLY ?? "1";
+const configuredAccessToken = String(process.env.JPC_ACCESS_TOKEN ?? "");
 const accessToken = configuredAccessToken || (isEnabled(localOnlyDev) ? "" : crypto.randomBytes(24).toString("base64url"));
 let shuttingDown = false;
 
@@ -44,9 +44,9 @@ function startProcess(spec) {
     env: {
       ...process.env,
       FORCE_COLOR: process.env.FORCE_COLOR ?? "1",
-      JLPT_API_HOST: process.env.JLPT_API_HOST ?? (isEnabled(localOnlyDev) ? "127.0.0.1" : "0.0.0.0"),
-      JLPT_ACCESS_TOKEN: accessToken,
-      JLPT_DEV_LOCAL_ONLY: localOnlyDev,
+      JPC_API_HOST: process.env.JPC_API_HOST ?? (isEnabled(localOnlyDev) ? "127.0.0.1" : "0.0.0.0"),
+      JPC_ACCESS_TOKEN: accessToken,
+      JPC_DEV_LOCAL_ONLY: localOnlyDev,
     },
     windowsHide: true,
     stdio: ["ignore", "pipe", "pipe"],
@@ -95,12 +95,12 @@ function pipeLines(spec, stream) {
 function writeLine(spec, line) {
   if (!line) return;
 
-  if (line.includes("[jlpt access] QR IMAGE BEGIN")) {
+  if (line.includes("[jpc access] QR IMAGE BEGIN")) {
     rawOutputMode.set(spec.name, true);
     return;
   }
 
-  if (line.includes("[jlpt access] QR IMAGE END")) {
+  if (line.includes("[jpc access] QR IMAGE END")) {
     rawOutputMode.set(spec.name, false);
     return;
   }

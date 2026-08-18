@@ -10,13 +10,13 @@ const DEFAULT_API_PORT = 47833;
 const DEFAULT_PREVIEW_PORT = 47832;
 
 const cli = parseCliArgs(process.argv.slice(2));
-const accessToken = process.env.JLPT_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
-const apiPort = readPort(process.env.JLPT_API_PORT, DEFAULT_API_PORT);
+const accessToken = process.env.JPC_ACCESS_TOKEN || crypto.randomBytes(24).toString("base64url");
+const apiPort = readPort(process.env.JPC_API_PORT, DEFAULT_API_PORT);
 const defaultPreviewHost = cli.public ? "0.0.0.0" : "127.0.0.1";
-const apiHost = process.env.JLPT_API_HOST ?? "127.0.0.1";
-const previewHost = process.env.JLPT_PREVIEW_HOST || defaultPreviewHost;
+const apiHost = process.env.JPC_API_HOST ?? "127.0.0.1";
+const previewHost = process.env.JPC_PREVIEW_HOST || defaultPreviewHost;
 const previewConnectHost = previewHost === "0.0.0.0" ? "127.0.0.1" : previewHost;
-const previewPort = readPort(process.env.JLPT_PREVIEW_PORT ?? process.env.PORT, DEFAULT_PREVIEW_PORT);
+const previewPort = readPort(process.env.JPC_PREVIEW_PORT ?? process.env.PORT, DEFAULT_PREVIEW_PORT);
 const children = [];
 let shuttingDown = false;
 
@@ -39,9 +39,9 @@ async function main() {
     commandLine: npmCommand("run start --workspace server"),
     env: {
       ...prodEnv(),
-      JLPT_ACCESS_TOKEN: accessToken,
-      JLPT_API_HOST: apiHost,
-      JLPT_API_PORT: String(apiPort),
+      JPC_ACCESS_TOKEN: accessToken,
+      JPC_API_HOST: apiHost,
+      JPC_API_PORT: String(apiPort),
     },
   });
 
@@ -52,9 +52,9 @@ async function main() {
     ),
     env: {
       ...prodEnv(),
-      JLPT_ACCESS_TOKEN: accessToken,
-      JLPT_API_PORT: String(apiPort),
-      JLPT_PREVIEW_ACCESS_CONTROL: "1",
+      JPC_ACCESS_TOKEN: accessToken,
+      JPC_API_PORT: String(apiPort),
+      JPC_PREVIEW_ACCESS_CONTROL: "1",
     },
   });
 
@@ -70,8 +70,8 @@ function prodEnv() {
   return {
     ...process.env,
     NODE_ENV: process.env.NODE_ENV ?? "production",
-    JLPT_LOG_LEVEL: process.env.JLPT_LOG_LEVEL ?? "warn",
-    VITE_JLPT_API_DEBUG: process.env.VITE_JLPT_API_DEBUG ?? "0",
+    JPC_LOG_LEVEL: process.env.JPC_LOG_LEVEL ?? "warn",
+    VITE_JPC_API_DEBUG: process.env.VITE_JPC_API_DEBUG ?? "0",
   };
 }
 

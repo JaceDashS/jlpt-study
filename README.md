@@ -1,1 +1,1 @@
-# jlpt-study
+# japanese-companion

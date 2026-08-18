@@ -1,5 +1,5 @@
 {
-  "name": "@jlpt-study/client",
+  "name": "@japanese-companion/client",
   "private": true,
   "version": "0.0.0",
   "type": "module",

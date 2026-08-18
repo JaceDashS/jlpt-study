@@ -1,5 +1,5 @@
 const ACCESS_TOKEN_ALIASES = ["access_token", "token"];
-const ACCESS_TOKEN_SESSION_KEY = "jlpt_access_token";
+const ACCESS_TOKEN_SESSION_KEY = "jpc_access_token";
 const API_BASE_ALIASES = ["api_base", "api_url"];
 const API_BASE_SESSION_KEY = "jlpt_api_base_url";
 const DEFAULT_LAN_API_PORT = "3001";
@@ -26,12 +26,12 @@ export function readApiBaseUrl() {
 
 export function attachApiAccessToken(request: Request) {
   const token = readAccessToken();
-  if (!token || request.headers.has("X-JLPT-Access-Token")) {
+  if (!token || request.headers.has("X-JPC-Access-Token")) {
     return request;
   }
 
   const headers = new Headers(request.headers);
-  headers.set("X-JLPT-Access-Token", token);
+  headers.set("X-JPC-Access-Token", token);
   return new Request(request, { headers });
 }
 

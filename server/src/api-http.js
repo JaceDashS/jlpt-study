@@ -5,8 +5,8 @@ export const API_LOG_CONTEXT = Symbol("apiLogContext");
 export const API_ACCEPT_ENCODING = Symbol("apiAcceptEncoding");
 
 const ACCESS_TOKEN_ALIASES = ["access_token", "token"];
-const ACCESS_TOKEN_COOKIE = "jlpt_access_token";
-const ACCESS_TOKEN_HEADER = "x-jlpt-access-token";
+const ACCESS_TOKEN_COOKIE = "jpc_access_token";
+const ACCESS_TOKEN_HEADER = "x-jpc-access-token";
 const SENSITIVE_QUERY_KEYS = new Set(["access_token", "token", "password", "secret"]);
 
 export function readRequestBaseUrl(req) {
@@ -23,7 +23,7 @@ export function applyCorsHeaders(req, res) {
   }
 
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-JLPT-Access-Token, Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-JPC-Access-Token, Authorization");
   res.setHeader("Access-Control-Max-Age", "600");
 
   if (String(req.headers["access-control-request-private-network"] ?? "").toLowerCase() === "true") {
@@ -56,7 +56,7 @@ function isAllowedCorsOrigin(origin) {
 }
 
 function readAllowedCorsOrigins() {
-  return String(process.env.JLPT_API_ALLOWED_ORIGINS ?? "")
+  return String(process.env.JPC_API_ALLOWED_ORIGINS ?? "")
     .split(",")
     .map((origin) => origin.trim())
     .filter(Boolean);
@@ -74,7 +74,7 @@ function isPrivateIpv4(hostname) {
 }
 
 export function isAuthorizedApiRequest(req, requestUrl) {
-  const expectedToken = String(process.env.JLPT_ACCESS_TOKEN ?? "");
+  const expectedToken = String(process.env.JPC_ACCESS_TOKEN ?? "");
   if (!expectedToken) return true;
   if (isTrustedInternalLanRequest(req)) return true;
 
@@ -148,7 +148,7 @@ export function logApiRequest(req, res, requestUrl) {
       formatGroupedFields("result", context.result),
       event ? `event=${formatLogValue(event)}` : "",
     ].filter(Boolean);
-    console.log(`[jlpt api] <- ${method} ${target} ${fields.join(" ")}`);
+    console.log(`[jpc api] <- ${method} ${target} ${fields.join(" ")}`);
   }
 
   res.once("finish", () => writeLog(""));

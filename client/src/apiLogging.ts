@@ -1,5 +1,5 @@
 const API_LOG_BODY_LIMIT = 8000;
-const SENSITIVE_HEADER_KEYS = new Set(["authorization", "cookie", "set-cookie", "x-api-key", "x-jlpt-access-token"]);
+const SENSITIVE_HEADER_KEYS = new Set(["authorization", "cookie", "set-cookie", "x-api-key", "x-jpc-access-token"]);
 const SENSITIVE_BODY_KEYS = new Set(["access_token", "authorization", "cookie", "password", "secret", "token", "x-api-key"]);
 const SENSITIVE_QUERY_KEYS = new Set(["access_token", "password", "secret", "token"]);
 

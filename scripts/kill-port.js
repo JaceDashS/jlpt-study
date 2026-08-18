@@ -26,9 +26,9 @@ function readPorts(args) {
 
 function readDefaultProjectPorts() {
   return uniquePorts([
-    readPort(process.env.JLPT_API_PORT, FALLBACK_API_PORT),
-    readPort(process.env.JLPT_DEV_PORT ?? process.env.PORT, FALLBACK_CLIENT_PORT),
-    readPort(process.env.JLPT_PREVIEW_PORT ?? process.env.PORT, FALLBACK_CLIENT_PORT),
+    readPort(process.env.JPC_API_PORT, FALLBACK_API_PORT),
+    readPort(process.env.JPC_DEV_PORT ?? process.env.PORT, FALLBACK_CLIENT_PORT),
+    readPort(process.env.JPC_PREVIEW_PORT ?? process.env.PORT, FALLBACK_CLIENT_PORT),
     FALLBACK_API_PORT,
     FALLBACK_CLIENT_PORT,
   ]);
