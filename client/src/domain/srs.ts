@@ -1,5 +1,8 @@
-﻿import { REVIEW_STAGE_MAX, getOffsetToNextStage } from "./constants";
+﻿import { GRADUATED_STAGE, REVIEW_STAGE_MAX, getOffsetToNextStage } from "./constants";
 import { addDays } from "./date";
+
+// 틀린 Day 를 다시 보는 간격. stage 는 그대로 두고 하루 뒤에 다시 띄운다.
+const RETRY_OFFSET_DAYS = 1;
 
 function isQuizTarget(item) {
   return Boolean(item);
@@ -36,16 +39,21 @@ export function getStageProgressRatio(entity) {
   return (safeStage - 1) / (REVIEW_STAGE_MAX - 1);
 }
 
+function normalizeStage(value) {
+  const stage = Number(value);
+  return Number.isFinite(stage) ? Math.max(1, Math.min(REVIEW_STAGE_MAX, stage)) : 1;
+}
+
+// 성공: 다음 단계로. 마지막 간격(30일)까지 통과하면 졸업이라 더 이상 예약하지 않는다.
 export function getNextStageState(day, today) {
-  const stage = Number(day?.stage);
-  const currentStage = Number.isFinite(stage) ? Math.max(1, Math.min(REVIEW_STAGE_MAX, stage)) : 1;
+  const currentStage = normalizeStage(day?.stage);
   const nextStage = Math.min(currentStage + 1, REVIEW_STAGE_MAX);
 
-  if (nextStage === currentStage) {
+  if (nextStage >= GRADUATED_STAGE) {
     return {
-      stage: currentStage,
-      stageCompleteDate: day?.stageCompleteDate ?? null,
-      nextReviewDate: day?.nextReviewDate ?? null,
+      stage: GRADUATED_STAGE,
+      stageCompleteDate: today,
+      nextReviewDate: null,
     };
   }
 
@@ -53,6 +61,16 @@ export function getNextStageState(day, today) {
     stage: nextStage,
     stageCompleteDate: today,
     nextReviewDate: addDays(today, getOffsetToNextStage(nextStage)),
+  };
+}
+
+// 실패: 한 단계 내려가고 내일 다시 본다.
+export function getFailStageState(day, today) {
+  const currentStage = normalizeStage(day?.stage);
+  return {
+    stage: Math.max(1, currentStage - 1),
+    stageCompleteDate: day?.stageCompleteDate ?? null,
+    nextReviewDate: addDays(today, RETRY_OFFSET_DAYS),
   };
 }
 
@@ -76,19 +94,10 @@ export function applyQuizResultForDay(day, today, gradedResultByItemId) {
     }
 
     const itemHasGraded = Object.prototype.hasOwnProperty.call(gradedResultByItemId, item.id);
-    const gradedResult = itemHasGraded ? gradedResultByItemId[item.id] : "NEUTRAL";
-    const base = {
-      ...item,
-      lastResult: gradedResult,
-    };
-
-    if (!allPass) {
-      return base;
-    }
-
+    // 이번에 풀지 않은 항목은 지난 결과를 그대로 둔다. 전부 맞혀도 이력은 지우지 않는다.
     return {
-      ...base,
-      lastResult: "NEUTRAL",
+      ...item,
+      lastResult: itemHasGraded ? gradedResultByItemId[item.id] : (item.lastResult ?? "NEUTRAL"),
     };
   });
 
@@ -98,71 +107,24 @@ export function applyQuizResultForDay(day, today, gradedResultByItemId) {
     items: nextItems,
   };
 
-  return {
-    allPass: hasReviewedGradable && allPass,
-    day: hasReviewedGradable && allPass
-      ? {
-          ...baseDay,
-          ...getNextStageState(baseDay, today),
-        }
-      : baseDay,
-  };
-}
-
-export function applyReviewResultForDay(day, today, gradedResultByItemId) {
-  let hasReviewed = false;
-  let hasFail = false;
-  const targetItems = day.items.filter(isQuizTarget);
-  const gradableIdSet = new Set(targetItems.filter(isGradableItem).map((item) => item.id));
-
-  const nextItems = day.items.map((item) => {
-    if (!isQuizTarget(item)) {
-      return item;
-    }
-
-    const gradedResult = gradedResultByItemId[item.id];
-    if (!gradedResult) {
-      return item;
-    }
-
-    if (!gradableIdSet.has(item.id)) {
-      return item;
-    }
-
-    hasReviewed = true;
-    if (gradedResult === "FAIL") {
-      hasFail = true;
-    }
-
+  if (hasReviewedGradable && allPass) {
     return {
-      ...item,
-      lastResult: gradedResult,
-    };
-  });
-
-  if (!hasReviewed) {
-    return { day };
-  }
-
-  if (hasFail) {
-    return {
+      allPass: true,
       day: {
-        ...day,
-        nextReviewDate: today,
-        lastAttemptDate: today,
-        items: nextItems,
+        ...baseDay,
+        ...getNextStageState(baseDay, today),
       },
     };
   }
 
-  const baseDay = {
-    ...day,
-    ...getNextStageState(day, today),
-    lastAttemptDate: today,
-    items: nextItems.map((item) => ({ ...item, lastResult: "NEUTRAL" })),
-  };
-
   return {
-    day: baseDay,
+    allPass: false,
+    day: hasReviewedGradable ? { ...baseDay, ...getFailStageState(baseDay, today) } : baseDay,
   };
+}
+
+// 복습도 학습과 같은 규칙을 쓴다: 그 회차의 채점 대상 전부를 맞혀야 단계가 오른다.
+// (자격증 앱과 동일한 기준. 예전에는 복습 대상으로 뽑힌 항목만 보고 판정했다.)
+export function applyReviewResultForDay(day, today, gradedResultByItemId) {
+  return applyQuizResultForDay(day, today, gradedResultByItemId);
 }

@@ -87,12 +87,6 @@ export function createSessionController({
     void persistSourceDayField(sourceDay, "lastAttemptDate", nextDay.lastAttemptDate);
   };
 
-  const resetPersistedResults = (items: StudyItem[]) => {
-    items.forEach((item) => {
-      void persistSourceField(item, "lastResult", "NEUTRAL");
-    });
-  };
-
   const finishSession = ({
     allPass,
     failedItemIds,
@@ -150,8 +144,6 @@ export function createSessionController({
       session.mode === "review"
         ? applyReviewResultForDay(day, today, gradedMap)
         : applyQuizResultForDay(day, today, gradedMap);
-    const stageRaised = Number(nextDay?.stage ?? 1) > Number(day?.stage ?? 1);
-
     setState((prev) => ({
       ...prev,
       curriculum: replaceDay(prev.curriculum, path, nextDay),
@@ -165,9 +157,6 @@ export function createSessionController({
     });
 
     persistDaySchedule(day, nextDay);
-    if (stageRaised) {
-      resetPersistedResults(nextDay.items);
-    }
   };
 
   const goPrevStudyItem = () => {

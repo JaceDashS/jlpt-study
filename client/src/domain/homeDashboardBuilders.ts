@@ -1,3 +1,4 @@
+import { GRADUATED_STAGE } from "./constants.ts";
 import { isDueOnOrBefore } from "./date.ts";
 import { diffDays, parseYmd } from "./dateMath.ts";
 import { getAllDayPaths, getDaySequenceIndex, isValidLearningPath, toLearningPathKey } from "./learningPath.ts";
@@ -81,7 +82,7 @@ export function buildReviewDue(curriculum: StudyUnit[], today: string) {
       const allDayItemIds = allDayQuizItems.map((item) => item.id);
       const dayLevelDue =
         allDayItemIds.length > 0 &&
-        getDayStage(day) < 5 &&
+        getDayStage(day) < GRADUATED_STAGE &&
         isDueOnOrBefore(getDayNextReviewDate(day), today);
 
       if (!dayLevelDue) return;
@@ -115,7 +116,7 @@ export function buildHomeDueDebug(curriculum: StudyUnit[], today: string) {
       const allDayItems = day.items.filter(isQuizTarget);
       const dayLevelDue =
         allDayItems.length > 0 &&
-        getDayStage(day) < 5 &&
+        getDayStage(day) < GRADUATED_STAGE &&
         isDueOnOrBefore(getDayNextReviewDate(day), today);
 
       rows.push({
@@ -303,6 +304,10 @@ export function buildAllDayRows(curriculum: StudyUnit[]) {
       dayTitle: path.dayTitle,
       passRatio: day ? getDayPassRatio(day) : 0,
       failCount: day ? countFailedQuizItems(day) : 0,
+      itemCount: day?.items?.length ?? 0,
+      stage: day ? getDayStage(day) : 1,
+      lastAttemptDate: day ? getDayLastAttemptDate(day) : "",
+      nextReviewDate: day ? getDayNextReviewDate(day) : null,
     };
   });
 }
