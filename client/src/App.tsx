@@ -1,34 +1,38 @@
-﻿import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getTodayString } from "./domain/date.ts";
 import { createProblemDraft } from "./domain/problem.ts";
-import { HomePage } from "./components/HomePage.tsx";
-import { SessionPanel } from "./components/SessionPanel.tsx";
-import { SettingsPopover } from "./components/SettingsPopover.tsx";
 import { type AssetFileMap, type AvailableBook, buildAppState } from "./domain/curriculumFiles.ts";
 import { useHomeDashboardData } from "./domain/homeDashboard.ts";
-import { useLayoutMaxWidth } from "./domain/layoutPreferences.ts";
 import { usePlanRange } from "./domain/planPreferences.ts";
 import { useToast } from "./domain/toast.ts";
-import { normalizeDayListDrawerWidth, normalizeStudyDrawerWidth } from "./domain/drawerPreferences.ts";
+import { normalizeStudyDrawerWidth } from "./domain/drawerPreferences.ts";
 import { useAppBoot } from "./domain/appBoot.ts";
 import { useHomeReviewDebugLog, usePersistStudyState } from "./domain/appLifecycle.ts";
 import { updateDailyLearningCount, useLearningPlanSync } from "./domain/learningPlanSync.ts";
-import {
-  normalizeDailyNewLearningCount,
-} from "./domain/studyHelpers.ts";
+import { normalizeDailyNewLearningCount } from "./domain/studyHelpers.ts";
 import { useStudyAppControllers } from "./domain/useStudyAppControllers.ts";
-import type { SessionView, StudyState } from "./domain/studyTypes.ts";
-import { cx } from "./styles.ts";
+import type { SessionView as SessionViewState, StudyState } from "./domain/studyTypes.ts";
+import { PhoneHeader, TabBar, TopBar, type NavKey } from "./components/AppChrome.tsx";
+import { HomeView } from "./components/home/HomeView.tsx";
+import { SessionView } from "./components/session/SessionView.tsx";
+import { SettingsView, type ThemeName } from "./components/SettingsView.tsx";
+import { useDeviceMode } from "./ui/deviceMode.ts";
+import { useTheme } from "./ui/useTheme.ts";
 
 export default function App() {
   const boot = useAppBoot();
 
   if (boot.status === "loading") {
-    return <div className="app-shell">커리큘럼을 불러오는 중...</div>;
+    return <div className="jc-boot">커리큘럼을 불러오는 중...</div>;
   }
 
   if (boot.status === "error") {
-    return <div className="app-shell">커리큘럼을 불러오지 못했습니다. QR을 다시 스캔해 주세요.</div>;
+    return (
+      <div className="jc-boot">
+        <div>커리큘럼을 불러오지 못했습니다.</div>
+        <div className="jc-dim">QR을 다시 스캔하거나 서버 상태를 확인해 주세요.</div>
+      </div>
+    );
   }
 
   return (
@@ -43,45 +47,42 @@ export default function App() {
 }
 
 function StudyApp({
+  availableBooks,
   initialAssetFiles,
   initialDailyNewLearningCount,
   initialPlanRange,
   initialSelectedBookId,
-  availableBooks,
 }: {
+  availableBooks: AvailableBook[];
   initialAssetFiles: AssetFileMap;
   initialDailyNewLearningCount?: number;
   initialPlanRange?: { end?: string; start?: string };
   initialSelectedBookId: string;
-  availableBooks: AvailableBook[];
 }) {
   const [sourceFiles, setSourceFiles] = useState(initialAssetFiles);
   const [selectedBookId, setSelectedBookId] = useState(initialSelectedBookId);
   const [state, setState] = useState<StudyState>(() =>
     buildAppState(initialSelectedBookId, initialAssetFiles, { dailyNewLearningCount: initialDailyNewLearningCount }),
   );
-  const [session, setSession] = useState<SessionView | null>(null);
+  const [session, setSession] = useState<SessionViewState | null>(null);
   const [problemEditor, setProblemEditor] = useState({
     open: false,
     draft: createProblemDraft(null),
     error: "",
   });
+  const [nav, setNav] = useState<NavKey>("today");
+
   const { showToast, toast } = useToast();
   const today = getTodayString();
   const [planRange, setPlanRange] = usePlanRange(today, initialPlanRange);
-  const {
-    commitLayoutWidthDraft,
-    handleLayoutWidthChange,
-    handleLayoutWidthMouseDown,
-    layoutMaxWidth,
-    layoutMaxWidthDraft,
-    stopLayoutWidthSpinner,
-  } = useLayoutMaxWidth();
+  const device = useDeviceMode();
+  const [theme, setTheme] = useTheme();
 
   usePersistStudyState({ selectedBookId, state });
 
   const dailyNewLearningCount = normalizeDailyNewLearningCount(state.dailyNewLearningCount);
   useLearningPlanSync({ setState, state, today });
+
   const {
     allDayRows,
     dateRangeMeta,
@@ -91,56 +92,11 @@ function StudyApp({
     overallMeta,
     pendingLearningRows,
     reviewDue,
-  } = useHomeDashboardData({
-    dailyNewLearningCount,
-    planRange,
-    state,
-    today,
-  });
+  } = useHomeDashboardData({ dailyNewLearningCount, planRange, state, today });
 
   useHomeReviewDebugLog({ reviewDueCount: reviewDue.length, session, stateCurriculum: state.curriculum, today });
 
-  const handleDailyNewLearningCountChange = (event) => {
-    updateDailyLearningCount({ event, setState, today });
-  };
-
-  const {
-    backupAssets,
-    canGoQuizNext,
-    commitStudyChanges,
-    copyDebugLogs,
-    copyDayWordsByPath,
-    copyDay1Words,
-    copyCurrentWord,
-    copyDisplayId,
-    currentItem,
-    getDisplayItemId,
-    goHome,
-    goNextQuizItem,
-    goNextStudyItem,
-    goPrevQuizItem,
-    goPrevStudyItem,
-    importDayDecompositionFromClipboardByPath,
-    importDayDecompositionFromTextByPath,
-    importDay1DecompositionFromClipboard,
-    importDay1DecompositionFromText,
-    markDayAttemptNow,
-    openLearningDay,
-    openProblemEditor,
-    openReviewDay,
-    renderKanjiWithReading,
-    renderSentenceWithTarget,
-    resetDayDecompositions,
-    resetDayProblems,
-    resetLocalCache,
-    restoreAssets,
-    saveProblemEditor,
-    selectQuizChoice,
-    sessionDay,
-    sessionItems,
-    switchBook,
-    updateMemo,
-  } = useStudyAppControllers({
+  const controllers = useStudyAppControllers({
     debugLogs,
     homeDueDebug,
     problemEditor,
@@ -157,103 +113,117 @@ function StudyApp({
     today,
   });
 
+  // 세션을 열면 홈 탭 위치는 그대로 두고, 세션이 끝나면 오늘 화면으로 돌아온다.
+  useEffect(() => {
+    if (session) return;
+    setProblemEditor((prev) => (prev.open ? { ...prev, open: false } : prev));
+  }, [session]);
+
+  const sideWidth = normalizeStudyDrawerWidth(state.studyDrawerWidth);
+  const setSideWidth = (nextWidth: number) =>
+    setState((prev) => ({ ...prev, studyDrawerWidth: normalizeStudyDrawerWidth(nextWidth) }));
+
+  const homeTab = nav === "settings" ? "today" : nav;
+
   return (
-    <main className={cx("layout")} style={{ maxWidth: `${layoutMaxWidth}px` }}>
-      {toast && <div className={cx(`toast ${toast.type === "error" ? "error" : "success"}`)}>{toast.message}</div>}
-
-      {!session && (
-        <HomePage
-          today={today}
-          bookSelection={{ availableBooks, onSwitchBook: switchBook, selectedBookId }}
-          dashboard={{
-            allDayRows,
-            dateRangeMeta,
-            learningPlanRows,
-            overallMeta,
-            pendingLearningRows,
-            reviewDue,
-          }}
-          planControls={{
-            planRange,
-            setPlanRange,
-          }}
-          studyActions={{
-            copyDayWordsByPath,
-            importDayDecompositionFromClipboardByPath,
-            importDayDecompositionFromTextByPath,
-            openLearningDay,
-            openReviewDay,
-          }}
-        />
+    <div className="jc-shell">
+      {device.isPhone ? (
+        <PhoneHeader title={navTitle(nav)} subtitle={today} />
+      ) : (
+        <TopBar dueCount={reviewDue.length} nav={nav} onNavigate={setNav} today={today} />
       )}
 
-      {session && sessionDay && (
-        <SessionPanel
-          session={session}
-          sessionDay={sessionDay}
-          currentItem={currentItem}
-          sessionItems={sessionItems}
-          problemEditor={problemEditor}
-          setProblemEditor={setProblemEditor}
+      <main className="jc-main" style={{ maxWidth: device.isPhone ? undefined : 1240 }}>
+        {nav === "settings" ? (
+          <SettingsView
+            backupAssets={controllers.backupAssets}
+            commitStudyChanges={controllers.commitStudyChanges}
+            copyDebugLogs={controllers.copyDebugLogs}
+            dailyNewLearningCount={dailyNewLearningCount}
+            debugLogs={debugLogs}
+            devicePreference={device.preference}
+            handleDailyNewLearningCountChange={(event) => updateDailyLearningCount({ event, setState, today })}
+            homeDueDebug={homeDueDebug}
+            resetLocalCache={controllers.resetLocalCache}
+            restoreAssets={controllers.restoreAssets}
+            setDevicePreference={device.setPreference}
+            setTheme={setTheme}
+            theme={theme}
+            viewportMode={device.viewportMode}
+          />
+        ) : (
+          <HomeView
+            bookSelection={{ availableBooks, onSwitchBook: controllers.switchBook, selectedBookId }}
+            dashboard={{ allDayRows, dateRangeMeta, learningPlanRows, overallMeta, pendingLearningRows, reviewDue }}
+            isPhone={device.isPhone}
+            planControls={{ planRange, setPlanRange }}
+            studyActions={{
+              copyDayWordsByPath: controllers.copyDayWordsByPath,
+              importDayDecompositionFromClipboardByPath: controllers.importDayDecompositionFromClipboardByPath,
+              importDayDecompositionFromTextByPath: controllers.importDayDecompositionFromTextByPath,
+              openLearningDay: controllers.openLearningDay,
+              openReviewDay: controllers.openReviewDay,
+            }}
+            tab={homeTab}
+            today={today}
+          />
+        )}
+      </main>
+
+      {device.isPhone && <TabBar dueCount={reviewDue.length} nav={nav} onNavigate={setNav} />}
+
+      {session && controllers.sessionDay && (
+        <SessionView
           actions={{
-            canGoQuizNext,
-            copyCurrentWord,
-            copyDay1Words,
-            copyDisplayId,
-            goHome,
-            goNextQuizItem,
-            goNextStudyItem,
-            goPrevQuizItem,
-            goPrevStudyItem,
-            importDay1DecompositionFromClipboard,
-            importDay1DecompositionFromText,
-            markDayAttemptNow,
-            openProblemEditor,
-            resetDayDecompositions,
-            resetDayProblems,
-            saveProblemEditor,
-            selectQuizChoice,
-            updateMemo,
+            canGoQuizNext: controllers.canGoQuizNext,
+            copyCurrentWord: controllers.copyCurrentWord,
+            copyDay1Words: controllers.copyDay1Words,
+            copyDisplayId: controllers.copyDisplayId,
+            goHome: controllers.goHome,
+            goNextQuizItem: controllers.goNextQuizItem,
+            goNextStudyItem: controllers.goNextStudyItem,
+            goPrevQuizItem: controllers.goPrevQuizItem,
+            goPrevStudyItem: controllers.goPrevStudyItem,
+            importDay1DecompositionFromClipboard: controllers.importDay1DecompositionFromClipboard,
+            importDay1DecompositionFromText: controllers.importDay1DecompositionFromText,
+            markDayAttemptNow: controllers.markDayAttemptNow,
+            openProblemEditor: controllers.openProblemEditor,
+            resetDayDecompositions: controllers.resetDayDecompositions,
+            resetDayProblems: controllers.resetDayProblems,
+            saveProblemEditor: controllers.saveProblemEditor,
+            selectQuizChoice: controllers.selectQuizChoice,
+            updateMemo: controllers.updateMemo,
           }}
+          currentItem={controllers.currentItem}
+          isPhone={device.isPhone}
+          problemEditor={problemEditor}
           renderers={{
-            getDisplayItemId,
-            renderKanjiWithReading,
-            renderSentenceWithTarget,
+            getDisplayItemId: controllers.getDisplayItemId,
+            renderKanjiWithReading: controllers.renderKanjiWithReading,
+            renderSentenceWithTarget: controllers.renderSentenceWithTarget,
           }}
+          session={session}
+          sessionDay={controllers.sessionDay}
+          sessionItems={controllers.sessionItems}
+          setProblemEditor={setProblemEditor}
           setSession={setSession}
-          layout={{
-            dayListDrawerWidth: normalizeDayListDrawerWidth(state.dayListDrawerWidth),
-            setDayListDrawerWidth: (nextWidth) =>
-              setState((prev) => ({
-                ...prev,
-                dayListDrawerWidth: normalizeDayListDrawerWidth(nextWidth),
-              })),
-            setStudyDrawerWidth: (nextWidth) =>
-              setState((prev) => ({
-                ...prev,
-                studyDrawerWidth: normalizeStudyDrawerWidth(nextWidth),
-              })),
-            studyDrawerWidth: normalizeStudyDrawerWidth(state.studyDrawerWidth),
-          }}
+          setSideWidth={setSideWidth}
+          sideWidth={sideWidth}
         />
       )}
 
-      <SettingsPopover
-        backupAssets={backupAssets}
-        commitLayoutWidthDraft={commitLayoutWidthDraft}
-        commitStudyChanges={commitStudyChanges}
-        copyDebugLogs={copyDebugLogs}
-        dailyNewLearningCount={dailyNewLearningCount}
-        debugLogs={debugLogs}
-        handleDailyNewLearningCountChange={handleDailyNewLearningCountChange}
-        handleLayoutWidthChange={handleLayoutWidthChange}
-        handleLayoutWidthMouseDown={handleLayoutWidthMouseDown}
-        homeDueDebug={homeDueDebug}
-        layoutMaxWidthDraft={layoutMaxWidthDraft}
-        resetLocalCache={resetLocalCache}
-        restoreAssets={restoreAssets}
-        stopLayoutWidthSpinner={stopLayoutWidthSpinner}
-      />
-    </main>
+      {toast && (
+        <div className="jc-toast" data-type={toast.type}>
+          {toast.message}
+        </div>
+      )}
+    </div>
   );
+}
+
+function navTitle(nav: NavKey) {
+  if (nav === "days") return "Day 선택";
+  if (nav === "progress") return "전체 진행률";
+  if (nav === "settings") return "설정";
+  return "오늘 할 학습";
 }

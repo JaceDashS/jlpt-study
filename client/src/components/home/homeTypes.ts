@@ -24,8 +24,12 @@ export type PlanRange = {
 export type AllDayRow = {
   dayTitle: string;
   failCount: number;
+  itemCount: number;
+  lastAttemptDate: string;
+  nextReviewDate: string | null;
   passRatio: number;
   path: LearningPath;
+  stage: number;
 };
 
 export type HomeActionType = "copy" | "input";

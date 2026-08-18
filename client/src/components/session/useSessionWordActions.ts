@@ -25,7 +25,7 @@ export function useSessionWordActions({
   const [wordImportText, setWordImportText] = useState("");
 
   useEffect(() => {
-    if (phase !== "study") {
+    if (phase === "done") {
       setIsWordImportOpen(false);
       setWordImportText("");
     }
