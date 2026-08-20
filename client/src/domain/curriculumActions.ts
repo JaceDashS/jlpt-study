@@ -55,9 +55,9 @@ export function createCurriculumActions({
     }
   };
 
-  const goHome = async () => {
-    await refreshCurriculumFromSource();
+  const goHome = () => {
     setSession(null);
+    void refreshCurriculumFromSource();
   };
 
   const resetLocalCache = () => {

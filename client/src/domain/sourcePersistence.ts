@@ -1,6 +1,11 @@
 import { apiFetch, apiUrl } from "../api.ts";
+import { SourceWriteQueue, type SourceWriteFetch } from "./sourceWriteQueue.ts";
+
+const sourceWriteQueues = new WeakMap<SourceWriteFetch, SourceWriteQueue>();
 
 export function createSourcePersistence(fetchImpl = apiFetch) {
+  const writeQueue = getSourceWriteQueue(fetchImpl);
+
   const persistSourceField = async (item, field, value) => {
     const sourceRef = item?.sourceRef;
     if (!sourceRef || !sourceRef.sourcePath) {
@@ -8,32 +13,14 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
       return false;
     }
 
-    try {
-      const response = await fetchImpl(apiUrl("save-item-field"), {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sourcePath: sourceRef.sourcePath,
-          unitPath: sourceRef.unitPath ?? null,
-          dayIndex: sourceRef.dayIndex,
-          itemIndex: sourceRef.itemIndex,
-          field,
-          value,
-        }),
-      });
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Failed to persist source JSON:", response.status, errorText);
-        return false;
-      }
-      return true;
-    } catch (error) {
-      console.error("Failed to persist source JSON:", error);
-      return false;
-    }
+    return enqueueSourceWrite(writeQueue, {
+      sourcePath: sourceRef.sourcePath,
+      unitPath: sourceRef.unitPath ?? null,
+      dayIndex: sourceRef.dayIndex,
+      itemIndex: sourceRef.itemIndex,
+      field,
+      value,
+    }, `item ${item?.id ?? "unknown"}.${field}`);
   };
 
   const persistSourceDayField = async (day, field, value) => {
@@ -44,36 +31,47 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
       return false;
     }
 
-    try {
-      const response = await fetchImpl(apiUrl("save-item-field"), {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sourcePath: sourceRef.sourcePath,
-          unitPath: sourceRef.unitPath ?? null,
-          dayIndex: sourceRef.dayIndex,
-          field,
-          value,
-          targetType: "day",
-        }),
-      });
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Failed to persist day field:", response.status, errorText);
-        return false;
-      }
-      return true;
-    } catch (error) {
-      console.error("Failed to persist day field:", error);
-      return false;
-    }
+    return enqueueSourceWrite(writeQueue, {
+      sourcePath: sourceRef.sourcePath,
+      unitPath: sourceRef.unitPath ?? null,
+      dayIndex: sourceRef.dayIndex,
+      field,
+      value,
+      targetType: "day",
+    }, `day ${day?.id ?? "unknown"}.${field}`);
   };
 
   return {
     persistSourceField,
     persistSourceDayField,
   };
+}
+
+function getSourceWriteQueue(fetchImpl: SourceWriteFetch) {
+  const existing = sourceWriteQueues.get(fetchImpl);
+  if (existing) return existing;
+
+  const next = new SourceWriteQueue(fetchImpl);
+  sourceWriteQueues.set(fetchImpl, next);
+  return next;
+}
+
+function enqueueSourceWrite(writeQueue: SourceWriteQueue, body: Record<string, unknown>, label: string) {
+  try {
+    return writeQueue.enqueue({
+      input: apiUrl("save-item-field"),
+      init: {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      },
+      label,
+    });
+  } catch (error) {
+    console.error(`[jpc persistence] failed to queue ${label}:`, error);
+    return Promise.resolve(false);
+  }
 }
