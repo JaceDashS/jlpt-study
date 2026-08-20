@@ -1,7 +1,7 @@
 import { execFile } from "node:child_process";
 import { sendJson, setApiLogDetail } from "./api-http.js";
 
-const COMMIT_MESSAGE = "study";
+const COMMIT_MESSAGE = "update JLPT study progress";
 const STUDY_COMMIT_PATHSPEC = "asset";
 const GIT_EXEC_BUFFER_LIMIT = 1_000_000;
 const GIT_RESPONSE_OUTPUT_LIMIT = 20_000;
@@ -45,30 +45,52 @@ async function runStudyCommitPush(repoRoot) {
   let commit = null;
   let pull = null;
   let push = null;
+  let pullMode = "none";
+
   if (stagedFiles.length > 0) {
     commit = await runGit(repoRoot, ["commit", "-m", COMMIT_MESSAGE, "--", STUDY_COMMIT_PATHSPEC]);
-    pull = await runPullRebase(repoRoot, syncTarget);
-    push = await runGit(repoRoot, ["push", syncTarget.remote, `HEAD:${syncTarget.branch}`]);
-  } else {
+  }
+
+  let syncState = await readSyncState(repoRoot, syncTarget);
+  if (syncState.ahead === 0) {
     pull = await runGit(repoRoot, ["pull", "--ff-only", syncTarget.remote, syncTarget.branch]);
+    pullMode = "ff-only";
+  } else if (syncState.behind > 0) {
+    pull = await runPullRebase(repoRoot, syncTarget);
+    pullMode = "rebase";
+  }
+
+  syncState = await readSyncState(repoRoot, syncTarget);
+  if (syncState.ahead > 0) {
+    push = await runGit(repoRoot, ["push", syncTarget.remote, `HEAD:${syncTarget.branch}`]);
   }
 
   return {
     fetched: true,
     committed: Boolean(commit),
     pushed: Boolean(push),
-    pulled: true,
+    pulled: Boolean(pull),
     commitMessage: COMMIT_MESSAGE,
     stagedFileCount: stagedFiles.length,
     stagedFiles,
     fetchOutput: formatGitOutput(fetch),
     pushTarget: push ? syncTarget.label : "",
     pullTarget: syncTarget.label,
-    pullMode: commit ? "rebase" : "ff-only",
+    pullMode,
     commitOutput: commit ? formatGitOutput(commit) : "",
     pushOutput: push ? formatGitOutput(push) : "",
-    pullOutput: formatGitOutput(pull),
+    pullOutput: pull ? formatGitOutput(pull) : "",
   };
+}
+
+async function readSyncState(repoRoot, syncTarget) {
+  const remoteRef = `${syncTarget.remote}/${syncTarget.branch}`;
+  const result = await runGit(repoRoot, ["rev-list", "--left-right", "--count", `${remoteRef}...HEAD`]);
+  const [behind, ahead] = result.stdout.split(/\s+/).map((value) => Number(value));
+  if (!Number.isInteger(behind) || !Number.isInteger(ahead)) {
+    throw new Error(`Cannot read sync state for ${remoteRef}`);
+  }
+  return { ahead, behind };
 }
 
 async function resolveSyncTarget(repoRoot) {
@@ -128,7 +150,7 @@ async function assertNoUnmergedFiles(repoRoot) {
   const unmerged = splitOutputLines((await runGit(repoRoot, ["diff", "--name-only", "--diff-filter=U"])).stdout);
   if (unmerged.length <= 0) return;
 
-  throw new Error(`Git conflict 상태라서 중단했습니다. 먼저 충돌을 해결해 주세요: ${unmerged.join(", ")}`);
+  throw new Error(`Git conflict state requires manual resolution: ${unmerged.join(", ")}`);
 }
 
 function parseRemoteBranchRef(ref) {

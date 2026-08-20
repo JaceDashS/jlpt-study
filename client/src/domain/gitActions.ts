@@ -35,6 +35,11 @@ export function createGitActions({ apiFetch, showToast }: GitActionsOptions) {
         return { status: "error", message };
       }
 
+      if (!payload?.committed && payload?.pushed) {
+        showToast("기존 로컬 커밋 푸쉬 완료.");
+        return { status: "committed", stagedFileCount: 0 };
+      }
+
       if (!payload?.committed) {
         showToast("커밋할 변경사항이 없습니다. 풀 완료.");
         return { status: "pulled" };
