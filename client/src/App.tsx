@@ -149,6 +149,7 @@ function StudyApp({
             setDevicePreference={device.setPreference}
             setTheme={setTheme}
             theme={theme}
+            sourceWriteQueue={controllers.sourceWriteQueue}
             viewportMode={device.viewportMode}
           />
         ) : (

@@ -1,7 +1,29 @@
+import { useSyncExternalStore } from "react";
 import { apiFetch, apiUrl } from "../api.ts";
-import { SourceWriteQueue, type SourceWriteFetch } from "./sourceWriteQueue.ts";
+import {
+  SourceWriteQueue,
+  type SourceWriteFetch,
+  type SourceWriteQueueSnapshot,
+} from "./sourceWriteQueue.ts";
 
 const sourceWriteQueues = new WeakMap<SourceWriteFetch, SourceWriteQueue>();
+
+export type SourceWriteQueueController = SourceWriteQueueSnapshot & {
+  retryItem: (id: number) => Promise<void>;
+  discardItem: (id: number) => Promise<void>;
+  discardFailed: () => Promise<void>;
+};
+
+export function useSourceWriteQueue(fetchImpl = apiFetch): SourceWriteQueueController {
+  const queue = getSourceWriteQueue(fetchImpl);
+  const snapshot = useSyncExternalStore(queue.subscribe, queue.getSnapshot, queue.getSnapshot);
+  return {
+    ...snapshot,
+    retryItem: (id) => queue.retryItem(id),
+    discardItem: (id) => queue.discardItem(id),
+    discardFailed: () => queue.discardFailed(),
+  };
+}
 
 export function createSourcePersistence(fetchImpl = apiFetch) {
   const writeQueue = getSourceWriteQueue(fetchImpl);

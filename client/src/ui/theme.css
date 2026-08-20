@@ -1241,6 +1241,179 @@ button {
   gap: 8px;
 }
 
+.jc-queue-warning {
+  margin: 0 0 10px;
+  padding: 9px 10px;
+  border: 1px solid var(--sakura-line);
+  border-radius: var(--radius-sm);
+  background: var(--sakura-soft);
+  color: var(--sakura-strong);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.jc-queue-empty {
+  margin: 0;
+}
+
+.jc-queue-list {
+  display: grid;
+  gap: 8px;
+}
+
+.jc-queue-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--sumi-750);
+}
+
+.jc-queue-item-main {
+  min-width: 0;
+}
+
+.jc-queue-item-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-width: 0;
+}
+
+.jc-queue-item-head strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.82rem;
+}
+
+.jc-queue-status {
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.jc-queue-status[data-status="retrying"] {
+  border-color: var(--kaki);
+  color: var(--kaki);
+}
+
+.jc-queue-status[data-status="failed"] {
+  border-color: var(--sakura-line);
+  color: var(--sakura-strong);
+}
+
+.jc-queue-item-meta,
+.jc-queue-error {
+  margin-top: 4px;
+  color: var(--dim);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+.jc-queue-warning {
+  margin: 0 0 10px;
+  padding: 9px 10px;
+  border: 1px solid var(--sakura-line);
+  border-radius: var(--radius-sm);
+  background: var(--sakura-soft);
+  color: var(--sakura-strong);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.jc-queue-empty {
+  margin: 0;
+}
+
+.jc-queue-list {
+  display: grid;
+  gap: 8px;
+}
+
+.jc-queue-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--sumi-750);
+}
+
+.jc-queue-item-main {
+  min-width: 0;
+}
+
+.jc-queue-item-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-width: 0;
+}
+
+.jc-queue-item-head strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.82rem;
+}
+
+.jc-queue-status {
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.jc-queue-status[data-status="retrying"] {
+  border-color: var(--kaki);
+  color: var(--kaki);
+}
+
+.jc-queue-status[data-status="failed"] {
+  border-color: var(--sakura-line);
+  color: var(--sakura-strong);
+}
+
+.jc-queue-item-meta,
+.jc-queue-error {
+  margin-top: 4px;
+  color: var(--dim);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.jc-queue-error {
+  color: var(--sakura-strong);
+  overflow-wrap: anywhere;
+}
+
+.jc-queue-item-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.jc-queue-item-actions .jc-btn {
+  min-height: 30px;
+  padding: 5px 8px;
+  font-size: 0.72rem;
+}
+
+.jc-queue-clear {
+  margin-top: 10px;
+}
+
 .jc-debug {
   border: 1px solid var(--line);
   border-radius: var(--radius);

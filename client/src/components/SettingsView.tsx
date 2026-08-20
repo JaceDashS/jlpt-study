@@ -2,7 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card } from "./common/Primitives.tsx";
 import type { HomeDueDebugRow } from "../domain/clipboardActions.ts";
 import type { StudyCommitPushResult } from "../domain/gitActions.ts";
+import type { SourceWriteQueueController } from "../domain/sourcePersistence.ts";
 import type { DeviceModePreference } from "../ui/deviceMode.ts";
+
+function queueStatusLabel(status: "pending" | "retrying" | "failed") {
+  if (status === "retrying") return "\uC7AC\uC2DC \uB300\uAE30";
+  if (status === "failed") return "\uC2E4\uD328";
+  return "\uC804\uC1A1 \uB300\uAE30";
+}
+
+function formatQueueTime(timestamp: number) {
+  return new Date(timestamp).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+}
 
 export type ThemeName = "dark" | "light";
 
@@ -20,6 +35,7 @@ export function SettingsView({
   setDevicePreference,
   setTheme,
   theme,
+  sourceWriteQueue,
   viewportMode,
 }: {
   backupAssets: () => void;
@@ -35,11 +51,14 @@ export function SettingsView({
   setDevicePreference: (preference: DeviceModePreference) => void;
   setTheme: (theme: ThemeName) => void;
   theme: ThemeName;
+  sourceWriteQueue: SourceWriteQueueController;
   viewportMode: "phone" | "pc";
 }) {
   const [syncLabel, setSyncLabel] = useState("커밋 / 풀 / 푸쉬");
   const [isSyncing, setIsSyncing] = useState(false);
   const labelTimerRef = useRef<number | null>(null);
+  const queueItems = sourceWriteQueue.items;
+  const failedQueueCount = queueItems.filter((item) => item.status === "failed").length;
 
   useEffect(
     () => () => {
@@ -137,6 +156,49 @@ export function SettingsView({
         </div>
       </Card>
 
+      <Card title={"\uC804\uC1A1 \uD050"} hint={sourceWriteQueue.isReady ? `${queueItems.length}\uAC74` : "\uBD88\uB7EC\uC624\uB294 \uC911..."}>
+        {!sourceWriteQueue.isPersistent && (
+          <p className="jc-queue-warning">{"\uC774 \uBE0C\uB77C\uC6B0\uC800\uC5D0\uC11C\uB294 \uC601\uC18D \uC800\uC7A5\uC744 \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC5B4 \uC571\uC744 \uB2EB\uC73C\uBA74 \uD050\uAC00 \uC0AC\uB77C\uC9C8 \uC218 \uC788\uC2B5\uB2C8\uB2E4."}</p>
+        )}
+        {queueItems.length === 0 ? (
+          <p className="jc-dim jc-queue-empty">{"\uB300\uAE30 \uC911\uC778 \uC804\uC1A1\uC774 \uC5C6\uC2B5\uB2C8\uB2E4."}</p>
+        ) : (
+          <div className="jc-queue-list">
+            {queueItems.map((item) => (
+              <div className="jc-queue-item" key={item.id}>
+                <div className="jc-queue-item-main">
+                  <div className="jc-queue-item-head">
+                    <strong>{item.label}</strong>
+                    <span className="jc-queue-status" data-status={item.status}>
+                      {queueStatusLabel(item.status)}
+                    </span>
+                  </div>
+                  <div className="jc-queue-item-meta">
+                    {item.retryCount > 0 ? `${"\uC7AC\uC2DC\uB3C4"} ${item.retryCount}\uD68C` : "\uCCAB \uC804\uC1A1"}
+                    {item.nextAttemptAt ? ` / ${"\uB2E4\uC74C \uC2DC\uB3C4"} ${formatQueueTime(item.nextAttemptAt)}` : ""}
+                  </div>
+                  {item.lastError ? <div className="jc-queue-error">{item.lastError}</div> : null}
+                </div>
+                {item.status === "failed" ? (
+                  <div className="jc-queue-item-actions">
+                    <button type="button" className="jc-btn" data-variant="ghost" onClick={() => void sourceWriteQueue.retryItem(item.id)}>
+                      {"\uC7AC\uC804\uC1A1"}
+                    </button>
+                    <button type="button" className="jc-btn" data-variant="ghost" onClick={() => void sourceWriteQueue.discardItem(item.id)}>
+                      {"\uC0AD\uC81C"}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        )}
+        {failedQueueCount > 0 ? (
+          <button type="button" className="jc-btn jc-queue-clear" data-variant="ghost" onClick={() => void sourceWriteQueue.discardFailed()}>
+            {`\uC2E4\uD328 \uD56D\uBAA9 \uBAA8\uB450 \uC0AD\uC81C (${failedQueueCount})`}
+          </button>
+        ) : null}
+      </Card>
       <details className="jc-debug">
         <summary>
           <span>디버깅 로그</span>

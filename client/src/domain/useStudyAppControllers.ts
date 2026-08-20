@@ -5,7 +5,7 @@ import { buildProblemPayload, createProblemDraft, normalizeJsonBlock, normalizeP
 import { renderKanjiWithReading, renderSentenceWithTarget } from "./renderers.tsx";
 import { createDayClipboardActions } from "./dayClipboard.ts";
 import { createSessionController } from "./sessionController.ts";
-import { createSourcePersistence } from "./sourcePersistence.ts";
+import { createSourcePersistence, useSourceWriteQueue } from "./sourcePersistence.ts";
 import { createProgressActions } from "./progressActions.ts";
 import { createAssetBackupActions } from "./assetBackup.ts";
 import { createClipboardActions, type HomeDueDebugRow } from "./clipboardActions.ts";
@@ -95,6 +95,7 @@ export function useStudyAppControllers({
   });
 
   const { persistSourceField, persistSourceDayField } = createSourcePersistence(apiFetch);
+  const sourceWriteQueue = useSourceWriteQueue(apiFetch);
 
   const progressActions = createProgressActions({
     session,
@@ -198,6 +199,7 @@ export function useStudyAppControllers({
     ...quizInputActions,
     ...sessionController,
     ...sessionOpeners,
+    sourceWriteQueue,
     currentItem,
     getDisplayItemId,
     renderKanjiWithReading,
