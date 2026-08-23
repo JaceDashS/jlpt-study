@@ -61,6 +61,8 @@ export function useStudyAppControllers({
   state,
   today,
 }: UseStudyAppControllersOptions) {
+  const { persistSourceField, persistSourceDayField } = createSourcePersistence(apiFetch);
+  const sourceWriteQueue = useSourceWriteQueue(apiFetch);
   const curriculumActions = createCurriculumActions({
     apiFetch,
     selectedBookId,
@@ -70,11 +72,13 @@ export function useStudyAppControllers({
     setState,
     sourceFiles,
     state,
+    waitForSourceWrites: sourceWriteQueue.waitForIdle,
   });
 
   useRefreshCurriculumOnHomeFocus({
     refreshCurriculumFromSource: curriculumActions.refreshCurriculumFromSource,
     session,
+    waitForSourceWrites: sourceWriteQueue.waitForIdle,
   });
 
   const clipboardActions = createClipboardActions({
@@ -94,8 +98,6 @@ export function useStudyAppControllers({
     showToast,
   });
 
-  const { persistSourceField, persistSourceDayField } = createSourcePersistence(apiFetch);
-  const sourceWriteQueue = useSourceWriteQueue(apiFetch);
 
   const progressActions = createProgressActions({
     session,

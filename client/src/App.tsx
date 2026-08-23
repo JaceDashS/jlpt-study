@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTodayString } from "./domain/date.ts";
+import { toLearningPathKey } from "./domain/learningPath.ts";
 import { createProblemDraft } from "./domain/problem.ts";
 import { type AssetFileMap, type AvailableBook, buildAppState } from "./domain/curriculumFiles.ts";
 import { useHomeDashboardData } from "./domain/homeDashboard.ts";
@@ -124,6 +125,11 @@ function StudyApp({
     setState((prev) => ({ ...prev, studyDrawerWidth: normalizeStudyDrawerWidth(nextWidth) }));
 
   const homeTab = nav === "settings" ? "today" : nav;
+  const pendingLearningPathKeys = new Set(
+    controllers.sourceWriteQueue.items
+      .filter((item) => item.status === "pending" || item.status === "retrying")
+      .flatMap((item) => (item.learningPath ? [toLearningPathKey(item.learningPath)] : [])),
+  );
 
   return (
     <div className="jc-shell">
@@ -157,6 +163,7 @@ function StudyApp({
             bookSelection={{ availableBooks, onSwitchBook: controllers.switchBook, selectedBookId }}
             dashboard={{ allDayRows, dateRangeMeta, learningPlanRows, overallMeta, pendingLearningRows, reviewDue }}
             isPhone={device.isPhone}
+            pendingLearningPathKeys={pendingLearningPathKeys}
             planControls={{ planRange, setPlanRange }}
             studyActions={{
               copyDayWordsByPath: controllers.copyDayWordsByPath,

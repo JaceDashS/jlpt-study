@@ -1,8 +1,13 @@
 export type SourceWriteFetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+export type SourceWriteLearningPath = {
+  unitId: string;
+  dayId: string;
+};
 
 export type SourceWriteRequest = {
   input: RequestInfo | URL;
   init?: RequestInit;
+  learningPath?: SourceWriteLearningPath;
   label?: string;
 };
 
@@ -10,6 +15,7 @@ export type SourceWriteQueueStatus = "pending" | "retrying" | "failed";
 
 export type SourceWriteQueueItem = {
   id: number;
+  learningPath?: SourceWriteLearningPath;
   label: string;
   status: SourceWriteQueueStatus;
   createdAt: number;
@@ -70,6 +76,7 @@ export class SourceWriteQueue {
   private readonly pending: QueueEntry[] = [];
   private readonly records = new Map<number, StoredQueueRecord>();
   private readonly listeners = new Set<() => void>();
+  private readonly idleWaiters = new Set<() => void>();
   private readonly initialRetryDelayMs: number;
   private readonly maxRetryDelayMs: number;
   private readonly logger: Pick<Console, "error" | "warn">;
@@ -155,6 +162,14 @@ export class SourceWriteQueue {
     this.pending.push({ record, request: restoreRequest(record), resolve: () => undefined });
     this.publish();
     this.schedulePump();
+  }
+  async whenIdle() {
+    await this.ready;
+    await this.persistChain;
+    if (this.pending.length === 0) return;
+    await new Promise<void>((resolve) => {
+      this.idleWaiters.add(resolve);
+    });
   }
 
   async discardItem(id: number) {
@@ -331,6 +346,10 @@ export class SourceWriteQueue {
       isPersistent: this.storage.persistent,
       items: [...this.records.values()].sort(compareRecords).map(toSnapshotItem),
     };
+    if (this.pending.length === 0) {
+      for (const resolve of this.idleWaiters) resolve();
+      this.idleWaiters.clear();
+    }
     for (const listener of this.listeners) listener();
   }
 }
@@ -514,7 +533,8 @@ function serializeRequest(request: SourceWriteRequest) {
       headers: headerRecord,
       ...(body === undefined ? {} : { body }),
     },
-  } satisfies Pick<StoredQueueRecord, "input" | "init">;
+    learningPath: request.learningPath,
+  } satisfies Pick<StoredQueueRecord, "input" | "init" | "learningPath">;
 }
 
 function restoreRequest(record: StoredQueueRecord): SourceWriteRequest {
@@ -525,6 +545,7 @@ function restoreRequest(record: StoredQueueRecord): SourceWriteRequest {
       headers: record.init.headers,
     },
     label: record.label,
+    learningPath: record.learningPath,
   };
 }
 
@@ -545,6 +566,7 @@ function createMemoryRecord(request: SourceWriteRequest, id: number): StoredQueu
 function cloneRecord(record: StoredQueueRecord): StoredQueueRecord {
   return {
     ...record,
+    learningPath: record.learningPath ? { ...record.learningPath } : undefined,
     init: {
       ...record.init,
       headers: record.init.headers ? { ...record.init.headers } : undefined,
@@ -555,6 +577,7 @@ function cloneRecord(record: StoredQueueRecord): StoredQueueRecord {
 function toSnapshotItem(record: StoredQueueRecord): SourceWriteQueueItem {
   return {
     id: record.id,
+    learningPath: record.learningPath,
     label: record.label,
     status: record.status,
     createdAt: record.createdAt,

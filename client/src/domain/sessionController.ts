@@ -13,7 +13,7 @@ import type {
 } from "./studyTypes.ts";
 
 type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<unknown>;
-type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<unknown>;
+type PersistSourceDayField = (day: StudyDay, field: string, value: unknown, path?: LearningPath) => Promise<unknown>;
 type DayResult = { day: StudyDay; allPass?: boolean };
 type ProblemPayload = { error: string; problem: unknown };
 
@@ -80,11 +80,11 @@ export function createSessionController({
     return canFinalizeQuiz();
   };
 
-  const persistDaySchedule = (sourceDay: StudyDay, nextDay: StudyDay) => {
-    void persistSourceDayField(sourceDay, "stage", nextDay.stage);
-    void persistSourceDayField(sourceDay, "stageCompleteDate", nextDay.stageCompleteDate ?? null);
-    void persistSourceDayField(sourceDay, "nextReviewDate", nextDay.nextReviewDate);
-    void persistSourceDayField(sourceDay, "lastAttemptDate", nextDay.lastAttemptDate);
+  const persistDaySchedule = (sourceDay: StudyDay, nextDay: StudyDay, path: LearningPath) => {
+    void persistSourceDayField(sourceDay, "stage", nextDay.stage, path);
+    void persistSourceDayField(sourceDay, "stageCompleteDate", nextDay.stageCompleteDate ?? null, path);
+    void persistSourceDayField(sourceDay, "nextReviewDate", nextDay.nextReviewDate, path);
+    void persistSourceDayField(sourceDay, "lastAttemptDate", nextDay.lastAttemptDate, path);
   };
 
   const finishSession = ({
@@ -156,7 +156,7 @@ export function createSessionController({
       reviewedCount,
     });
 
-    persistDaySchedule(day, nextDay);
+    persistDaySchedule(day, nextDay, path);
   };
 
   const goPrevStudyItem = () => {

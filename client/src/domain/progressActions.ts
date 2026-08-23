@@ -1,7 +1,7 @@
 import type { LearningPath, QuizResult, SessionView, SetStudyState, StudyDay, StudyItem, StudyUnit } from "./studyTypes.ts";
 
 type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<unknown>;
-type PersistSourceDayField = (day: StudyDay, field: string, value: unknown) => Promise<unknown>;
+type PersistSourceDayField = (day: StudyDay, field: string, value: unknown, path?: LearningPath) => Promise<unknown>;
 
 type ProgressActionsOptions = {
   session: SessionView | null;
@@ -38,7 +38,7 @@ export function createProgressActions({
       curriculum: replaceDay(prev.curriculum, path, nextDay),
     }));
 
-    void persistSourceDayField(day, "lastAttemptDate", today);
+    void persistSourceDayField(day, "lastAttemptDate", today, path);
   };
 
   const updateMemo = (itemId: string, field: "memoPersonal" | "memoDecomposition", value: string) => {
@@ -122,7 +122,7 @@ export function createProgressActions({
     }));
 
     void persistSourceField(targetItem, "lastResult", result);
-    void persistSourceDayField(day, "lastAttemptDate", today);
+    void persistSourceDayField(day, "lastAttemptDate", today, path);
   };
 
   return {

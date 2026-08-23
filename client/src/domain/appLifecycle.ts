@@ -7,11 +7,11 @@ export function usePersistStudyState({ selectedBookId, state }) {
   }, [state, selectedBookId]);
 }
 
-export function useRefreshCurriculumOnHomeFocus({ refreshCurriculumFromSource, session }) {
+export function useRefreshCurriculumOnHomeFocus({ refreshCurriculumFromSource, session, waitForSourceWrites }) {
   useEffect(() => {
     if (session) return undefined;
     const onFocus = () => {
-      refreshCurriculumFromSource();
+      void waitForSourceWrites().then(refreshCurriculumFromSource);
     };
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onFocus);
@@ -19,7 +19,7 @@ export function useRefreshCurriculumOnHomeFocus({ refreshCurriculumFromSource, s
       window.removeEventListener("focus", onFocus);
       document.removeEventListener("visibilitychange", onFocus);
     };
-  }, [refreshCurriculumFromSource, session]);
+  }, [refreshCurriculumFromSource, session, waitForSourceWrites]);
 }
 
 export function useHomeReviewDebugLog({ reviewDueCount, session, stateCurriculum, today }) {

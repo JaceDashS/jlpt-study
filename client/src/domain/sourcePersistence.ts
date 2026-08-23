@@ -5,6 +5,7 @@ import {
   type SourceWriteFetch,
   type SourceWriteQueueSnapshot,
 } from "./sourceWriteQueue.ts";
+import type { LearningPath } from "./studyTypes.ts";
 
 const sourceWriteQueues = new WeakMap<SourceWriteFetch, SourceWriteQueue>();
 
@@ -12,6 +13,7 @@ export type SourceWriteQueueController = SourceWriteQueueSnapshot & {
   retryItem: (id: number) => Promise<void>;
   discardItem: (id: number) => Promise<void>;
   discardFailed: () => Promise<void>;
+  waitForIdle: () => Promise<void>;
 };
 
 export function useSourceWriteQueue(fetchImpl = apiFetch): SourceWriteQueueController {
@@ -22,6 +24,7 @@ export function useSourceWriteQueue(fetchImpl = apiFetch): SourceWriteQueueContr
     retryItem: (id) => queue.retryItem(id),
     discardItem: (id) => queue.discardItem(id),
     discardFailed: () => queue.discardFailed(),
+    waitForIdle: () => queue.whenIdle(),
   };
 }
 
@@ -45,7 +48,7 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
     }, `item ${item?.id ?? "unknown"}.${field}`);
   };
 
-  const persistSourceDayField = async (day, field, value) => {
+  const persistSourceDayField = async (day, field, value, learningPath?: LearningPath) => {
     const sourceItem = day?.items?.find((item) => item?.sourceRef?.sourcePath);
     const sourceRef = sourceItem?.sourceRef;
     if (!sourceRef || !sourceRef.sourcePath) {
@@ -60,7 +63,7 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
       field,
       value,
       targetType: "day",
-    }, `day ${day?.id ?? "unknown"}.${field}`);
+    }, `day ${day?.id ?? "unknown"}.${field}`, learningPath);
   };
 
   return {
@@ -78,7 +81,7 @@ function getSourceWriteQueue(fetchImpl: SourceWriteFetch) {
   return next;
 }
 
-function enqueueSourceWrite(writeQueue: SourceWriteQueue, body: Record<string, unknown>, label: string) {
+function enqueueSourceWrite(writeQueue: SourceWriteQueue, body: Record<string, unknown>, label: string, learningPath?: LearningPath) {
   try {
     return writeQueue.enqueue({
       input: apiUrl("save-item-field"),
@@ -91,6 +94,7 @@ function enqueueSourceWrite(writeQueue: SourceWriteQueue, body: Record<string, u
         body: JSON.stringify(body),
       },
       label,
+      learningPath,
     });
   } catch (error) {
     console.error(`[jpc persistence] failed to queue ${label}:`, error);

@@ -41,6 +41,7 @@ export type HomeViewProps = {
     reviewDue: ReviewDueRow[];
   };
   isPhone: boolean;
+  pendingLearningPathKeys: ReadonlySet<string>;
   planControls: {
     planRange: PlanRange;
     setPlanRange: React.Dispatch<React.SetStateAction<PlanRange>>;
@@ -56,8 +57,14 @@ export type HomeViewProps = {
   today: string;
 };
 
-export function HomeView({ bookSelection, dashboard, isPhone, planControls, studyActions, tab, today }: HomeViewProps) {
+export function HomeView({ bookSelection, dashboard, isPhone, pendingLearningPathKeys, planControls, studyActions, tab, today }: HomeViewProps) {
   const wordActions = useWordActionState(studyActions);
+  const pendingLearningRows = dashboard.pendingLearningRows.filter(
+    (row) => !pendingLearningPathKeys.has(toLearningPathKey(row.path)),
+  );
+  const reviewDue = dashboard.reviewDue.filter(
+    (row) => !pendingLearningPathKeys.has(toLearningPathKey(row.path)),
+  );
 
   const todayQueue = (
     <TodayQueue
@@ -65,14 +72,14 @@ export function HomeView({ bookSelection, dashboard, isPhone, planControls, stud
       learningPlanRows={dashboard.learningPlanRows}
       openLearningDay={studyActions.openLearningDay}
       openReviewDay={studyActions.openReviewDay}
-      pendingLearningRows={dashboard.pendingLearningRows}
-      reviewDue={dashboard.reviewDue}
+      pendingLearningRows={pendingLearningRows}
+      reviewDue={reviewDue}
       today={today}
     />
   );
 
-  const dueCount = dashboard.reviewDue.length;
-  const newCount = dashboard.pendingLearningRows.length;
+  const dueCount = reviewDue.length;
+  const newCount = pendingLearningRows.length;
 
   if (tab === "days") {
     return (
@@ -97,8 +104,8 @@ export function HomeView({ bookSelection, dashboard, isPhone, planControls, stud
 
   const failTotal = dashboard.allDayRows.reduce((sum, row) => sum + row.failCount, 0);
   const masteredCount = dashboard.allDayRows.filter((row) => Number(row.stage) >= GRADUATED_STAGE).length;
-  const dueItemCount = dashboard.reviewDue.reduce((sum, row) => sum + row.dueCount, 0);
-  const newItemCount = dashboard.pendingLearningRows.reduce((sum, row) => sum + row.itemCount, 0);
+  const dueItemCount = reviewDue.reduce((sum, row) => sum + row.dueCount, 0);
+  const newItemCount = pendingLearningRows.reduce((sum, row) => sum + row.itemCount, 0);
 
   const stats = (
     <HomeStats

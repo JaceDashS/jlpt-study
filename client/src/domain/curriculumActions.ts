@@ -17,6 +17,7 @@ type CurriculumActionsOptions = {
   setState: SetStudyState;
   sourceFiles: Record<string, unknown>;
   state: StudyState;
+  waitForSourceWrites: () => Promise<void>;
 };
 
 export function createCurriculumActions({
@@ -28,6 +29,7 @@ export function createCurriculumActions({
   setState,
   sourceFiles,
   state,
+  waitForSourceWrites,
 }: CurriculumActionsOptions) {
   const refreshCurriculumFromSource = async () => {
     try {
@@ -57,7 +59,7 @@ export function createCurriculumActions({
 
   const goHome = () => {
     setSession(null);
-    void refreshCurriculumFromSource();
+    void waitForSourceWrites().then(refreshCurriculumFromSource);
   };
 
   const resetLocalCache = () => {
