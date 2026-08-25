@@ -27,6 +27,7 @@ import { getPathDay } from "./learningPath.ts";
 import type { AssetFileMap } from "./curriculumFiles.ts";
 import type { ProblemEditorState } from "../components/session/sessionViewTypes.ts";
 import type { SessionView, SetSession, SetStudyState, StudyState } from "./studyTypes.ts";
+import type { SrsSettings } from "./srsPreferences.ts";
 
 type UseStudyAppControllersOptions = {
   debugLogs: string[];
@@ -41,6 +42,7 @@ type UseStudyAppControllersOptions = {
   setState: SetStudyState;
   showToast: (message: string, type?: "success" | "error") => void;
   sourceFiles: AssetFileMap;
+  srsSettings: SrsSettings;
   state: StudyState;
   today: string;
 };
@@ -58,6 +60,7 @@ export function useStudyAppControllers({
   setState,
   showToast,
   sourceFiles,
+  srsSettings,
   state,
   today,
 }: UseStudyAppControllersOptions) {
@@ -149,8 +152,8 @@ export function useStudyAppControllers({
     updateProblem: progressActions.updateProblem,
     getPathDay,
     replaceDay,
-    applyReviewResultForDay,
-    applyQuizResultForDay,
+    applyReviewResultForDay: (day, resultToday, gradedMap) => applyReviewResultForDay(day, resultToday, gradedMap, srsSettings),
+    applyQuizResultForDay: (day, resultToday, gradedMap) => applyQuizResultForDay(day, resultToday, gradedMap, srsSettings),
     persistSourceField,
     persistSourceDayField,
     goHome: curriculumActions.goHome,

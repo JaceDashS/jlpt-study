@@ -1,5 +1,6 @@
 import { apiFetch, apiUrl } from "../api.ts";
 import { normalizeDailyNewLearningCount } from "./studyHelpers.ts";
+import { normalizeSrsSettings, type SrsSettings } from "./srsPreferences.ts";
 
 export type PlanRangePreference = {
   end: string;
@@ -9,6 +10,7 @@ export type PlanRangePreference = {
 export type AppPreferences = {
   dailyNewLearningCount?: number;
   planRange?: Partial<PlanRangePreference>;
+  srs?: Partial<SrsSettings>;
   selectedBookId?: string;
 };
 
@@ -59,6 +61,9 @@ export function normalizeAppPreferences(value: unknown): AppPreferences {
   }
   if (Object.prototype.hasOwnProperty.call(source, "dailyNewLearningCount")) {
     preferences.dailyNewLearningCount = normalizeDailyNewLearningCount(source.dailyNewLearningCount);
+  }
+  if (Object.prototype.hasOwnProperty.call(source, "srs")) {
+    preferences.srs = normalizeSrsSettings(source.srs);
   }
   const planRange = normalizePlanRangePreference(source.planRange);
   if (planRange) {

@@ -10,6 +10,7 @@ import {
   type PlanRange,
 } from "./homeDashboardBuilders.ts";
 import type { StudyState } from "./studyTypes.ts";
+import type { SrsSettings } from "./srsPreferences.ts";
 
 export {
   buildAllDayRows,
@@ -27,17 +28,22 @@ export {
 export function useHomeDashboardData({
   dailyNewLearningCount,
   planRange,
+  srsSettings,
   state,
   today,
 }: {
   dailyNewLearningCount: number;
   planRange: PlanRange;
+  srsSettings: SrsSettings;
   state: StudyState;
   today: string;
 }) {
-  const reviewDue = useMemo(() => buildReviewDue(state.curriculum, today), [state.curriculum, today]);
-  const homeDueDebug = useMemo(() => buildHomeDueDebug(state.curriculum, today), [state.curriculum, today]);
-  const overallMeta = useMemo(() => buildOverallMeta(state.curriculum, state.totalDay), [state.curriculum, state.totalDay]);
+  const reviewDue = useMemo(() => buildReviewDue(state.curriculum, today, srsSettings), [srsSettings, state.curriculum, today]);
+  const homeDueDebug = useMemo(() => buildHomeDueDebug(state.curriculum, today, srsSettings), [srsSettings, state.curriculum, today]);
+  const overallMeta = useMemo(
+    () => buildOverallMeta(state.curriculum, state.totalDay, srsSettings),
+    [srsSettings, state.curriculum, state.totalDay],
+  );
   const dateRangeMeta = useMemo(() => buildDateRangeMeta(planRange, today), [planRange, today]);
   const learningPlanRows = useMemo(
     () => buildLearningPlanRows(state.curriculum, state.learningPlan, dailyNewLearningCount, today),

@@ -3,6 +3,10 @@ import path from "node:path";
 import { stripBom, writeFileAtomically } from "./asset-services.js";
 
 const PREFERENCES_FILE = "server-data/app-preferences.json";
+const DEFAULT_MAX_REVIEW_STAGE = 6;
+const DEFAULT_FAILURE_RETRY_DAYS = 1;
+const MIN_REVIEW_STAGE = 2;
+const MAX_FAILURE_RETRY_DAYS = 30;
 
 export function normalizeAppPreferences(value) {
   const preferences = {};
@@ -13,6 +17,10 @@ export function normalizeAppPreferences(value) {
 
   if (Object.prototype.hasOwnProperty.call(value ?? {}, "dailyNewLearningCount")) {
     preferences.dailyNewLearningCount = normalizeDailyNewLearningCount(value.dailyNewLearningCount);
+  }
+
+  if (Object.prototype.hasOwnProperty.call(value ?? {}, "srs")) {
+    preferences.srs = normalizeSrsSettings(value.srs);
   }
 
   const planRange = normalizePlanRange(value?.planRange);
@@ -60,6 +68,19 @@ function normalizeDailyNewLearningCount(value) {
   const parsed = Number(value);
   if (!Number.isFinite(parsed)) return 1;
   return Math.max(1, Math.min(5, Math.round(parsed)));
+}
+
+function normalizeSrsSettings(value) {
+  const maxReviewStage = Number(value?.maxReviewStage);
+  const failureRetryDays = Number(value?.failureRetryDays);
+  return {
+    maxReviewStage: Number.isFinite(maxReviewStage)
+      ? Math.max(MIN_REVIEW_STAGE, Math.min(DEFAULT_MAX_REVIEW_STAGE, Math.round(maxReviewStage)))
+      : DEFAULT_MAX_REVIEW_STAGE,
+    failureRetryDays: Number.isFinite(failureRetryDays)
+      ? Math.max(DEFAULT_FAILURE_RETRY_DAYS, Math.min(MAX_FAILURE_RETRY_DAYS, Math.round(failureRetryDays)))
+      : DEFAULT_FAILURE_RETRY_DAYS,
+  };
 }
 
 function normalizePlanRange(value) {

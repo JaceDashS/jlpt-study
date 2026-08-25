@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import type { AssetFileMap, AvailableBook } from "./curriculumFiles.ts";
 import { getDefaultBookId, listAvailableBooks, loadCurriculumFiles } from "./curriculumFiles.ts";
 import { readAppPreferences, writeAppPreferences, type PlanRangePreference } from "./appPreferences.ts";
+import type { SrsSettings } from "./srsPreferences.ts";
 
 type BootState =
   | { status: "loading"; files: null; availableBooks: AvailableBook[]; selectedBookId: "" }
   | {
       status: "ready";
       dailyNewLearningCount?: number;
+      srsSettings?: Partial<SrsSettings>;
       files: AssetFileMap;
       availableBooks: AvailableBook[];
       planRange?: Partial<PlanRangePreference>;
@@ -38,11 +40,13 @@ export function useAppBoot() {
         void writeAppPreferences({
           selectedBookId,
           ...(preferences.dailyNewLearningCount ? { dailyNewLearningCount: preferences.dailyNewLearningCount } : {}),
+          ...(preferences.srs ? { srs: preferences.srs } : {}),
           ...(preferences.planRange ? { planRange: preferences.planRange } : {}),
         });
         setBoot({
           status: "ready",
           dailyNewLearningCount: preferences.dailyNewLearningCount,
+          srsSettings: preferences.srs,
           files,
           availableBooks,
           planRange: preferences.planRange,

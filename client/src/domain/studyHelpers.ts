@@ -1,5 +1,6 @@
 import { getStageProgressRatio } from "./srs";
 import type { LearningPath, StudyDay, StudyItem, StudyUnit } from "./studyTypes.ts";
+import type { SrsSettings } from "./srsPreferences.ts";
 
 export {
   areLearningPathListsEqual,
@@ -49,8 +50,8 @@ function getAverage(numbers: number[]) {
   return total / numbers.length;
 }
 
-export function getDayProgress(day: StudyDay) {
-  return getStageProgressRatio(day);
+export function getDayProgress(day: StudyDay, settings?: SrsSettings) {
+  return getStageProgressRatio(day, settings);
 }
 
 export function getDayPassRatio(day: StudyDay) {
@@ -65,8 +66,8 @@ export function getDayMissingDecompositionCount(day: StudyDay | null | undefined
   return targetItems.filter((item) => String(item?.memoDecomposition ?? "").trim().length === 0).length;
 }
 
-export function getUnitProgress(unit: StudyUnit) {
-  return getAverage(unit.days.map((day) => getDayProgress(day)));
+export function getUnitProgress(unit: StudyUnit, settings?: SrsSettings) {
+  return getAverage(unit.days.map((day) => getDayProgress(day, settings)));
 }
 
 export function getDisplayDayIndex(day: Pick<StudyDay, "dayIndex" | "title"> | null | undefined, sequenceIndexFallback: number) {

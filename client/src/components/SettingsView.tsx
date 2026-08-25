@@ -4,6 +4,7 @@ import type { HomeDueDebugRow } from "../domain/clipboardActions.ts";
 import type { StudyCommitPushResult } from "../domain/gitActions.ts";
 import type { SourceWriteQueueController } from "../domain/sourcePersistence.ts";
 import type { DeviceModePreference } from "../ui/deviceMode.ts";
+import type { SrsSettings } from "../domain/srsPreferences.ts";
 
 function queueStatusLabel(status: "pending" | "retrying" | "failed") {
   if (status === "retrying") return "\uC7AC\uC2DC \uB300\uAE30";
@@ -26,6 +27,8 @@ export function SettingsView({
   commitStudyChanges,
   copyDebugLogs,
   dailyNewLearningCount,
+  handleFailureRetryDaysChange,
+  handleMaxReviewStageChange,
   debugLogs,
   devicePreference,
   handleDailyNewLearningCountChange,
@@ -36,12 +39,15 @@ export function SettingsView({
   setTheme,
   theme,
   sourceWriteQueue,
+  srsSettings,
   viewportMode,
 }: {
   backupAssets: () => void;
   commitStudyChanges: () => Promise<StudyCommitPushResult>;
   copyDebugLogs: () => void;
   dailyNewLearningCount: number;
+  handleFailureRetryDaysChange: React.ChangeEventHandler<HTMLInputElement>;
+  handleMaxReviewStageChange: React.ChangeEventHandler<HTMLSelectElement>;
   debugLogs: string[];
   devicePreference: DeviceModePreference;
   handleDailyNewLearningCountChange: React.ChangeEventHandler<HTMLSelectElement>;
@@ -52,6 +58,7 @@ export function SettingsView({
   setTheme: (theme: ThemeName) => void;
   theme: ThemeName;
   sourceWriteQueue: SourceWriteQueueController;
+  srsSettings: SrsSettings;
   viewportMode: "phone" | "pc";
 }) {
   const [syncLabel, setSyncLabel] = useState("커밋 / 풀 / 푸쉬");
@@ -137,6 +144,55 @@ export function SettingsView({
             ))}
           </select>
         </div>
+      </Card>
+
+      <Card title="Review settings" hint="Current values are the defaults">
+        <div className="jc-settings-list">
+          <div className="jc-settings-row">
+            <span>
+              Maximum review stage
+              <br />
+              <span className="jc-dim">The stage at which a Day graduates</span>
+            </span>
+            <select
+              id="max-review-stage"
+              className="jc-select"
+              value={srsSettings.maxReviewStage}
+              onChange={handleMaxReviewStageChange}
+            >
+              {[2, 3, 4, 5, 6].map((stage) => (
+                <option key={stage} value={stage}>
+                  Stage {stage}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="jc-settings-row">
+            <span>
+              Retry after failure
+              <br />
+              <span className="jc-dim">Days until a failed Day appears again</span>
+            </span>
+            <label className="jc-row" htmlFor="failure-retry-days" style={{ gap: 6 }}>
+              <input
+                id="failure-retry-days"
+                className="jc-input"
+                type="number"
+                min={1}
+                max={30}
+                step={1}
+                value={srsSettings.failureRetryDays}
+                onChange={handleFailureRetryDaysChange}
+                style={{ width: 76 }}
+              />
+              <span>days</span>
+            </label>
+          </div>
+        </div>
+        <p className="jc-dim" style={{ marginBottom: 0 }}>
+          Successful review intervals remain 1, 3, 7, and 30 days.
+        </p>
       </Card>
 
       <Card title="데이터">

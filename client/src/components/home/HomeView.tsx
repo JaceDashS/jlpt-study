@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { GRADUATED_STAGE } from "../../domain/constants.ts";
+import { isGraduatedStage } from "../../domain/constants.ts";
 import { toLearningPathKey } from "../../domain/learningPath.ts";
 import { Card } from "../common/Primitives.tsx";
 import { DayGrid } from "./DayGrid.tsx";
@@ -11,6 +11,7 @@ import { TodayQueue } from "./TodayQueue.tsx";
 import type { AvailableBook } from "../../domain/curriculumFiles.ts";
 import type { LearningPlanRow, ReviewDueRow } from "../../domain/homeDashboard.ts";
 import type { LearningPath } from "../../domain/studyTypes.ts";
+import type { SrsSettings } from "../../domain/srsPreferences.ts";
 import type {
   ActionDoneState,
   ActionHoldState,
@@ -42,6 +43,7 @@ export type HomeViewProps = {
   };
   isPhone: boolean;
   pendingLearningPathKeys: ReadonlySet<string>;
+  srsSettings: SrsSettings;
   planControls: {
     planRange: PlanRange;
     setPlanRange: React.Dispatch<React.SetStateAction<PlanRange>>;
@@ -57,7 +59,7 @@ export type HomeViewProps = {
   today: string;
 };
 
-export function HomeView({ bookSelection, dashboard, isPhone, pendingLearningPathKeys, planControls, studyActions, tab, today }: HomeViewProps) {
+export function HomeView({ bookSelection, dashboard, isPhone, pendingLearningPathKeys, planControls, srsSettings, studyActions, tab, today }: HomeViewProps) {
   const wordActions = useWordActionState(studyActions);
   const pendingLearningRows = dashboard.pendingLearningRows.filter(
     (row) => !pendingLearningPathKeys.has(toLearningPathKey(row.path)),
@@ -94,6 +96,7 @@ export function HomeView({ bookSelection, dashboard, isPhone, pendingLearningPat
       <Card title="전체 진행률">
         <ProgressPanel
           dateRangeMeta={dashboard.dateRangeMeta}
+          maxReviewStage={srsSettings.maxReviewStage}
           overallMeta={dashboard.overallMeta}
           planRange={planControls.planRange}
           setPlanRange={planControls.setPlanRange}
@@ -103,7 +106,7 @@ export function HomeView({ bookSelection, dashboard, isPhone, pendingLearningPat
   }
 
   const failTotal = dashboard.allDayRows.reduce((sum, row) => sum + row.failCount, 0);
-  const masteredCount = dashboard.allDayRows.filter((row) => Number(row.stage) >= GRADUATED_STAGE).length;
+  const masteredCount = dashboard.allDayRows.filter((row) => isGraduatedStage(row.stage, srsSettings.maxReviewStage)).length;
   const dueItemCount = reviewDue.reduce((sum, row) => sum + row.dueCount, 0);
   const newItemCount = pendingLearningRows.reduce((sum, row) => sum + row.itemCount, 0);
 
@@ -129,10 +132,10 @@ export function HomeView({ bookSelection, dashboard, isPhone, pendingLearningPat
           {todayQueue}
         </Card>
         <Card title="복습 회차 분포" hint={`${dashboard.allDayRows.length}개`}>
-          <StageDistribution allDayRows={dashboard.allDayRows} />
+          <StageDistribution allDayRows={dashboard.allDayRows} maxReviewStage={srsSettings.maxReviewStage} />
         </Card>
         <Card title="최근 학습">
-          <RecentDays allDayRows={dashboard.allDayRows} openLearningDay={studyActions.openLearningDay} today={today} />
+          <RecentDays allDayRows={dashboard.allDayRows} maxReviewStage={srsSettings.maxReviewStage} openLearningDay={studyActions.openLearningDay} today={today} />
         </Card>
       </>
     );
@@ -158,18 +161,19 @@ export function HomeView({ bookSelection, dashboard, isPhone, pendingLearningPat
         </Card>
         <div className="jc-stack" style={{ gap: 14 }}>
           <Card title="복습 회차 분포" hint={`${dashboard.allDayRows.length}개`}>
-            <StageDistribution allDayRows={dashboard.allDayRows} />
+            <StageDistribution allDayRows={dashboard.allDayRows} maxReviewStage={srsSettings.maxReviewStage} />
           </Card>
           <Card title="진행률">
             <ProgressPanel
               dateRangeMeta={dashboard.dateRangeMeta}
+              maxReviewStage={srsSettings.maxReviewStage}
               overallMeta={dashboard.overallMeta}
               planRange={planControls.planRange}
               setPlanRange={planControls.setPlanRange}
             />
           </Card>
           <Card title="최근 학습">
-            <RecentDays allDayRows={dashboard.allDayRows} openLearningDay={studyActions.openLearningDay} today={today} />
+            <RecentDays allDayRows={dashboard.allDayRows} maxReviewStage={srsSettings.maxReviewStage} openLearningDay={studyActions.openLearningDay} today={today} />
           </Card>
         </div>
       </div>

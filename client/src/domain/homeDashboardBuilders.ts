@@ -1,4 +1,4 @@
-import { GRADUATED_STAGE } from "./constants.ts";
+import { isGraduatedStage } from "./constants.ts";
 import { isDueOnOrBefore } from "./date.ts";
 import { diffDays, parseYmd } from "./dateMath.ts";
 import { getAllDayPaths, getDaySequenceIndex, isValidLearningPath, toLearningPathKey } from "./learningPath.ts";
@@ -18,6 +18,7 @@ import {
   isQuizTarget,
 } from "./studyHelpers.ts";
 import type { HomeDueDebugRow } from "./clipboardActions.ts";
+import { DEFAULT_SRS_SETTINGS, normalizeSrsSettings, type SrsSettings } from "./srsPreferences.ts";
 import type { LearningPath, StudyDay, StudyState, StudyUnit } from "./studyTypes.ts";
 
 export type ReviewDueRow = {
@@ -63,15 +64,16 @@ function countFailedQuizItems(day: StudyDay) {
   return day.items.filter((item) => isQuizTarget(item) && item.lastResult === "FAIL").length;
 }
 
-function getReviewRound(progress: number) {
-  return Math.max(1, Math.round(progress * 4) + 1);
+function getReviewRound(progress: number, maxReviewStage: number) {
+  return Math.max(1, Math.round(progress * Math.max(0, maxReviewStage - 2)) + 1);
 }
 
 function compareReviewDueRows(a: ReviewDueRow, b: ReviewDueRow) {
   return a.reviewRound - b.reviewRound || a.dayIndex - b.dayIndex || a.sequenceIndex - b.sequenceIndex;
 }
 
-export function buildReviewDue(curriculum: StudyUnit[], today: string) {
+export function buildReviewDue(curriculum: StudyUnit[], today: string, settings: SrsSettings = DEFAULT_SRS_SETTINGS) {
+  const normalizedSettings = normalizeSrsSettings(settings);
   const list: ReviewDueRow[] = [];
   let sequenceIndex = 0;
 
@@ -82,12 +84,12 @@ export function buildReviewDue(curriculum: StudyUnit[], today: string) {
       const allDayItemIds = allDayQuizItems.map((item) => item.id);
       const dayLevelDue =
         allDayItemIds.length > 0 &&
-        getDayStage(day) < GRADUATED_STAGE &&
+        !isGraduatedStage(getDayStage(day), normalizedSettings.maxReviewStage) &&
         isDueOnOrBefore(getDayNextReviewDate(day), today);
 
       if (!dayLevelDue) return;
 
-      const progress = getDayProgress(day);
+      const progress = getDayProgress(day, normalizedSettings);
       list.push({
         path: { unitId: unit.id, dayId: day.id },
         unitId: unit.id,
@@ -100,7 +102,7 @@ export function buildReviewDue(curriculum: StudyUnit[], today: string) {
         dueItemIds: allDayItemIds,
         failCount: countFailedQuizItems(day),
         progress,
-        reviewRound: getReviewRound(progress),
+        reviewRound: getReviewRound(progress, normalizedSettings.maxReviewStage),
         missingDecompositionCount: getDayMissingDecompositionCount(day),
       });
     });
@@ -109,14 +111,15 @@ export function buildReviewDue(curriculum: StudyUnit[], today: string) {
   return list.sort(compareReviewDueRows);
 }
 
-export function buildHomeDueDebug(curriculum: StudyUnit[], today: string) {
+export function buildHomeDueDebug(curriculum: StudyUnit[], today: string, settings: SrsSettings = DEFAULT_SRS_SETTINGS) {
+  const normalizedSettings = normalizeSrsSettings(settings);
   const rows: HomeDueDebugRow[] = [];
   curriculum.forEach((unit) => {
     unit.days.forEach((day) => {
       const allDayItems = day.items.filter(isQuizTarget);
       const dayLevelDue =
         allDayItems.length > 0 &&
-        getDayStage(day) < GRADUATED_STAGE &&
+        !isGraduatedStage(getDayStage(day), normalizedSettings.maxReviewStage) &&
         isDueOnOrBefore(getDayNextReviewDate(day), today);
 
       rows.push({
@@ -133,7 +136,8 @@ export function buildHomeDueDebug(curriculum: StudyUnit[], today: string) {
   return rows;
 }
 
-export function buildOverallMeta(curriculum: StudyUnit[], totalDay: unknown) {
+export function buildOverallMeta(curriculum: StudyUnit[], totalDay: unknown, settings: SrsSettings = DEFAULT_SRS_SETTINGS) {
+  const normalizedSettings = normalizeSrsSettings(settings);
   let totalDays = 0;
   const stageRatios: number[] = [];
   let maxDayIndex = 0;
@@ -155,7 +159,7 @@ export function buildOverallMeta(curriculum: StudyUnit[], totalDay: unknown) {
           stageByDayIndex.set(dayIndexValue, prevStage);
         }
       }
-      stageRatios.push(getDayProgress(day));
+      stageRatios.push(getDayProgress(day, normalizedSettings));
     });
   });
 

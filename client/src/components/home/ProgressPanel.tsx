@@ -1,20 +1,24 @@
 import React from "react";
-import { REVIEW_STAGE_MAX } from "../../domain/constants.ts";
+import { normalizeReviewStageLimit } from "../../domain/constants.ts";
 import { MeterRow } from "../common/Primitives.tsx";
 import type { DateRangeMeta, OverallMeta, PlanRange } from "./homeTypes.ts";
 
 export function ProgressPanel({
   dateRangeMeta,
+  maxReviewStage,
   overallMeta,
   planRange,
   setPlanRange,
 }: {
   dateRangeMeta: DateRangeMeta;
+  maxReviewStage: number;
   overallMeta: OverallMeta;
   planRange: PlanRange;
   setPlanRange: React.Dispatch<React.SetStateAction<PlanRange>>;
 }) {
-  const averageReviewStage = (1 + overallMeta.avgStageRatio * (REVIEW_STAGE_MAX - 1)).toFixed(2);
+  const REVIEW_STAGE_MAX = normalizeReviewStageLimit(maxReviewStage);
+  const stageMax = REVIEW_STAGE_MAX;
+  const averageReviewStage = (1 + overallMeta.avgStageRatio * (stageMax - 1)).toFixed(2);
 
   return (
     <div className="jc-stack" style={{ gap: 16 }}>

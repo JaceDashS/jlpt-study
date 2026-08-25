@@ -8,9 +8,11 @@ import { usePlanRange } from "./domain/planPreferences.ts";
 import { useToast } from "./domain/toast.ts";
 import { normalizeStudyDrawerWidth } from "./domain/drawerPreferences.ts";
 import { useAppBoot } from "./domain/appBoot.ts";
+import { writeAppPreferences } from "./domain/appPreferences.ts";
 import { useHomeReviewDebugLog, usePersistStudyState } from "./domain/appLifecycle.ts";
 import { updateDailyLearningCount, useLearningPlanSync } from "./domain/learningPlanSync.ts";
 import { normalizeDailyNewLearningCount } from "./domain/studyHelpers.ts";
+import { normalizeSrsSettings, type SrsSettings } from "./domain/srsPreferences.ts";
 import { useStudyAppControllers } from "./domain/useStudyAppControllers.ts";
 import type { SessionView as SessionViewState, StudyState } from "./domain/studyTypes.ts";
 import { PhoneHeader, TabBar, TopBar, type NavKey } from "./components/AppChrome.tsx";
@@ -40,6 +42,7 @@ export default function App() {
     <StudyApp
       initialAssetFiles={boot.files}
       initialDailyNewLearningCount={boot.dailyNewLearningCount}
+      initialSrsSettings={boot.srsSettings}
       initialPlanRange={boot.planRange}
       initialSelectedBookId={boot.selectedBookId}
       availableBooks={boot.availableBooks}
@@ -51,12 +54,14 @@ function StudyApp({
   availableBooks,
   initialAssetFiles,
   initialDailyNewLearningCount,
+  initialSrsSettings,
   initialPlanRange,
   initialSelectedBookId,
 }: {
   availableBooks: AvailableBook[];
   initialAssetFiles: AssetFileMap;
   initialDailyNewLearningCount?: number;
+  initialSrsSettings?: Partial<SrsSettings>;
   initialPlanRange?: { end?: string; start?: string };
   initialSelectedBookId: string;
 }) {
@@ -78,6 +83,13 @@ function StudyApp({
   const [planRange, setPlanRange] = usePlanRange(today, initialPlanRange);
   const device = useDeviceMode();
   const [theme, setTheme] = useTheme();
+  const [srsSettings, setSrsSettings] = useState<SrsSettings>(() => normalizeSrsSettings(initialSrsSettings));
+
+  const updateSrsSettings = (patch: Partial<SrsSettings>) => {
+    const next = normalizeSrsSettings({ ...srsSettings, ...patch });
+    setSrsSettings(next);
+    void writeAppPreferences({ srs: next });
+  };
 
   usePersistStudyState({ selectedBookId, state });
 
@@ -93,7 +105,7 @@ function StudyApp({
     overallMeta,
     pendingLearningRows,
     reviewDue,
-  } = useHomeDashboardData({ dailyNewLearningCount, planRange, state, today });
+  } = useHomeDashboardData({ dailyNewLearningCount, planRange, srsSettings, state, today });
 
   useHomeReviewDebugLog({ reviewDueCount: reviewDue.length, session, stateCurriculum: state.curriculum, today });
 
@@ -110,6 +122,7 @@ function StudyApp({
     setState,
     showToast,
     sourceFiles,
+    srsSettings,
     state,
     today,
   });
@@ -146,6 +159,8 @@ function StudyApp({
             commitStudyChanges={controllers.commitStudyChanges}
             copyDebugLogs={controllers.copyDebugLogs}
             dailyNewLearningCount={dailyNewLearningCount}
+            handleFailureRetryDaysChange={(event) => updateSrsSettings({ failureRetryDays: Number(event.target.value) })}
+            handleMaxReviewStageChange={(event) => updateSrsSettings({ maxReviewStage: Number(event.target.value) })}
             debugLogs={debugLogs}
             devicePreference={device.preference}
             handleDailyNewLearningCountChange={(event) => updateDailyLearningCount({ event, setState, today })}
@@ -156,6 +171,7 @@ function StudyApp({
             setTheme={setTheme}
             theme={theme}
             sourceWriteQueue={controllers.sourceWriteQueue}
+            srsSettings={srsSettings}
             viewportMode={device.viewportMode}
           />
         ) : (
@@ -173,6 +189,7 @@ function StudyApp({
               openReviewDay: controllers.openReviewDay,
             }}
             tab={homeTab}
+            srsSettings={srsSettings}
             today={today}
           />
         )}

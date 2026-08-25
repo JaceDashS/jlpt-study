@@ -10,7 +10,7 @@ const TEMP_DIR = path.join(process.cwd(), TEMP_DIR_REL);
 
 function compileSrsForTest() {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
-  const files = ["constants.ts", "date.ts", "srs.ts"];
+  const files = ["constants.ts", "date.ts", "srsPreferences.ts", "srs.ts"];
   for (const name of files) {
     const srcPath = path.join(process.cwd(), "client", "src", "domain", name);
     const raw = fs.readFileSync(srcPath, "utf8");
@@ -64,9 +64,9 @@ function runCases() {
     const day = createDay(2);
     const out = applyQuizResultForDay(day, today, { "d1-i1": "PASS", "d1-i2": "FAIL" });
     assert.equal(out.allPass, false);
-    assert.equal(out.day.stage, 2);
-    assert.equal(out.day.nextReviewDate, "2026-02-18");
-    results.push({ name: "quiz_fail_keeps_stage", status: "PASS" });
+    assert.equal(out.day.stage, 1);
+    assert.equal(out.day.nextReviewDate, "2026-02-19");
+    results.push({ name: "quiz_fail_decrements_stage_and_retries_tomorrow", status: "PASS" });
   }
 
   {
@@ -89,9 +89,9 @@ function runCases() {
   {
     const day = createDay(2);
     const out = applyReviewResultForDay(day, today, { "d1-i1": "PASS", "d1-i2": "FAIL" });
-    assert.equal(out.day.stage, 2);
-    assert.equal(out.day.nextReviewDate, "2026-02-18");
-    results.push({ name: "review_fail_keeps_stage_and_due_today", status: "PASS" });
+    assert.equal(out.day.stage, 1);
+    assert.equal(out.day.nextReviewDate, "2026-02-19");
+    results.push({ name: "review_fail_keeps_stage_and_retries_tomorrow", status: "PASS" });
   }
 
   {
@@ -100,6 +100,28 @@ function runCases() {
     assert.equal(out.day.stage, 2);
     assert.equal(out.day.nextReviewDate, "2026-02-18");
     results.push({ name: "review_without_graded_does_not_promote", status: "PASS" });
+  }
+
+  {
+    const day = createDay(3);
+    const out = applyQuizResultForDay(day, today, { "d1-i1": "PASS", "d1-i2": "PASS" }, {
+      maxReviewStage: 4,
+      failureRetryDays: 3,
+    });
+    assert.equal(out.day.stage, 4);
+    assert.equal(out.day.nextReviewDate, null);
+    results.push({ name: "custom_max_stage_graduates_at_configured_stage", status: "PASS" });
+  }
+
+  {
+    const day = createDay(3);
+    const out = applyReviewResultForDay(day, today, { "d1-i1": "PASS", "d1-i2": "FAIL" }, {
+      maxReviewStage: 4,
+      failureRetryDays: 3,
+    });
+    assert.equal(out.day.stage, 2);
+    assert.equal(out.day.nextReviewDate, "2026-02-21");
+    results.push({ name: "custom_failure_retry_days_are_used", status: "PASS" });
   }
 
   return results;

@@ -6,10 +6,12 @@ import type { AllDayRow } from "./homeTypes.ts";
 
 export function RecentDays({
   allDayRows,
+  maxReviewStage,
   openLearningDay,
   today,
 }: {
   allDayRows: AllDayRow[];
+  maxReviewStage: number;
   openLearningDay: (path: LearningPath) => void;
   today: string;
 }) {
@@ -35,7 +37,7 @@ export function RecentDays({
           <span className="jc-recent-meta">
             {formatRelative(row.lastAttemptDate, today)} · 정답률 {Math.round(row.passRatio * 100)}%
           </span>
-          <span className="jc-recent-stage">{getStageLabel(row.stage)}</span>
+            <span className="jc-recent-stage">{getStageLabel(row.stage, maxReviewStage)}</span>
         </button>
       ))}
     </div>
