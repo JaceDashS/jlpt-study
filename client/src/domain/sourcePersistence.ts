@@ -5,7 +5,13 @@ import {
   type SourceWriteFetch,
   type SourceWriteQueueSnapshot,
 } from "./sourceWriteQueue.ts";
-import type { LearningPath } from "./studyTypes.ts";
+import type { LearningPath, QuizResult, StudyDay } from "./studyTypes.ts";
+
+export type PersistSourceDayResult = (
+  sourceDay: StudyDay,
+  nextDay: StudyDay,
+  learningPath: LearningPath,
+) => Promise<boolean>;
 
 const sourceWriteQueues = new WeakMap<SourceWriteFetch, SourceWriteQueue>();
 
@@ -66,9 +72,67 @@ export function createSourcePersistence(fetchImpl = apiFetch) {
     }, `day ${day?.id ?? "unknown"}.${field}`, learningPath);
   };
 
+  const persistSourceDayResult: PersistSourceDayResult = async (sourceDay, nextDay, learningPath) => {
+    const groups = new Map();
+    for (const item of nextDay.items ?? []) {
+      const sourceRef = item?.sourceRef;
+      if (!sourceRef?.sourcePath || !Number.isInteger(sourceRef.dayIndex) || !Number.isInteger(sourceRef.itemIndex)) {
+        continue;
+      }
+      if (!isQuizResult(item.lastResult)) continue;
+
+      const key = JSON.stringify([sourceRef.sourcePath, sourceRef.unitPath ?? null, sourceRef.dayIndex]);
+      const group = groups.get(key) ?? {
+        sourcePath: sourceRef.sourcePath,
+        unitPath: sourceRef.unitPath ?? null,
+        dayIndex: sourceRef.dayIndex,
+        items: new Map(),
+      };
+      group.items.set(sourceRef.itemIndex, {
+        itemIndex: sourceRef.itemIndex,
+        lastResult: item.lastResult,
+      });
+      groups.set(key, group);
+    }
+
+    if (groups.size === 0) {
+      console.warn("Skip source persist(day result): missing sourceRef", sourceDay?.id ?? nextDay?.id);
+      return false;
+    }
+
+    const stage = Number(nextDay.stage ?? sourceDay.stage);
+    const lastAttemptDate = nextDay.lastAttemptDate ?? "";
+    if (!Number.isInteger(stage) || stage < 1 || !isYmd(lastAttemptDate)) {
+      console.warn("Skip source persist(day result): invalid schedule", nextDay?.id, stage, lastAttemptDate);
+      return false;
+    }
+
+    const day = {
+      stage,
+      stageCompleteDate: nextDay.stageCompleteDate ?? null,
+      nextReviewDate: nextDay.nextReviewDate ?? null,
+      lastAttemptDate,
+    };
+    const results = await Promise.all([...groups.values()].map((group) => enqueueSourceWrite(
+      writeQueue,
+      {
+        sourcePath: group.sourcePath,
+        unitPath: group.unitPath,
+        dayIndex: group.dayIndex,
+        items: [...group.items.values()],
+        day,
+      },
+      `day ${nextDay?.id ?? "unknown"} result`,
+      learningPath,
+      "save-day-result",
+    )));
+    return results.every(Boolean);
+  };
+
   return {
     persistSourceField,
     persistSourceDayField,
+    persistSourceDayResult,
   };
 }
 
@@ -81,10 +145,18 @@ function getSourceWriteQueue(fetchImpl: SourceWriteFetch) {
   return next;
 }
 
-function enqueueSourceWrite(writeQueue: SourceWriteQueue, body: Record<string, unknown>, label: string, learningPath?: LearningPath) {
+function isQuizResult(value: unknown): value is QuizResult {
+  return value === "PASS" || value === "FAIL" || value === "NEUTRAL";
+}
+
+function isYmd(value: unknown): value is string {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
+function enqueueSourceWrite(writeQueue: SourceWriteQueue, body: Record<string, unknown>, label: string, learningPath?: LearningPath, endpoint = "save-item-field") {
   try {
     return writeQueue.enqueue({
-      input: apiUrl("save-item-field"),
+      input: apiUrl(endpoint),
       init: {
         method: "POST",
         credentials: "same-origin",

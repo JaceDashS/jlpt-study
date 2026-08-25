@@ -11,9 +11,8 @@ import type {
   StudyProblem,
   StudyUnit,
 } from "./studyTypes.ts";
+import type { PersistSourceDayResult } from "./sourcePersistence.ts";
 
-type PersistSourceField = (item: StudyItem, field: string, value: unknown) => Promise<unknown>;
-type PersistSourceDayField = (day: StudyDay, field: string, value: unknown, path?: LearningPath) => Promise<unknown>;
 type DayResult = { day: StudyDay; allPass?: boolean };
 type ProblemPayload = { error: string; problem: unknown };
 
@@ -36,8 +35,7 @@ type SessionControllerOptions = {
   replaceDay: (curriculum: StudyUnit[], targetPath: LearningPath, nextDay: StudyDay) => StudyUnit[];
   applyReviewResultForDay: (day: StudyDay, today: string, gradedMap: Record<string, QuizResult>) => DayResult;
   applyQuizResultForDay: (day: StudyDay, today: string, gradedMap: Record<string, QuizResult>) => DayResult;
-  persistSourceField: PersistSourceField;
-  persistSourceDayField: PersistSourceDayField;
+  persistSourceDayResult: PersistSourceDayResult;
   goHome: () => void;
 };
 
@@ -60,8 +58,7 @@ export function createSessionController({
   replaceDay,
   applyReviewResultForDay,
   applyQuizResultForDay,
-  persistSourceField,
-  persistSourceDayField,
+  persistSourceDayResult,
   goHome,
 }: SessionControllerOptions) {
   const canFinalizeQuiz = () => {
@@ -78,13 +75,6 @@ export function createSessionController({
     const isLast = session.index === sessionItems.length - 1;
     if (!isLast) return true;
     return canFinalizeQuiz();
-  };
-
-  const persistDaySchedule = (sourceDay: StudyDay, nextDay: StudyDay, path: LearningPath) => {
-    void persistSourceDayField(sourceDay, "stage", nextDay.stage, path);
-    void persistSourceDayField(sourceDay, "stageCompleteDate", nextDay.stageCompleteDate ?? null, path);
-    void persistSourceDayField(sourceDay, "nextReviewDate", nextDay.nextReviewDate, path);
-    void persistSourceDayField(sourceDay, "lastAttemptDate", nextDay.lastAttemptDate, path);
   };
 
   const finishSession = ({
@@ -156,7 +146,7 @@ export function createSessionController({
       reviewedCount,
     });
 
-    persistDaySchedule(day, nextDay, path);
+    void persistSourceDayResult(day, nextDay, path);
   };
 
   const goPrevStudyItem = () => {

@@ -17,6 +17,7 @@ import {
   handleAssetBackupExport,
   handleAssetBackupImport,
   handleReloadCurriculum,
+  handleSaveDayResult,
   handleSaveItemField,
 } from "./asset-routes.js";
 import { handleGitStudyCommitPush } from "./git-routes.js";
@@ -104,6 +105,15 @@ export function createApiRequestHandler() {
         return;
       }
       await handleGitStudyCommitPush(res, { repoRoot: REPO_ROOT });
+      return;
+    }
+
+    if (pathname === "/api/save-day-result") {
+      if (req.method !== "POST") {
+        sendJson(res, 405, { ok: false, error: "Method Not Allowed" });
+        return;
+      }
+      await handleSaveDayResult(req, res, enqueueWrite, { repoRoot: REPO_ROOT });
       return;
     }
 

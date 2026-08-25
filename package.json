@@ -21,6 +21,7 @@
     "build": "npm run build --workspace client",
     "typecheck": "npm run typecheck --workspace client",
     "preview": "npm run preview --workspace client",
+    "test:save-day-result": "node scripts/test-save-day-result.cjs",
     "test:stage-progression": "node scripts/test-stage-progression.cjs"
   }
 }

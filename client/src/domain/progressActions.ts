@@ -120,9 +120,6 @@ export function createProgressActions({
       ...prev,
       curriculum: replaceDay(prev.curriculum, path, nextDay),
     }));
-
-    void persistSourceField(targetItem, "lastResult", result);
-    void persistSourceDayField(day, "lastAttemptDate", today, path);
   };
 
   return {

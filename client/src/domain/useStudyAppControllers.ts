@@ -64,7 +64,7 @@ export function useStudyAppControllers({
   state,
   today,
 }: UseStudyAppControllersOptions) {
-  const { persistSourceField, persistSourceDayField } = createSourcePersistence(apiFetch);
+  const { persistSourceField, persistSourceDayField, persistSourceDayResult } = createSourcePersistence(apiFetch);
   const sourceWriteQueue = useSourceWriteQueue(apiFetch);
   const curriculumActions = createCurriculumActions({
     apiFetch,
@@ -154,8 +154,7 @@ export function useStudyAppControllers({
     replaceDay,
     applyReviewResultForDay: (day, resultToday, gradedMap) => applyReviewResultForDay(day, resultToday, gradedMap, srsSettings),
     applyQuizResultForDay: (day, resultToday, gradedMap) => applyQuizResultForDay(day, resultToday, gradedMap, srsSettings),
-    persistSourceField,
-    persistSourceDayField,
+    persistSourceDayResult,
     goHome: curriculumActions.goHome,
   });
 

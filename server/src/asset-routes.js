@@ -8,7 +8,7 @@ import {
   restoreAssetSnapshot,
   stripBom,
 } from "./asset-services.js";
-import { getAllowedSourceFields, writeSourceField } from "./asset-write-service.js";
+import { getAllowedSourceFields, writeSourceDayResult, writeSourceField } from "./asset-write-service.js";
 
 const ASSET_BACKUP_FILE = "backup/asset-full-backup.json";
 
@@ -168,4 +168,94 @@ export async function handleSaveItemField(req, res, enqueueWrite, { repoRoot }) 
     console.error("save-item-field-plugin error:", error);
     sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/save-item-field" });
   }
+}
+
+export async function handleSaveDayResult(req, res, enqueueWrite, { repoRoot }) {
+  try {
+    const bodyText = await readBody(req);
+    const body = JSON.parse(stripBom(bodyText || "{}"));
+    const sourcePath = String(body?.sourcePath ?? "");
+    const unitPath = String(body?.unitPath ?? "").trim() || null;
+    const dayIndex = Number(body?.dayIndex);
+    const rawDay = body?.day;
+    const rawItems = body?.items;
+    setApiLogDetail(res, {
+      endpoint: "save-day-result",
+      sourcePath,
+      unitPath,
+      dayIndex,
+      itemCount: Array.isArray(rawItems) ? rawItems.length : undefined,
+    });
+
+    if (!sourcePath.startsWith("asset/")) {
+      sendJson(res, 400, { ok: false, error: "Invalid sourcePath" });
+      return;
+    }
+    if (!Number.isInteger(dayIndex) || dayIndex < 0) {
+      sendJson(res, 400, { ok: false, error: "Invalid dayIndex" });
+      return;
+    }
+    if (!rawDay || typeof rawDay !== "object" || Array.isArray(rawDay)) {
+      sendJson(res, 400, { ok: false, error: "Invalid day result" });
+      return;
+    }
+    if (!Array.isArray(rawItems)) {
+      sendJson(res, 400, { ok: false, error: "Invalid item results" });
+      return;
+    }
+
+    const stage = Number(rawDay.stage);
+    const stageCompleteDate = readNullableDate(rawDay.stageCompleteDate);
+    const nextReviewDate = readNullableDate(rawDay.nextReviewDate);
+    const lastAttemptDate = rawDay.lastAttemptDate;
+    if (!Number.isInteger(stage) || stage < 1) {
+      sendJson(res, 400, { ok: false, error: "Invalid stage" });
+      return;
+    }
+    if (stageCompleteDate === undefined || nextReviewDate === undefined || !isYmd(lastAttemptDate)) {
+      sendJson(res, 400, { ok: false, error: "Invalid day dates" });
+      return;
+    }
+
+    const seenItemIndexes = new Set();
+    const items = [];
+    for (const rawItem of rawItems) {
+      const itemIndex = Number(rawItem?.itemIndex);
+      const lastResult = String(rawItem?.lastResult ?? "");
+      if (!Number.isInteger(itemIndex) || itemIndex < 0 || seenItemIndexes.has(itemIndex)) {
+        sendJson(res, 400, { ok: false, error: "Invalid item result index" });
+        return;
+      }
+      if (!["PASS", "FAIL", "NEUTRAL"].includes(lastResult)) {
+        sendJson(res, 400, { ok: false, error: "Invalid item result" });
+        return;
+      }
+      seenItemIndexes.add(itemIndex);
+      items.push({ itemIndex, lastResult });
+    }
+
+    const filePath = resolveAssetWritePath(repoRoot, sourcePath);
+    await enqueueWrite(filePath, async () => {
+      await writeSourceDayResult(filePath, {
+        dayIndex,
+        day: { stage, stageCompleteDate, nextReviewDate, lastAttemptDate },
+        items,
+        unitPath,
+      });
+    });
+
+    sendJson(res, 200, { ok: true, itemCount: items.length });
+  } catch (error) {
+    console.error("save-day-result error:", error);
+    sendJson(res, 500, { ok: false, error: String(error?.message ?? error), where: "/api/save-day-result" });
+  }
+}
+
+function isYmd(value) {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
+function readNullableDate(value) {
+  if (value === null) return null;
+  return isYmd(value) ? value : undefined;
 }

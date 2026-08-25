@@ -62,3 +62,43 @@ export async function writeSourceField(filePath, request) {
   target[request.field] = request.value;
   await writeFileAtomically(filePath, `${JSON.stringify(json, null, 2)}\n`, "utf8");
 }
+
+export async function writeSourceDayResult(filePath, request) {
+  const raw = await fs.readFile(filePath, "utf8");
+  const json = JSON.parse(stripBom(raw));
+  const root = resolveCombinedRoot(json, request.unitPath);
+
+  if (!root || typeof root !== "object") {
+    throw new Error(`Unit not found in combined file: ${request.unitPath}`);
+  }
+
+  const dayTarget = findWriteTarget(root, {
+    dayIndex: request.dayIndex,
+    targetType: "day",
+  });
+  if (!dayTarget || typeof dayTarget !== "object") {
+    throw new Error("Target day not found");
+  }
+
+  const itemTargets = request.items.map((item) => {
+    const target = findWriteTarget(root, {
+      dayIndex: request.dayIndex,
+      itemIndex: item.itemIndex,
+      targetType: "item",
+    });
+    if (!target || typeof target !== "object") {
+      throw new Error(`Target item not found: ${item.itemIndex}`);
+    }
+    return { target, result: item.lastResult };
+  });
+
+  for (const { target, result } of itemTargets) {
+    target.lastResult = result;
+  }
+  dayTarget.stage = request.day.stage;
+  dayTarget.stageCompleteDate = request.day.stageCompleteDate;
+  dayTarget.nextReviewDate = request.day.nextReviewDate;
+  dayTarget.lastAttemptDate = request.day.lastAttemptDate;
+
+  await writeFileAtomically(filePath, `${JSON.stringify(json, null, 2)}\n`, "utf8");
+}
