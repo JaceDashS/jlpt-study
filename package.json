@@ -15,6 +15,8 @@
     "local:no-build": "node scripts/prod-monorepo.js --skip-build",
     "prod": "node scripts/prod-monorepo.js --public",
     "prod:no-build": "node scripts/prod-monorepo.js --public --skip-build",
+    "study:commit": "node scripts/nightly-study-commit.mjs",
+    "study:commit:dry": "node scripts/nightly-study-commit.mjs --dry-run",
     "kill:port": "node scripts/kill-port.js",
     "kill:api": "node scripts/kill-port.js 47833",
     "kill:prod-ports": "node scripts/kill-port.js 47833 47832",
